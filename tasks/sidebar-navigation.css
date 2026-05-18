@@ -1,0 +1,489 @@
+/* Professional Sidebar Navigation Styles - SCORM Builder v2.0 */
+
+/* =============================================
+   SIDEBAR CORE STYLES
+   ============================================= */
+
+/* Main Sidebar Container */
+#sidebarNavigation {
+    width: 400px;
+    background: linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
+    border-right: 1px solid #e5e7eb;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 5rem); /* Subtract header height */
+}
+
+/* Sidebar Open State */
+.sidebar-open #sidebarNavigation {
+    transform: translateX(0);
+}
+
+/* Main Content Adjustments */
+#mainContentWrapper {
+    padding-left: 0;
+    transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-open #mainContentWrapper {
+    padding-left: 400px;
+}
+
+/* =============================================
+   BURGER MENU ANIMATION
+   ============================================= */
+
+#sidebarToggle {
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#sidebarToggle:hover {
+    background-color: #f3f4f6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+#sidebarToggle:active {
+    background-color: #e5e7eb;
+}
+
+.sidebar-toggle-line {
+    transform-origin: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Burger to X animation */
+.sidebar-open .sidebar-toggle-line:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+}
+
+.sidebar-open .sidebar-toggle-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.sidebar-open .sidebar-toggle-line:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+}
+
+/* =============================================
+   SIDEBAR HEADER STYLES
+   ============================================= */
+
+.sidebar-header {
+    background: linear-gradient(135deg, #4A9B8E 0%, #6B4C93 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease infinite;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.sidebar-header h2 {
+    color: #ffffff;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* =============================================
+   PROGRESS RING STYLES
+   ============================================= */
+
+.progress-ring-container {
+    position: relative;
+    width: 48px;
+    height: 48px;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+    transition: stroke-dashoffset 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-ring-bg {
+    stroke: #e5e7eb;
+}
+
+.progress-ring-fill {
+    stroke: url(#progressGradient);
+    stroke-linecap: round;
+    filter: drop-shadow(0 2px 4px rgba(74, 155, 142, 0.3));
+}
+
+.progress-percentage {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #1f2937;
+}
+
+/* =============================================
+   NAVIGATION SECTION STYLES
+   ============================================= */
+
+.nav-section {
+    margin-bottom: 1.5rem;
+}
+
+.nav-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.nav-section-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    tracking: wide;
+}
+
+.nav-section-count {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    font-weight: 500;
+}
+
+/* =============================================
+   NAVIGATION ITEM STYLES
+   ============================================= */
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    margin: 0 0.5rem 0.25rem;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4b5563;
+    text-decoration: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-item:hover {
+    background: linear-gradient(135deg, #f0fdfa 0%, #ecfdf5 100%);
+    color: #059669;
+    transform: translateX(4px);
+}
+
+.nav-item:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #4A9B8E;
+}
+
+.nav-item.current {
+    background: linear-gradient(135deg, #4A9B8E 0%, #059669 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(74, 155, 142, 0.4);
+}
+
+.nav-item.completed {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    color: #059669;
+}
+
+.nav-item.locked {
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    color: #9ca3af;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.nav-item.locked:hover {
+    transform: none;
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    color: #9ca3af;
+}
+
+/* =============================================
+   NAVIGATION STATUS ICONS
+   ============================================= */
+
+.nav-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.nav-item:hover .nav-icon {
+    transform: scale(1.1);
+}
+
+/* Status specific icon styles */
+.nav-icon.completed {
+    color: #10b981;
+}
+
+.nav-icon.current {
+    color: #ffffff;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.nav-icon.locked {
+    color: #9ca3af;
+}
+
+/* =============================================
+   NAVIGATION ITEM CONTENT
+   ============================================= */
+
+.nav-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.nav-title {
+    font-weight: 500;
+    margin-bottom: 0.125rem;
+    line-height: 1.25;
+}
+
+.nav-subtitle {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    line-height: 1.25;
+}
+
+/* =============================================
+   PROGRESS INDICATORS
+   ============================================= */
+
+.nav-progress {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.nav-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ffffff 0%, #e0f2fe 100%);
+    border-radius: 2px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-item.completed .nav-progress-fill {
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+}
+
+/* =============================================
+   QUIZ NAVIGATION STYLES
+   ============================================= */
+
+.nav-item.quiz {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 1px solid #f59e0b;
+    color: #92400e;
+}
+
+.nav-item.quiz:hover {
+    background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%);
+    transform: translateX(4px);
+}
+
+.nav-item.quiz.completed {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    border: 1px solid #10b981;
+    color: #065f46;
+}
+
+/* =============================================
+   FOOTER ACTIONS
+   ============================================= */
+
+.sidebar-footer {
+    border-top: 1px solid #e5e7eb;
+    background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+}
+
+
+/* =============================================
+   ACCESSIBILITY ENHANCEMENTS
+   ============================================= */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    #sidebarNavigation {
+        border-right: 2px solid #000000;
+    }
+
+    .nav-item {
+        border: 1px solid transparent;
+    }
+
+    .nav-item:focus {
+        border-color: #4A9B8E;
+        background: #e6fffa;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    #sidebarNavigation,
+    #mainContentWrapper,
+    .nav-item,
+    .progress-ring {
+        transition: none;
+        animation: none;
+    }
+
+    .sidebar-toggle-line {
+        transition: none;
+    }
+}
+
+/* Focus visible support */
+.nav-item:focus-visible {
+    outline: 2px solid #4A9B8E;
+    outline-offset: 2px;
+}
+
+/* =============================================
+   SCROLLABLE CONTENT AREA
+   ============================================= */
+
+/* Ensure the scrollable content area works properly */
+#sidebarNavigation .overflow-y-auto {
+    flex: 1;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    height: 0; /* Force flex child to respect parent flexbox */
+}
+
+/* Prevent scroll propagation to main content */
+#sidebarNavigation {
+    overscroll-behavior: contain;
+}
+
+/* =============================================
+   SCROLLBAR STYLING
+   ============================================= */
+
+#sidebarNavigation .overflow-y-auto {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db transparent;
+}
+
+#sidebarNavigation .overflow-y-auto::-webkit-scrollbar {
+    width: 6px;
+}
+
+#sidebarNavigation .overflow-y-auto::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#sidebarNavigation .overflow-y-auto::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 3px;
+}
+
+#sidebarNavigation .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background-color: #9ca3af;
+}
+
+/* =============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================= */
+
+/* Tablet (768px - 1023px) - Collapsible sidebar */
+@media (max-width: 1023px) {
+    #sidebarNavigation {
+        width: 280px;
+        z-index: 50;
+    }
+
+    .sidebar-open #mainContentWrapper {
+        padding-left: 280px;
+    }
+}
+
+/* Large screens with extra space */
+@media (min-width: 1280px) {
+    #sidebarNavigation {
+        width: 400px;
+    }
+
+    .sidebar-open #mainContentWrapper {
+        padding-left: 400px;
+    }
+
+    /* Center content properly on wide screens */
+    .sidebar-open .max-w-7xl {
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+/* =============================================
+   ANIMATION UTILITIES
+   ============================================= */
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Apply animations on sidebar open */
+.sidebar-open #sidebarNavigation {
+    animation: slideInLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =============================================
+   PRINT STYLES
+   ============================================= */
+
+@media print {
+    #sidebarNavigation,
+    #sidebarToggle {
+        display: none;
+    }
+
+    #mainContentWrapper {
+        padding-left: 0;
+    }
+}

@@ -1,0 +1,2380 @@
+/* Prerecorded Audio Player - Voice Bot UI Design */
+
+/* Voice Bot Theme System */
+.prerecorded-audio-player {
+  width: 100%;
+  height: 200px;
+  /* Reduced from 400px to 200px (half height) */
+  position: relative;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.prerecorded-audio-player * {
+  box-sizing: border-box;
+}
+
+/* Dark Theme Support */
+.prerecorded-audio-player.dark-theme {
+  background: #000000;
+}
+
+.prerecorded-audio-player.dark-theme .audio-controls-container {
+  background: rgba(20, 20, 20, 0.95);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.prerecorded-audio-player.dark-theme .control-group {
+  background: rgba(20, 20, 25, 0.7);
+  border-color: rgba(139, 69, 116, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.prerecorded-audio-player.dark-theme .voice-bot-btn {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.prerecorded-audio-player.dark-theme .voice-bot-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.prerecorded-audio-player.dark-theme .progress-bar {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.prerecorded-audio-player.dark-theme .volume-slider {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.prerecorded-audio-player.dark-theme .speed-select {
+  background: rgba(30, 30, 30, 0.95);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+.prerecorded-audio-player.dark-theme .time-display {
+  color: #ffffff;
+}
+
+.prerecorded-audio-player.dark-theme .language-display {
+  color: #ffffff;
+}
+
+/* Canvas Background */
+.audio-player-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+}
+
+.prerecorded-audio-player.dark-theme .audio-player-canvas {
+  background: #000000;
+}
+
+/* Connection Indicator - Top Right */
+.audio-connection-indicator {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #333;
+  z-index: 9999;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.prerecorded-audio-player.dark-theme .audio-connection-indicator {
+  background: rgba(20, 20, 20, 0.95);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.connection-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4CAF50;
+  animation: none;
+}
+
+.connection-dot.disconnected {
+  background: #ff4444;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  51%,
+  100% {
+    opacity: 0.3;
+  }
+}
+
+.session-timer {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.session-timer.warning {
+  color: #ff9800 !important;
+}
+
+.session-timer.critical {
+  color: #f44336 !important;
+}
+
+/* Bottom Controls Container - Corner Layout */
+.audio-controls-container {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 200;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none;
+  height: auto;
+}
+
+.audio-controls-left,
+.audio-controls-right {
+  pointer-events: auto;
+}
+
+.control-group {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 6px;
+  border-radius: 30px;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Voice Bot Button Styling */
+.voice-bot-btn {
+  outline: none;
+  border: none;
+  color: #333;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.05);
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.voice-bot-btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
+}
+
+.voice-bot-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.voice-bot-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.voice-bot-btn svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  pointer-events: none;
+}
+
+/* Play/Pause Button - Primary Action */
+.play-pause-btn {
+  background: rgba(33, 150, 243, 0.1) !important;
+  color: #1976d2 !important;
+  border: 2px solid rgba(33, 150, 243, 0.3) !important;
+}
+
+.play-pause-btn:hover:not(:disabled) {
+  background: rgba(33, 150, 243, 0.2) !important;
+  border-color: rgba(33, 150, 243, 0.5) !important;
+}
+
+.play-pause-btn.active {
+  background: #f44336 !important;
+  color: white !important;
+  border-color: #d32f2f !important;
+  animation: pulse 1.5s infinite;
+  box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.3) !important;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 83, 80, 0.7);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(239, 83, 80, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 83, 80, 0);
+  }
+}
+
+/* Progress Bar in Right Controls */
+.audio-controls-right .time-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 200px;
+  margin-right: 8px;
+}
+
+/* Enhanced flexbox layout for button positioning */
+.audio-controls-right .time-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 200px;
+  margin-right: 8px;
+}
+
+/* Play button followed by skip button layout */
+.audio-controls-right .control-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Specific spacing between play and skip buttons */
+.audio-controls-right .play-pause-btn+.skip-solve-btn {
+  margin-left: 4px;
+}
+
+/* Improved visual hierarchy - play button remains primary */
+.audio-controls-right .play-pause-btn {
+  order: 0;
+  /* Play button comes first */
+}
+
+.audio-controls-right .skip-solve-btn {
+  order: 1;
+  /* Skip button comes second */
+}
+
+.time-display {
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  min-width: 45px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.progress-container {
+  flex: 1;
+  min-width: 100px;
+}
+
+.progress-bar {
+  position: relative;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.progress-bar:hover {
+  height: 8px;
+}
+
+.progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #2196F3, #1976d2);
+  border-radius: 3px;
+  transition: width 0.1s ease;
+  min-width: 2px;
+}
+
+.progress-handle {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  background: white;
+  border: 2px solid #2196F3;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.progress-bar:hover .progress-handle {
+  opacity: 1;
+}
+
+.progress-handle:active {
+  cursor: grabbing;
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+/* Volume Controls */
+.volume-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.volume-slider {
+  width: 80px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.15);
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #2196F3;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #2196F3;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.volume-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+}
+
+/* Speed Controls */
+.speed-controls {
+  display: flex;
+  align-items: center;
+}
+
+.speed-select {
+  padding: 6px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.speed-select:hover {
+  border-color: rgba(33, 150, 243, 0.5);
+}
+
+.speed-select:focus {
+  border-color: #2196F3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+}
+
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .audio-controls-container {
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    flex-direction: column-reverse;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .audio-controls-left,
+  .audio-controls-right {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .audio-controls-right .time-controls {
+    margin: 0;
+    order: 1;
+  }
+
+  .control-group {
+    justify-content: center;
+  }
+}
+
+/* Responsive Design for when transcript is open */
+.prerecorded-audio-section .flex.lg\\:flex-row.gap-4:has(.transcript-placeholder:not([style*="height: 0"])) .audio-controls-container {
+  /* When transcript is visible, make audio player controls more compact */
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.prerecorded-audio-section .flex.lg\\:flex-row.gap-4:has(.transcript-placeholder:not([style*="height: 0"])) .audio-controls-right {
+  flex: 1;
+  min-width: 0;
+  /* Allow flex item to shrink */
+}
+
+.prerecorded-audio-section .flex.lg\\:flex-row.gap-4:has(.transcript-placeholder:not([style*="height: 0"])) .audio-controls-right .time-controls {
+  min-width: 150px;
+  margin-right: 4px;
+}
+
+.prerecorded-audio-section .flex.lg\\:flex-row.gap-4:has(.transcript-placeholder:not([style*="height: 0"])) .control-group {
+  padding: 4px;
+  gap: 2px;
+}
+
+.prerecorded-audio-section .flex.lg\\:flex-row.gap-4:has(.transcript-placeholder:not([style*="height: 0"])) .voice-bot-btn {
+  width: 36px;
+  height: 36px;
+}
+
+.prerecorded-audio-section .flex.lg\\:flex-row.gap-4:has(.transcript-placeholder:not([style*="height: 0"])) .voice-bot-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.prerecorded-audio-section .flex.lg\\:flex-row.gap-4:has(.transcript-placeholder:not([style*="height: 0"])) .time-display {
+  font-size: 11px;
+  min-width: 40px;
+}
+
+.prerecorded-audio-section .flex.lg\\:flex-row.gap-4:has(.transcript-placeholder:not([style*="height: 0"])) .volume-slider {
+  width: 60px;
+}
+
+/* Alternative approach for browsers that don't support :has() */
+.transcript-placeholder:not([style*="height: 0"])~.audio-player-container .audio-controls-container {
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.transcript-placeholder:not([style*="height: 0"])~.audio-player-container .audio-controls-right {
+  flex: 1;
+  min-width: 0;
+}
+
+.transcript-placeholder:not([style*="height: 0"])~.audio-player-container .audio-controls-right .time-controls {
+  min-width: 150px;
+  margin-right: 4px;
+}
+
+.transcript-placeholder:not([style*="height: 0"])~.audio-player-container .control-group {
+  padding: 4px;
+  gap: 2px;
+}
+
+.transcript-placeholder:not([style*="height: 0"])~.audio-player-container .voice-bot-btn {
+  width: 36px;
+  height: 36px;
+}
+
+.transcript-placeholder:not([style*="height: 0"])~.audio-player-container .voice-bot-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.transcript-placeholder:not([style*="height: 0"])~.audio-player-container .time-display {
+  font-size: 11px;
+  min-width: 40px;
+}
+
+.transcript-placeholder:not([style*="height: 0"])~.audio-player-container .volume-slider {
+  width: 60px;
+}
+
+/* ============================================
+   TRANSCRIPT ACTIVE - Left-Aligned Compact Layout
+   Controls on LEFT side, Logo/Visualizer shifted left
+   ============================================ */
+
+/* Keep audio player dimensions but allow shrinking */
+.prerecorded-audio-section.transcript-active .prerecorded-audio-player,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .prerecorded-audio-player {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Canvas/Visualizer - shift content left when transcript is active to avoid clipping */
+/* The canvas draws the logo/ripple at center, we use transform to shift visually */
+.prerecorded-audio-section.transcript-active .audio-player-canvas,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .audio-player-canvas {
+  /* Shift the canvas content left by adjusting its position */
+  position: absolute;
+  left: -10%;
+  width: 100%;
+  height: 100%;
+}
+
+/* Controls container - positioned on the LEFT side, vertically stacked */
+.prerecorded-audio-section.transcript-active .audio-controls-container,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .audio-controls-container {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: auto;
+  width: auto;
+  max-width: 45%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  pointer-events: auto;
+}
+
+/* Left controls - show on top with compact styling, left-aligned */
+.prerecorded-audio-section.transcript-active .audio-controls-left,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .audio-controls-left {
+  order: 1;
+  width: auto;
+  align-self: flex-start;
+}
+
+.prerecorded-audio-section.transcript-active .audio-controls-left .control-group,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .audio-controls-left .control-group {
+  display: flex !important;
+  padding: 5px 8px;
+  gap: 4px;
+  /* Inherit original styling - no overrides */
+}
+
+/* Right controls - show below with compact styling */
+.prerecorded-audio-section.transcript-active .audio-controls-right,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .audio-controls-right {
+  order: 2;
+  width: auto;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Right controls inner control group */
+.prerecorded-audio-section.transcript-active .audio-controls-right .control-group,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .audio-controls-right .control-group {
+  padding: 5px 8px;
+  gap: 4px;
+  flex-shrink: 0;
+  /* Inherit original styling - no overrides */
+}
+
+/* Time controls - wider for better timebar */
+.prerecorded-audio-section.transcript-active .audio-controls-right .time-controls,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .audio-controls-right .time-controls {
+  min-width: 120px;
+  max-width: 250px;
+  flex: 1;
+  margin: 0;
+  gap: 4px;
+}
+
+/* Progress bar - wider */
+.prerecorded-audio-section.transcript-active .progress-container,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .progress-container {
+  min-width: 80px;
+  max-width: 150px;
+  flex: 1;
+}
+
+.prerecorded-audio-section.transcript-active .progress-bar,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .progress-bar {
+  height: 5px;
+}
+
+/* Buttons - increased size */
+.prerecorded-audio-section.transcript-active .voice-bot-btn,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .voice-bot-btn {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.prerecorded-audio-section.transcript-active .voice-bot-btn svg,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .voice-bot-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Play button - bigger for prominence */
+.prerecorded-audio-section.transcript-active .play-pause-btn,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .play-pause-btn {
+  width: 36px;
+  height: 36px;
+}
+
+/* Time display - readable size */
+.prerecorded-audio-section.transcript-active .time-display,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .time-display {
+  font-size: 10px;
+  min-width: 32px;
+  padding: 0 2px;
+}
+
+/* Hide volume slider to save space */
+.prerecorded-audio-section.transcript-active .volume-slider,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .volume-slider {
+  display: none;
+}
+
+/* Hide language display */
+.prerecorded-audio-section.transcript-active .language-display,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .language-display {
+  display: none;
+}
+
+/* Speed select - compact */
+.prerecorded-audio-section.transcript-active .speed-select,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .speed-select {
+  font-size: 8px;
+  padding: 2px 4px;
+  flex-shrink: 0;
+}
+
+/* Skip and solve doubt button - compact but visible */
+.prerecorded-audio-section.transcript-active .skip-solve-btn,
+.prerecorded-audio-section [id^="audio-player-container-"].transcript-active .skip-solve-btn {
+  font-size: 9px !important;
+  padding: 4px 8px !important;
+  white-space: nowrap;
+}
+
+/* Loading State */
+.audio-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: #757575;
+  gap: 16px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  z-index: 1000;
+}
+
+.prerecorded-audio-player.dark-theme .audio-loading {
+  background: rgba(20, 20, 20, 0.9);
+  color: #ffffff;
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top: 3px solid #2196F3;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.prerecorded-audio-player.dark-theme .loading-spinner {
+  border-color: rgba(255, 255, 255, 0.3);
+  border-top-color: #64b5f6;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error State */
+.audio-error {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  border-radius: 12px;
+  color: #d32f2f;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  max-width: 80%;
+}
+
+.error-icon {
+  font-size: 1.5rem;
+}
+
+.error-message {
+  flex: 1;
+  font-weight: 500;
+}
+
+.retry-btn {
+  padding: 8px 16px;
+  border: none;
+  background: #d32f2f;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.retry-btn:hover {
+  background: #c62828;
+  transform: translateY(-1px);
+}
+
+/* Play/Pause Button - Enhanced voice bot styling already applied above */
+
+
+/* Loading State */
+.audio-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: var(--audio-text-secondary);
+  gap: 16px;
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--audio-border);
+  border-top: 3px solid var(--audio-primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error State */
+.audio-error {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: var(--audio-error-color);
+}
+
+.error-icon {
+  font-size: 1.5rem;
+}
+
+.error-message {
+  flex: 1;
+  font-weight: 500;
+}
+
+.retry-btn {
+  padding: 8px 16px;
+  border: none;
+  background: var(--audio-error-color);
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: var(--audio-transition);
+}
+
+.retry-btn:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+/* Transcript Manager Styles - Space Theme */
+.transcript-manager {
+  width: 100%;
+  background: rgba(15, 15, 20, 0.95);
+  border-radius: 12px;
+  border: 1px solid rgba(139, 69, 116, 0.3);
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Transcript Header - Compact Space Theme */
+.transcript-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, rgba(139, 69, 116, 0.9) 0%, rgba(107, 76, 147, 0.9) 100%);
+  color: white;
+  gap: 10px;
+  border-bottom: 1px solid rgba(155, 89, 182, 0.3);
+}
+
+.transcript-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.transcript-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Search Container - Space Theme */
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  padding: 6px 32px 6px 10px;
+  border: 1px solid rgba(155, 89, 182, 0.4);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 0.8rem;
+  width: 150px;
+  outline: none;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(5px);
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.search-input:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(155, 89, 182, 0.6);
+  width: 180px;
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: var(--audio-transition);
+}
+
+.search-clear-btn:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Control Buttons - Compact Space Theme */
+.auto-scroll-btn,
+.print-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(155, 89, 182, 0.4);
+  background: rgba(139, 69, 116, 0.2);
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 12px;
+}
+
+.auto-scroll-btn:hover,
+.print-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+.auto-scroll-btn:focus,
+.print-btn:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 2px;
+}
+
+.auto-scroll-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Search Results - Space Theme */
+.search-results {
+  padding: 10px 14px;
+  background: rgba(139, 69, 116, 0.15);
+  border-bottom: 1px solid rgba(155, 89, 182, 0.2);
+}
+
+.search-results-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.search-results-count {
+  font-weight: 600;
+  color: #c27ba0;
+}
+
+.search-clear-all-btn {
+  padding: 4px 10px;
+  border: 1px solid rgba(155, 89, 182, 0.4);
+  background: rgba(139, 69, 116, 0.2);
+  color: #c27ba0;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.search-clear-all-btn:hover {
+  background: rgba(155, 89, 182, 0.4);
+  color: white;
+}
+
+.search-results-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 4px;
+}
+
+.search-result-item {
+  display: flex;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.search-result-item:hover {
+  background: rgba(155, 89, 182, 0.2);
+}
+
+.result-timestamp {
+  font-weight: 600;
+  color: #7bc8dc;
+  min-width: 45px;
+  font-size: 0.8rem;
+}
+
+.result-text {
+  flex: 1;
+  color: #e0d0e8;
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+
+/* Search Highlights - Cyan for dark theme visibility */
+.search-highlight {
+  background: rgba(72, 145, 167, 0.5);
+  color: #fff;
+  padding: 1px 3px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+/* Transcript Content */
+.transcript-content {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.transcript-segments {
+  padding: 0;
+}
+
+/* Transcript Segments */
+.transcript-segment {
+  display: flex;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--audio-border);
+  cursor: pointer;
+  transition: var(--audio-transition);
+  position: relative;
+}
+
+.transcript-segment:hover {
+  background: var(--audio-surface);
+}
+
+.transcript-segment:focus {
+  outline: 2px solid var(--audio-primary-color);
+  outline-offset: -2px;
+  background: var(--audio-surface);
+}
+
+.transcript-segment.last {
+  border-bottom: none;
+}
+
+/* Segment States */
+.transcript-segment.past {
+  opacity: 0.6;
+  color: var(--audio-text-secondary);
+}
+
+.transcript-segment.active {
+  background: linear-gradient(90deg, #e3f2fd, #bbdefb);
+  border-left: 4px solid var(--audio-primary-color);
+}
+
+.transcript-segment.future {
+  opacity: 0.7;
+  color: var(--audio-text-secondary);
+}
+
+.transcript-segment.clicked {
+  animation: pulse 0.3s ease;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.02);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Segment Timestamps */
+.segment-timestamps {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.segment-start,
+.segment-end {
+  font-size: 0.85rem;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  line-height: 1.2;
+}
+
+.segment-start {
+  font-weight: 600;
+  color: var(--audio-text-primary);
+}
+
+.segment-end {
+  color: var(--audio-text-secondary);
+  font-size: 0.8rem;
+}
+
+/* Segment Text */
+.segment-text {
+  flex: 1;
+  line-height: 1.6;
+  color: var(--audio-text-primary);
+  word-wrap: break-word;
+}
+
+.transcript-segment.active .segment-text {
+  color: var(--audio-text-primary);
+  font-weight: 500;
+}
+
+/* Empty State */
+.transcript-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: var(--audio-text-secondary);
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.transcript-empty p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* Transcript Footer */
+.transcript-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: var(--audio-surface);
+  border-top: 1px solid var(--audio-border);
+  font-size: 0.85rem;
+  color: var(--audio-text-secondary);
+}
+
+.transcript-stats {
+  display: flex;
+  gap: 12px;
+}
+
+.navigation-hint {
+  font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .audio-controls {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .time-controls {
+    order: 1;
+    min-width: auto;
+  }
+
+  .play-pause-btn {
+    order: 0;
+    align-self: center;
+  }
+
+  .volume-controls,
+  .speed-controls {
+    align-self: center;
+  }
+
+  .transcript-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .transcript-controls {
+    justify-content: space-between;
+  }
+
+  .search-input {
+    width: 180px;
+  }
+
+  .search-input:focus {
+    width: 200px;
+  }
+
+  .transcript-segment {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .segment-timestamps {
+    flex-direction: row;
+    gap: 12px;
+    min-width: auto;
+  }
+
+  .transcript-content {
+    max-height: 300px;
+  }
+
+  .transcript-footer {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .audio-player-header {
+    padding: 16px;
+  }
+
+  .audio-controls {
+    padding: 16px;
+  }
+
+  .time-controls {
+    font-size: 0.8rem;
+  }
+
+  .current-time,
+  .duration {
+    min-width: 40px;
+    font-size: 0.8rem;
+  }
+
+  .volume-slider {
+    width: 60px;
+  }
+
+  .transcript-segment {
+    padding: 12px 16px;
+  }
+
+  .segment-text {
+    font-size: 0.95rem;
+  }
+
+  .transcript-content {
+    max-height: 250px;
+  }
+}
+
+/* Print Styles */
+@media print {
+
+  .audio-controls,
+  .transcript-header,
+  .transcript-footer,
+  .search-results {
+    display: none !important;
+  }
+
+  .transcript-content {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .transcript-manager {
+    border: none;
+    box-shadow: none;
+  }
+
+  .transcript-segment {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+/* Accessibility and High Contrast */
+@media (prefers-contrast: high) {
+  :root {
+    --audio-border: #000000;
+    --audio-text-primary: #000000;
+    --audio-text-secondary: #333333;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .loading-spinner {
+    animation: none;
+  }
+}
+
+/* Focus Styles for Better Accessibility */
+.play-pause-btn:focus-visible,
+.volume-btn:focus-visible,
+.auto-scroll-btn:focus-visible,
+.print-btn:focus-visible,
+.transcript-segment:focus-visible {
+  outline: 2px solid var(--audio-primary-color);
+  outline-offset: 2px;
+}
+
+/* Custom Scrollbar */
+.transcript-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.transcript-content::-webkit-scrollbar-track {
+  background: var(--audio-surface);
+}
+
+.transcript-content::-webkit-scrollbar-thumb {
+  background: var(--audio-border);
+  border-radius: 3px;
+}
+
+.transcript-content::-webkit-scrollbar-thumb:hover {
+  background: var(--audio-text-secondary);
+}
+
+/* ========================================
+   AUDIO/VOICE TOGGLE BUTTON STYLING
+   ======================================== */
+
+/* Voice Assistant Toggle Container */
+.voice-assistant-toggle {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 2rem;
+}
+
+.toggle-container {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 30px;
+  padding: 4px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  border-radius: 26px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  outline: none;
+  text-decoration: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.toggle-btn:hover:not(.active) {
+  color: #475569;
+  background: rgba(148, 163, 184, 0.1);
+}
+
+.toggle-btn:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  z-index: 10;
+}
+
+.toggle-btn.active {
+  background: #3b82f6;
+  color: white;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+  transform: scale(1.02);
+}
+
+.toggle-btn i {
+  font-size: 16px;
+}
+
+/* Toggle Animation Effects */
+.toggle-btn.active {
+  animation: toggleActive 0.3s ease-out;
+}
+
+@keyframes toggleActive {
+  0% {
+    transform: scale(0.95);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1.02);
+  }
+}
+
+/* Dark Theme Support for Toggle */
+.prerecorded-audio-player.dark-theme .toggle-container {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+.prerecorded-audio-player.dark-theme .toggle-btn {
+  color: #9ca3af;
+}
+
+.prerecorded-audio-player.dark-theme .toggle-btn:hover:not(.active) {
+  color: #e5e7eb;
+  background: rgba(75, 85, 99, 0.3);
+}
+
+.prerecorded-audio-player.dark-theme .toggle-btn.active {
+  background: #60a5fa;
+  color: #111827;
+  box-shadow: 0 2px 8px rgba(96, 165, 250, 0.4);
+}
+
+/* Responsive Design for Toggle Button */
+@media (max-width: 768px) {
+  .voice-assistant-toggle {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+
+  .toggle-container {
+    padding: 3px;
+    border-radius: 25px;
+  }
+
+  .toggle-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+    border-radius: 22px;
+  }
+
+  .toggle-btn i {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .toggle-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .toggle-btn i {
+    font-size: 13px;
+  }
+
+  .toggle-btn span:not(.i) {
+    display: none;
+  }
+
+  .toggle-btn {
+    min-width: 50px;
+    justify-content: center;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .toggle-container {
+    background: #000000;
+    border-color: #ffffff;
+    border-width: 2px;
+  }
+
+  .toggle-btn {
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  .toggle-btn.active {
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .toggle-btn {
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .toggle-btn.active {
+    animation: none;
+    transform: scale(1);
+  }
+
+  .toggle-btn:hover {
+    transform: none;
+  }
+}
+
+/* Toggle Button Loading State */
+.toggle-btn.loading {
+  pointer-events: none;
+  opacity: 0.6;
+  position: relative;
+}
+
+.toggle-btn.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+/* Toggle Button Transitions */
+.voice-assistant-toggle {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.voice-assistant-toggle.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Focus Management for Accessibility */
+.toggle-btn:focus {
+  outline: none;
+}
+
+.toggle-btn:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 26px;
+}
+
+/* Touch-Friendly Interaction */
+@media (hover: none) and (pointer: coarse) {
+  .toggle-btn:hover:not(.active) {
+    background: transparent;
+    color: #64748b;
+  }
+
+  .toggle-btn:active {
+    transform: scale(0.98);
+  }
+
+  .toggle-btn.active:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Toggle Button in Different States */
+.toggle-btn.success {
+  background: #10b981;
+  color: white;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.toggle-btn.warning {
+  background: #f59e0b;
+  color: white;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+}
+
+.toggle-btn.error {
+  background: #ef4444;
+  color: white;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+/* ========================================
+   SEQUENTIAL INTERACTION TRANSITIONS
+   ======================================== */
+
+/* Audio Player and Voice Assistant Transition Effects */
+.prerecorded-audio-section,
+.voice-widget-container-full {
+  transition: all 0.5s ease-out;
+}
+
+/* Audio Player Fade Out */
+.prerecorded-audio-section.hiding {
+  opacity: 0;
+  transform: translateY(-20px);
+  filter: blur(2px);
+}
+
+/* Voice Assistant Fade In */
+.voice-widget-container-full.showing {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Voice Waiting Screen Styling */
+.voice-waiting-screen {
+  position: relative;
+  overflow: hidden;
+}
+
+.voice-waiting-screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 100%;
+  }
+}
+
+/* Voice Transition Screen */
+.voice-transition-screen {
+  position: relative;
+  overflow: hidden;
+}
+
+.voice-transition-screen .voice-transition-icon {
+  animation: bounceIn 0.8s ease-out;
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Sequential Loading States */
+.voice-widget-loading-full {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.voice-widget-loading-full::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(59, 130, 246, 0.1),
+      transparent);
+  animation: loadingShimmer 1.5s infinite;
+}
+
+@keyframes loadingShimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Audio Completion Success Animation */
+.audio-completion-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 3rem;
+  animation: successPulse 1s ease-out;
+  z-index: 1000;
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+}
+
+@keyframes successPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Voice Widget Container Transitions */
+.voice-bot-container-full {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.voice-bot-container-full.entering {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+}
+
+.voice-bot-container-full.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Voice Widget Header Transitions */
+.voice-widget-header {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+}
+
+.voice-widget-header.entering {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.voice-widget-header.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Audio Player Container Transitions */
+#audio-player-container-,
+#transcript-container- {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#audio-player-container-.exiting,
+#transcript-container-.exiting {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.98);
+}
+
+/* Smooth Height Transitions for Container Changes */
+.voice-widget-container-full {
+  transition: height 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+/* Connection Indicator Success Animation */
+.connection-dot.audio-completed {
+  background: #10b981;
+  animation: successBlink 0.6s ease-in-out;
+}
+
+@keyframes successBlink {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(1.2);
+  }
+}
+
+/* Audio Section Transition Classes */
+.prerecorded-audio-section.transition-out {
+  animation: audioSlideOut 0.5s ease-out forwards;
+}
+
+@keyframes audioSlideOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-30px) scale(0.95);
+  }
+}
+
+.voice-widget-container-full.transition-in {
+  animation: voiceSlideIn 0.6s ease-out forwards;
+}
+
+@keyframes voiceSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(30px) scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Enhanced Mobile Transitions */
+@media (max-width: 768px) {
+
+  .prerecorded-audio-section,
+  .voice-widget-container-full {
+    transition: all 0.3s ease-out;
+  }
+
+  .voice-transition-screen .voice-transition-icon {
+    animation-duration: 0.6s;
+  }
+
+  .audio-completion-indicator {
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+  }
+}
+
+/* Accessibility: Respect Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+
+  .prerecorded-audio-section,
+  .voice-widget-container-full,
+  .voice-bot-container-full,
+  .voice-widget-header,
+  #audio-player-container-,
+  #transcript-container- {
+    transition: opacity 0.2s ease !important;
+    transform: none !important;
+  }
+
+  .voice-waiting-screen::before,
+  .voice-widget-loading-full::after {
+    animation: none !important;
+  }
+
+  .voice-transition-screen .voice-transition-icon {
+    animation: none !important;
+  }
+
+  .audio-completion-indicator {
+    animation: none !important;
+    transform: translate(-50%, -50%) scale(1) !important;
+  }
+}
+
+/* Enhanced Focus Management During Transitions */
+.voice-widget-container-full.transitioning * {
+  pointer-events: none;
+}
+
+.voice-widget-container-full.transitioning {
+  pointer-events: auto;
+}
+
+/* Smooth Scroll to Voice Assistant */
+html {
+  scroll-behavior: smooth;
+}
+
+.voice-widget-container-full:focus-within {
+  outline: 2px solid var(--audio-primary-color);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+/* Loading State Enhancements for Sequential Flow */
+.voice-sequence-loading {
+  position: relative;
+}
+
+.voice-sequence-loading::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  border-radius: inherit;
+}
+
+/* ========================================
+   SKIP AND SOLVE DOUBT BUTTON STYLING
+   Glassmorphism + Nebula Purple Theme
+   ======================================== */
+
+/* Skip and Solve Doubt Button Styling - Nebula Theme */
+.skip-solve-btn {
+  background: rgba(139, 69, 116, 0.15) !important;
+  color: #c27ba0 !important;
+  border: 1px solid rgba(139, 69, 116, 0.4) !important;
+  border-radius: 24px !important;
+  padding: 10px 20px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+  min-width: auto !important;
+  width: auto !important;
+  height: auto !important;
+  position: relative;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(139, 69, 116, 0.2);
+}
+
+.skip-solve-btn:hover:not(:disabled) {
+  background: rgba(139, 69, 116, 0.3) !important;
+  border-color: rgba(155, 89, 182, 0.6) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 69, 116, 0.35);
+}
+
+.skip-solve-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(139, 69, 116, 0.2);
+}
+
+.skip-solve-btn::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 25px;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, rgba(155, 89, 182, 0.4), rgba(72, 145, 167, 0.3), rgba(139, 69, 116, 0.4));
+  background-size: 200% 200%;
+  animation: shimmerBorder 3s ease-in-out infinite;
+  z-index: -1;
+  opacity: 0.6;
+}
+
+@keyframes shimmerBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Dark theme support - Space Theme */
+.prerecorded-audio-player.dark-theme .skip-solve-btn {
+  color: #d4a5c9 !important;
+  background: rgba(155, 89, 182, 0.15) !important;
+  border-color: rgba(155, 89, 182, 0.4) !important;
+}
+
+.prerecorded-audio-player.dark-theme .skip-solve-btn:hover:not(:disabled) {
+  background: rgba(155, 89, 182, 0.3) !important;
+  border-color: rgba(155, 89, 182, 0.6) !important;
+}
+
+/* Skip button pulse animation */
+.skip-solve-btn {
+  animation: gentlePulse 3s ease-in-out infinite;
+}
+
+@keyframes gentlePulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 0 8px rgba(76, 175, 80, 0);
+  }
+}
+
+/* Enhanced focus state */
+.skip-solve-btn:focus-visible {
+  outline: 2px solid #4CAF50;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.2);
+}
+
+/* ========================================
+   TRANSCRIPT TOGGLE BUTTON STYLING
+   ======================================== */
+
+/* Transcript Toggle Button */
+.transcript-btn {
+  background: rgba(156, 39, 176, 0.1) !important;
+  color: #9C27B0 !important;
+  border: 2px solid rgba(156, 39, 176, 0.3) !important;
+}
+
+.transcript-btn:hover:not(:disabled) {
+  background: rgba(156, 39, 176, 0.2) !important;
+  border-color: rgba(156, 39, 176, 0.5) !important;
+  transform: translateY(-1px);
+}
+
+.transcript-btn.active {
+  background: #9C27B0 !important;
+  color: white !important;
+  border-color: #7B1FA2 !important;
+  box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.3) !important;
+}
+
+.transcript-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Dark theme support */
+.prerecorded-audio-player.dark-theme .transcript-btn {
+  color: #CE93D8 !important;
+  background: rgba(156, 39, 176, 0.15) !important;
+  border-color: rgba(156, 39, 176, 0.4) !important;
+}
+
+.prerecorded-audio-player.dark-theme .transcript-btn:hover:not(:disabled) {
+  background: rgba(156, 39, 176, 0.25) !important;
+  border-color: rgba(156, 39, 176, 0.6) !important;
+}
+
+.prerecorded-audio-player.dark-theme .transcript-btn.active {
+  background: #9C27B0 !important;
+  color: #ffffff !important;
+  border-color: #BA68C8 !important;
+}
+
+/* Transcript button icon variations */
+.transcript-btn .transcript-icon-show,
+.transcript-btn .transcript-icon-hide {
+  transition: opacity 0.2s ease;
+}
+
+.transcript-btn .transcript-icon-hide {
+  color: #ffffff;
+}
+
+/* Active state animation */
+.transcript-btn.active {
+  animation: transcriptPulse 2s ease-in-out infinite;
+}
+
+@keyframes transcriptPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(156, 39, 176, 0.5);
+  }
+}
+
+/* Enhanced focus state */
+.transcript-btn:focus-visible {
+  outline: 2px solid #9C27B0;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(156, 39, 176, 0.2);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 600px) {
+  .skip-solve-btn {
+    font-size: 11px !important;
+    padding: 6px 12px !important;
+  }
+
+  .skip-solve-btn::after {
+    animation-duration: 3s;
+    /* Slower animation on mobile */
+  }
+
+  /* Adjust button spacing on mobile */
+  .audio-controls-right .control-group {
+    gap: 6px;
+  }
+
+  .audio-controls-right .play-pause-btn+.skip-solve-btn {
+    margin-left: 2px;
+  }
+
+  /* Responsive time controls */
+  .audio-controls-right .time-controls {
+    gap: 6px;
+    margin-right: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .skip-solve-btn {
+    font-size: 10px !important;
+    padding: 5px 10px !important;
+  }
+
+  /* Further reduce spacing on very small screens */
+  .audio-controls-right .control-group {
+    gap: 4px;
+  }
+
+  .audio-controls-right .play-pause-btn+.skip-solve-btn {
+    margin-left: 1px;
+  }
+
+  /* Responsive time controls for very small screens */
+  .audio-controls-right .time-controls {
+    gap: 4px;
+    margin-right: 4px;
+  }
+}
+
+/* Desktop spacing improvements */
+@media (min-width: 601px) {
+
+  /* Ensure consistent 8px gap between buttons on desktop */
+  .audio-controls-right .control-group {
+    gap: 8px;
+  }
+
+  /* 4px specific margin between play and skip buttons on desktop */
+  .audio-controls-right .play-pause-btn+.skip-solve-btn {
+    margin-left: 4px;
+  }
+}
+
+/* ===================================== */
+/* 3D Space Theme Styles                 */
+/* For Three.js Space Visualizer         */
+/* ===================================== */
+
+/* Space Theme Base Styles */
+.prerecorded-audio-player.space-theme {
+  background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 100%);
+  border: 1px solid rgba(100, 100, 200, 0.2);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    inset 0 0 60px rgba(107, 76, 147, 0.05);
+}
+
+.prerecorded-audio-player.space-theme .audio-player-canvas {
+  background: transparent !important;
+}
+
+/* Space Theme Controls - Glassmorphic Dark Style */
+.prerecorded-audio-player.space-theme .audio-controls-container {
+  background: transparent;
+}
+
+.prerecorded-audio-player.space-theme .control-group {
+  background: rgba(15, 15, 35, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(100, 130, 200, 0.25);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.prerecorded-audio-player.space-theme .voice-bot-btn {
+  color: rgba(200, 200, 255, 0.9);
+  background: rgba(100, 130, 200, 0.1);
+  border: 1px solid rgba(100, 130, 200, 0.2);
+}
+
+.prerecorded-audio-player.space-theme .voice-bot-btn:hover:not(:disabled) {
+  background: rgba(100, 130, 200, 0.25);
+  border-color: rgba(100, 130, 200, 0.4);
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(100, 130, 200, 0.3);
+}
+
+/* Space Theme Play/Pause Button */
+.prerecorded-audio-player.space-theme .play-pause-btn {
+  background: rgba(72, 145, 167, 0.2) !important;
+  color: rgba(100, 200, 220, 0.95) !important;
+  border: 2px solid rgba(72, 145, 167, 0.4) !important;
+}
+
+.prerecorded-audio-player.space-theme .play-pause-btn:hover:not(:disabled) {
+  background: rgba(72, 145, 167, 0.35) !important;
+  border-color: rgba(72, 145, 167, 0.6) !important;
+  box-shadow: 0 0 20px rgba(72, 145, 167, 0.4) !important;
+}
+
+.prerecorded-audio-player.space-theme .play-pause-btn.active {
+  background: rgba(139, 69, 116, 0.5) !important;
+  color: white !important;
+  border-color: rgba(139, 69, 116, 0.8) !important;
+  box-shadow: 0 0 25px rgba(139, 69, 116, 0.5) !important;
+}
+
+/* Space Theme Progress Bar */
+.prerecorded-audio-player.space-theme .progress-bar {
+  background: rgba(100, 100, 200, 0.2);
+}
+
+.prerecorded-audio-player.space-theme .progress-fill {
+  background: linear-gradient(90deg,
+      rgba(72, 145, 167, 0.9),
+      rgba(139, 69, 116, 0.9));
+  box-shadow: 0 0 10px rgba(107, 76, 147, 0.5);
+}
+
+.prerecorded-audio-player.space-theme .progress-handle {
+  background: #ffffff;
+  border-color: rgba(139, 69, 116, 0.8);
+  box-shadow: 0 0 10px rgba(139, 69, 116, 0.6);
+}
+
+/* Space Theme Volume Slider */
+.prerecorded-audio-player.space-theme .volume-slider {
+  background: rgba(100, 100, 200, 0.2);
+}
+
+.prerecorded-audio-player.space-theme .volume-slider::-webkit-slider-thumb {
+  background: linear-gradient(135deg, #4891a7, #6b4c93);
+  box-shadow: 0 0 10px rgba(107, 76, 147, 0.5);
+}
+
+.prerecorded-audio-player.space-theme .volume-slider::-moz-range-thumb {
+  background: linear-gradient(135deg, #4891a7, #6b4c93);
+  box-shadow: 0 0 10px rgba(107, 76, 147, 0.5);
+}
+
+/* Space Theme Text Elements */
+.prerecorded-audio-player.space-theme .time-display {
+  color: rgba(180, 180, 220, 0.9);
+  text-shadow: 0 0 10px rgba(100, 100, 200, 0.3);
+}
+
+.prerecorded-audio-player.space-theme .speed-select {
+  background: rgba(20, 20, 50, 0.9);
+  border-color: rgba(100, 130, 200, 0.3);
+  color: rgba(200, 200, 255, 0.9);
+}
+
+.prerecorded-audio-player.space-theme .speed-select:hover {
+  border-color: rgba(100, 130, 200, 0.5);
+}
+
+.prerecorded-audio-player.space-theme .speed-select:focus {
+  border-color: rgba(139, 69, 116, 0.6);
+  box-shadow: 0 0 0 2px rgba(139, 69, 116, 0.2);
+}
+
+/* Space Theme Connection Indicator */
+.prerecorded-audio-player.space-theme .audio-connection-indicator {
+  background: rgba(15, 15, 35, 0.9);
+  border: 1px solid rgba(100, 130, 200, 0.25);
+  color: rgba(200, 200, 255, 0.9);
+  backdrop-filter: blur(15px);
+}
+
+/* Space Theme Loading State */
+.prerecorded-audio-player.space-theme .audio-loading {
+  background: rgba(10, 10, 30, 0.95);
+  border: 1px solid rgba(100, 130, 200, 0.2);
+}
+
+.prerecorded-audio-player.space-theme .loading-spinner {
+  border-color: rgba(100, 100, 200, 0.3);
+  border-top-color: rgba(139, 69, 116, 0.9);
+}
+
+/* Space Theme Skip Button */
+.prerecorded-audio-player.space-theme .skip-solve-btn {
+  background: linear-gradient(135deg,
+      rgba(139, 69, 116, 0.3),
+      rgba(107, 76, 147, 0.3)) !important;
+  border: 1px solid rgba(139, 69, 116, 0.4) !important;
+  color: rgba(220, 180, 220, 0.95) !important;
+}
+
+.prerecorded-audio-player.space-theme .skip-solve-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg,
+      rgba(139, 69, 116, 0.5),
+      rgba(107, 76, 147, 0.5)) !important;
+  border-color: rgba(139, 69, 116, 0.6) !important;
+  box-shadow: 0 0 15px rgba(139, 69, 116, 0.4) !important;
+}

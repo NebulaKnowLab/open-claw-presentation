@@ -1,0 +1,2356 @@
+<!-- scorm-builder/templates/topic-template.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding OpenClaw Architecture and Core Concepts - Nebula KnowLab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Marked.js v5 for markdown rendering - CDN with pinned version -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@5.1.2/marked.min.js"></script>
+
+    <!-- Prism.js for syntax highlighting - VS Code-like experience -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <!-- Prism language packs - common languages used in the learning platform -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+
+    <!-- Canvas Confetti for celebration effects -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <!-- Chat Widget Styles -->
+    <link rel="stylesheet" href="chat-widget.css">
+    <!-- Audio Player Styles -->
+    <link rel="stylesheet" href="prerecorded-audio-player.css">
+    <script src="markdown-renderer.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'nebula': {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            200: '#99f6e4',
+                            300: '#5eead4',
+                            400: '#2dd4bf',
+                            500: '#4A9B8E',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        'nebula-purple': {
+                            50: '#faf5ff',
+                            100: '#f3e8ff',
+                            200: '#e9d5ff',
+                            300: '#d8b4fe',
+                            400: '#c084fc',
+                            500: '#6B4C93',
+                            600: '#9333ea',
+                            700: '#7c3aed',
+                            800: '#6b21a8',
+                            900: '#581c87',
+                        },
+                        'accent': '#FF6B6B',
+                        'success': '#10B981',
+                        'warning': '#F59E0B',
+                        'error': '#EF4444',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                        'display': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                        'medium': '0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                        'strong': '0 10px 40px -10px rgba(0, 0, 0, 0.15), 0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-gentle': 'bounce 1s infinite',
+                        'slideInUp': 'slideInUp 0.5s ease-out',
+                        'fadeIn': 'fadeIn 0.5s ease-out',
+                        'hintReveal': 'hintReveal 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                        'shimmer': 'shimmer 2s linear infinite',
+                    },
+                    keyframes: {
+                        slideInUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        hintReveal: {
+                            '0%': { transform: 'translateY(20px) scale(0.95)', opacity: '0' },
+                            '50%': { transform: 'translateY(-5px) scale(1.02)', opacity: '0.8' },
+                            '100%': { transform: 'translateY(0) scale(1)', opacity: '1' }
+                        },
+                        shimmer: {
+                            '0%': { transform: 'translateX(-100%)' },
+                            '100%': { transform: 'translateX(100%)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Split-Screen Styles -->
+    <link rel="stylesheet" href="task-split-screen.css">
+
+    <!-- Custom Styles - Generated by build process -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Enhanced Concept Card Styles -->
+    <link rel="stylesheet" href="concept-styles.css">
+
+    <!-- Professional Sidebar Navigation Styles -->
+    <link rel="stylesheet" href="sidebar-navigation.css">
+
+    <!-- Picture-in-Picture Styles -->
+    <link rel="stylesheet" href="pip-styles.css">
+
+    <!-- Template Configuration -->
+    <script>
+        window.templateConfig = {
+            backendUrl: "https://learning-platform-ecosystem.onrender.com",
+            servicesApiBaseUrl: "https://chatbot-backend-759854934093.asia-south1.run.app"
+        };
+    </script>
+
+    <!-- Core JS Files -->
+    <script src="scorm-api.js"></script>
+    <script src="chat-service.js"></script>
+    <script src="feedback-service.js"></script>
+    <script src="enhanced-chat-widget.js"></script>
+    <script src="chat-integration.js"></script>
+    <script src="core-functions.js"></script>
+    <script src="quiz-system.js"></script>
+    <script src="chat-system.js"></script>
+    <script src="task-system.js"></script>
+
+    <script src="task-split-screen.js"></script>
+    <script src="sidebar-navigation.js"></script>
+    <!-- Pagination System Scripts -->
+    <link rel="stylesheet" href="pagination-styles.css">
+    <script src="task-renderer.js"></script>
+    <!-- Picture-in-Picture Manager -->
+    <script src="pip-manager.js"></script>
+
+    <script src="prerecorded-audio-player.js"></script>
+    <script src="transcription-display.js"></script>
+    <script src="pagination-system.js"></script>
+    <script src="page-renderer.js"></script>
+    <script src="fullscreen-manager.js"></script>
+    <script src="accessibility.js"></script>
+
+    <!-- Three.js for 3D Voice Widget Space Visualization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Load the Voice Widget components -->
+    <script src="voice-widget/utils.js"></script>
+    <script src="voice-widget/audio-manager.js"></script>
+    <script src="voice-widget/websocket-client.js"></script>
+    <script src="voice-widget/ui-controller.js"></script>
+    <script src="voice-widget/space-visualizer.js"></script>
+    <script src="voice-widget/space-visualizer-manager.js"></script>
+    <script src="voice-widget/visualizer.js"></script>
+    <script src="voice-widget/voice-bot.js"></script>
+    <script src="voice-widget-manager.js"></script>
+</head>
+
+<body class="bg-gray-50 h-screen overflow-hidden">
+    <!-- Template Data Injection -->
+    <script id="templateData" type="application/json">
+        {
+            "hints": [],
+            "quiz": {"title":"Knowledge Check","description":"","questions":[{"id":"q1","question":"a","type":"mcq","options":["a","a"],"explanation":"","correct_answer":0}]},
+            "id": "AIPlatforms-M10-T3",
+            "courseId": "bafxl0W0r9RzFquhby90",
+            "title": "Understanding OpenClaw Architecture and Core Concepts",
+            "description": "Learning module for Understanding OpenClaw Architecture and Core Concepts",
+            "taskStatement": "",
+            "taskRequirements": [],
+            "learningObjectives": [],
+            "concepts": [],
+            "tasks": [{"id":"task-1","title":"BOTFATHER","unlock_after":"","steps":[{"title":"Create Bots for Admin and Channels","description":"","instructions":"# Create a Telegram Bot Using BotFather\r\n\r\n## Step 1 — Open Telegram\r\nDownload and open Telegram:\r\n\r\n- Desktop: https://desktop.telegram.org\r\n- Mobile: https://telegram.org/apps\r\n\r\n---\r\n\r\n## Step 2 — Search for BotFather\r\nSearch for:\r\n\r\n```text\r\n@BotFather\r\n```\r\n\r\nOpen the verified BotFather account.\r\n\r\n---\r\n\r\n## Step 3 — Start BotFather\r\nClick **Start** or send:\r\n\r\n```text\r\n/start\r\n```\r\n\r\n---\r\n\r\n## Step 4 — Create a New Bot\r\nSend the command:\r\n\r\n```text\r\n/newbot\r\n```\r\n\r\n---\r\n\r\n## Step 5 — Enter Your Bot Name\r\nExample:\r\n\r\n```text\r\nOpenClaw Assistant\r\n```\r\n\r\nThis is the display name users will see.\r\n\r\n---\r\n\r\n## Step 6 — Choose a Username\r\nYour username must:\r\n\r\n- End with `bot`\r\n- Be unique\r\n\r\nExample:\r\n\r\n```text\r\nopenclaw_assistant_bot\r\n```\r\n\r\n---\r\n\r\n## Step 7 — Copy the Bot Token\r\nBotFather will generate a token like:\r\n\r\n```text\r\n123456789:AAExampleBotTokenHere\r\n```\r\n\r\nSave this token securely.\r\n\r\n---\r\n\r\n## Step 8 — Test Your Bot\r\nOpen your bot using the provided link:\r\n\r\n```text\r\nhttps://t.me/your_bot_username\r\n```\r\n\r\nClick **Start** to begin chatting with your bot.\r\n\r\n---\r\n\r\n## Optional — Set Bot Profile Picture\r\nSend:\r\n\r\n```text\r\n/setuserpic\r\n```\r\n\r\nThen upload an image.\r\n\r\n---\r\n\r\n## Optional — Set Bot Description\r\nSend:\r\n\r\n```text\r\n/setdescription\r\n```\r\n\r\nAdd a short description for your bot.\r\n\r\n---\r\n\r\n## Optional — Set About Text\r\nSend:\r\n\r\n```text\r\n/setabouttext\r\n```\r\n\r\nExample:\r\n\r\n```text\r\nAI assistant powered by OpenClaw\r\n```","taskPage":null,"images":[{"src":"assets/images/task_step-Screenshot_from_2026-05-08_12-21-47_4a09945b.png","alt":"Step image"}]}]},{"id":"task-2","title":"Fireworks api key","unlock_after":"","steps":[{"title":"Fireworks AI Homepage Overview","description":"","instructions":"1. Open the Fireworks AI homepage in your browser.\r\n2. Click the “Log In” button located at the top-right corner of the page.\r\n3. Enter your account credentials in the login page.\r\n4. Complete the authentication process to access the Fireworks AI platform dashboard.","taskPage":null,"images":[{"src":"assets/images/task_step-Screenshot_from_2026-05-14_11-58-42_c2e181e3.png","alt":"Step image"}]},{"title":"Fireworks AI Platform Features Overview","description":"","instructions":"* Open the **Fireworks AI** webpage in your browser.\r\n* Observe the \"**Build. Tune. Scale**\" section and platform features.\r\n* Review the AI usage options such as **Code Assistance**, **Conversational AI**, and **Agentic AI**.\r\n* Observe the \"Submit to get **$5 Credits**\" button on the page.","images":[{"src":"assets/images/task_step-Screenshot_from_2026-05-14_12-02-24_a6f3f8df.png","alt":"Step image"}],"taskPage":null},{"title":"Fireworks AI Dashboard Interface Overview","description":"","instructions":"* Open the **Fireworks AI** dashboard page in your browser.\r\n* Observe the left-side navigation panel and available dashboard sections.\r\n* Review important options such as **Deployments**, **Models**, **Playground**, and **Settings**.\r\n* Observe the quick action buttons like **Create API Key** and **Fine-tune**.\r\n* Review the usage analytics and dashboard information displayed on the page.","images":[{"src":"assets/images/task_step-Screenshot_from_2026-05-14_12-05-00_5f90b1a2.png","alt":"Step image"}],"taskPage":null},{"title":"Fireworks AI API Keys Management Interface","description":"","instructions":"1. Open the Settings section in the Fireworks AI platform.\r\n2. Navigate to the “API Keys” option from the left-side menu.\r\n3. Observe the available API key details and management options.\r\n4. Review the “Create API Key” button located on the page.\r\n5. Observe additional settings such as Billing, Users & Access, and Quotas.","images":[{"src":"assets/images/task_step-Screenshot_from_2026-05-14_12-12-08_d9226a06.png","alt":"Step image"}],"taskPage":null},{"title":"Creating and Copying an API Key in Fireworks AI","description":"","instructions":"1. Open the API Keys section in the Fireworks AI platform.\r\n2. Click the “Create API Key” button available on the page.\r\n3. Enter a name for the API key and click “Generate Key.”\r\n4. Copy the generated API key displayed in the pop-up window.\r\n5. Note that the API key will only be visible **one time**.\r\n6. Paste and save the API key **somewhere safe** for later onboarding use.","taskPage":null}]},{"id":"task-3","title":"VPS","unlock_after":"","steps":[{"title":"Hostinger","description":"","instructions":"https://www.hostinger.com/in/openclaw?utm_id=381673073&msclkid=19e3e9dbf13f190c9d8283d3c320d08a&utm_source=bing&utm_medium=cpc&utm_campaign=Brand-Exact|NT:Bing|LO:IN&utm_term=hostinger+openclaw&utm_content=Phrase+|+Hostinger+-+Openclaw","taskPage":null},{"title":"Hostinger OpenClaw Pricing Plans Overview","description":"","instructions":"# Steps to Analyze Hostinger OpenClaw Pricing\r\n\r\n1.  Open the Hostinger OpenClaw pricing webpage in your browser.\r\n2.  Observe the available hosting plans displayed on the page.\r\n3.  Review the “Managed OpenClaw” plan and its pricing details.\r\n4.  Observe the “OpenClaw on VPS” plan and compare its features.\r\n5.  Identify the plan benefits such as AI access, web search, security, and terminal access.\r\n6.  Review the pricing discounts, renewal details, and resource specifications provided for each plan.\r\n7.  Observe the “Choose plan” buttons and other interface elements on the page.\r\n8.  Document your observations about the pricing structure, hosting features, and user interface design.","images":[{"src":"assets/images/task_step-Screenshot_from_2026-05-13_12-56-48_408cacf9.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_from_2026-05-13_12-57-22_fd1bbde9.png","alt":"Step image"}],"taskPage":null},{"title":"OpenClaw API Key Configuration Setup","description":"","instructions":"1.  Complete the **OpenClaw** hosting plan purchase process.\r\n2.  After deployment, observe the **OpenClaw** configuration screen displayed on the page.\r\n3.  Review the available API key fields such as Gateway Token, Anthropic API Key, OpenAI API Key, Gemini API Key, X API Key, and others.\r\n4.  Enter the required **Gateway Token** information if needed.\r\n5.  Do not enter any **AI model API keys** at this stage.\r\n6.  Note that the **AI model API keys** will be configured later during the setup process.\r\n7.  Observe the interface layout and configuration options available on the screen.\r\n8.  Document your observations about the **OpenClaw** configuration and API setup interface.","images":[{"src":"assets/images/task_step-unnamed_cd54cf37.png","alt":"Step image"}],"taskPage":null},{"title":"OpenClaw Deployment Status in Hostinger Docker Manager","description":"","instructions":"1. Open the Hostinger Docker Manager page after entering the required API key.\r\n2. Locate the OpenClaw project in the Docker projects section.\r\n3. Check the deployment status and wait for the process to complete.\r\n4. Observe the available options such as Documentation, Quick Start, and Manage.\r\n5. Once the deployment is completed successfully, continue with the next setup process.","images":[{"src":"assets/images/task_step-unnamed_7ea4d83c.png","alt":"Step image"}],"taskPage":null},{"title":"Hostinger VPS Overview After Deployment","description":"","instructions":"1. Open the VPS Overview page in Hostinger.\r\n2. Check the server status and deployment information displayed on the screen.\r\n3. Observe the available options such as OpenClaw, Gateway Token, and Docker Manager.\r\n4. Review the VPS details including Ubuntu version, root access, and server status.\r\n5. Once the deployment is completed successfully, proceed with the next setup process.","images":[{"src":"assets/images/task_step-unnamed_ab996379.png","alt":"Step image"}],"taskPage":null},{"title":"Connecting OpenClaw Using Gateway Token","description":"","instructions":"1. Open the **OpenClaw** connection page.\r\n2. Enter the **Gateway Token** in the required field.\r\n3. Optionally enter a **password** if needed.\r\n4. Click the \"**Connect**\" button to establish the connection.\r\n5. Observe the **connection status** and **security message** displayed on the screen.","code":{"content":"ssh -L <YOUR_PORT>:localhost:<YOUR_PORT> root@<YOUR_IP>","language":"bash"},"images":[{"src":"assets/images/task_step-Screenshot_from_2026-05-14_10-40-53_3e46c004.png","alt":"Step image"},{"src":"assets/images/task_step-unnamed_5621f2b0.png","alt":"Step image"}],"taskPage":null},{"title":"OpenClaw Available","description":"","instructions":"Now u can use openclaw nomally ,follow the next task for the on-boarding part ,and if you want to configure something use the","taskPage":null}]},{"id":"task-4","title":"Installation & On-boarding of OpenClaw","unlock_after":"","steps":[{"title":"Note","description":"","instructions":"# Important Installation Disclaimer\r\n\r\nBefore installing OpenClaw locally, ensure you are comfortable with:\r\n- Terminal usage\r\n- Python/package installation\r\n- Environment configuration\r\n- Basic troubleshooting\r\n\r\nOpenClaw may modify dependencies, ports, and local environments.  \r\nIf you are unsure about installing directly on Windows, it is strongly recommended to use **Windows Subsystem for Linux (WSL2)** or a separate Linux environment.\r\n\r\n## Recommended Setup\r\n- Linux machine or VPS\r\n- Docker-based environment\r\n\r\n## Important Notes\r\n- Use isolated environments whenever possible\r\n- Store API keys securely\r\n- Avoid installing on critical production systems\r\n- Review commands before running them\r\n\r\nFor beginners, Docker provides the safest and most stable setup for learning and experimenting with OpenClaw.","taskPage":null},{"title":"Node installation","description":"","instructions":"# Install Node.js and npm\r\n\r\n## Linux (Ubuntu/Debian)\r\n\r\n### Step 1 — Update package list\r\n```bash\r\nsudo apt update\r\n```\r\n\r\n### Step 2 — Install Node.js and npm\r\n```bash\r\nsudo apt install nodejs npm -y\r\n```\r\n\r\n### Step 3 — Verify Node.js installation\r\n```bash\r\nnode -v\r\n```\r\n\r\n### Step 4 — Verify npm installation\r\n```bash\r\nnpm -v\r\n```\r\n\r\n---\r\n\r\n## Windows\r\n\r\n### Step 1 — Install Node.js using Winget\r\n```powershell\r\nwinget install OpenJS.NodeJS.LTS\r\n```\r\n\r\n### Step 2 — Verify Node.js installation\r\n```powershell\r\nnode -v\r\n```\r\n\r\n### Step 3 — Verify npm installation\r\n```powershell\r\nnpm -v\r\n```","taskPage":null},{"title":"Visit OpenClaw Documentation","description":"","instructions":"# Install OpenClaw\r\n\r\n## Step 1 — Open the OpenClaw Documentation\r\n\r\nOpen the installation guide:\r\n\r\nhttps://docs.openclaw.ai/install\r\n---\r\n\r\n## Step 2 — Find Your Operating System\r\n\r\nChoose the correct installation section based on your operating system:\r\n\r\n- Windows\r\n- Linux\r\n- macOS\r\n\r\n---\r\n\r\n## Step 3 — Copy the Installation Command\r\n\r\nCopy the exact installation command provided in the documentation for your operating system.\r\n\r\n---\r\n\r\n## Step 4 — Run the Command\r\n\r\nOpen your terminal:\r\n\r\n- **Linux/macOS** → Terminal\r\n- **Windows** → PowerShell\r\n\r\nPaste the copied command and run it.","taskPage":null,"images":[{"src":"assets/images/task_step-Screenshot_2026-05-08_104352_4e6cfa15.png","alt":"Step image"}]},{"title":"Local Machine Onboarding","description":"","instructions":"## Run the Installation Command\r\n\r\nPaste the installation command into your terminal and run it.\r\n\r\n---\r\n\r\n## Accept the Terms\r\n\r\nDuring installation, you may see a prompt asking you to accept the terms.\r\n\r\nUse:\r\n\r\n- **Arrow Keys** → Navigate between options\r\n- **Enter** → Select the highlighted option\r\n\r\nSelect:\r\n\r\n```text\r\nYes\r\n```\r\n\r\nto continue the installation.","taskPage":null,"video":{"src":"https://scorm-builder-gcs.b-cdn.net/topics/default/AIPlatforms-M10-T1/videos/actual_task1_edd9b7f0.mp4","type":"local"}},{"title":"Docker Onboarding(Part-1)","description":"","instructions":"1. Search Docker and click the first search result.\r\n2. Download the docker desktop application based on your OS.\r\n3. Then open the docker application and let it be open.","taskPage":null,"images":[{"src":"assets/images/task_step-Screenshot_2026-05-14_171030_30a2264a.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-14_171048_101dee28.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-14_171132_93798829.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-14_171159_c580e8f7.png","alt":"Step image"}]},{"title":"Docker Onboarding(Part-2)","description":"","instructions":"1. Download the folder and extract the files from the link: <https://drive.google.com/file/d/1X35wF9Gr0pri9BR3KoY222WA_L4rZelh/view?usp=share_link>\r\n2. Choose the folder based on your OS.\r\n3. Click start file to open OpenClaw.\r\n4. For Mac type this command `bash ./mac/start.sh` in root folder to start.\r\n5. To open terminal of the docker container, click the arrow near openclaw in containers side bar.\r\n6. Select \"Open in terminal\" option in the three dots.\r\n7. Type `openclaw configure` to continue onboarding.","images":[{"src":"assets/images/task_step-Screenshot_2026-05-16_104542_031fe243.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_104550_54e8a05a.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_110019_34f1181a.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_110131_451c78d5.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_110143_7e5c5b4e.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_110152_12042853.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_110212_a53af3d7.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_110229_6c8d0bf0.png","alt":"Step image"}],"taskPage":null},{"title":"OpenClaw Quickstart Model Configuration","description":"","instructions":"## Select Quickstart\r\n\r\nChoose:\r\n**Quickstart**\r\nThis option helps configure OpenClaw easily with recommended defaults.\r\n\r\nUse:\r\n*   **Arrow Keys** → Navigate\r\n*   **Enter** → Select\r\n\r\n---\r\n\r\n## Select a Model Provider\r\n\r\nChoose:\r\n**Fireworks AI**\r\n\r\nUse:\r\n*   **Arrow Keys** → Navigate\r\n*   **Enter** → Select\r\n\r\nFireworks supports many open-source models through a single API key.\r\n\r\n---\r\n\r\n## Enter the API Key\r\n\r\nPaste the Fireworks API key you copied earlier and press:\r\n**Enter**\r\n\r\nFireworks API keys are created from the Fireworks dashboard and used as Bearer authentication for models.\r\n\r\n---\r\n\r\n## Choose Any Model\r\n\r\nAfter the API key is accepted, select any available model from the list.","taskPage":null,"video":{"src":"https://scorm-builder-gcs.b-cdn.net/topics/default/AIPlatforms-M10-T1/videos/actual_task2_56d8f7b4.mp4","type":"local"}},{"title":"OpenClaw Channel and Skills Configuration","description":"","instructions":"## Select a Channel\r\n\r\nChoose a channel/platform for your bot.\r\n\r\nExamples:\r\n\r\n- WhatsApp\r\n- Telegram\r\n- Slack\r\n- Discord\r\n\r\nFor this setup:\r\n\r\n```text\r\nTelegram\r\n```\r\n\r\nwas selected.\r\n\r\nUse:\r\n\r\n- **Arrow Keys** → Navigate\r\n- **Enter** → Select\r\n\r\n---\r\n\r\n## Enter the Bot Token\r\n\r\nPaste the Telegram bot token you received from BotFather and press:\r\n\r\n```text\r\nEnter\r\n```\r\n\r\n---\r\n\r\n## Select Required Skills\r\n\r\nChoose the skills needed for your setup.\r\n\r\nSelected skills:\r\n\r\n```text\r\nclawhub\r\ngog\r\ngemini\r\ngithub\r\nsummarize\r\n```\r\n\r\nFor multiple selections:\r\n\r\n- **Arrow Keys** → Navigate\r\n- **Space** → Select/Deselect\r\n- **Enter** → Continue","taskPage":null,"video":{"src":"https://scorm-builder-gcs.b-cdn.net/topics/default/AIPlatforms-M10-T1/videos/actual_task3_ad112efb.mp4","type":"local"}},{"title":"Configuring npm, Hooks, and OpenClaw Interface","description":"","instructions":"## Select npm\r\n\r\nOnce Homebrew installation is completed, choose:\r\n\r\n```text\r\nnpm\r\n```\r\n\r\nThis will install the selected OpenClaw skills and required packages.\r\n\r\nUse:\r\n\r\n- **Arrow Keys** → Navigate\r\n- **Enter** → Select\r\n\r\n---\r\n\r\n## Add API Keys\r\n\r\nEnter the API keys for the services you want to use.\r\n\r\nIf you do not have an API key for a service, choose:\r\n\r\n```text\r\nNo\r\n```\r\n\r\nto skip it.\r\n\r\n---\r\n\r\n## Install Hooks\r\n\r\nChoose to install all hooks.\r\n\r\nThis helps the agent maintain better context and reduces confusion during usage.\r\n\r\nTo select all hooks press:\r\n\r\n```text\r\nA\r\n```\r\n\r\nUse:\r\n\r\n- **Arrow Keys** → Navigate\r\n- **Enter** → Select\r\n\r\n---\r\n\r\n## Open the Interface\r\n\r\nChoose:\r\n\r\n```text\r\nWeb UI\r\n```\r\n\r\nto open OpenClaw in the browser interface for easier usage.\r\n\r\nA terminal interface is also available:\r\n\r\n```text\r\nTUI\r\n```\r\n\r\nif you prefer using the terminal.","taskPage":null,"video":{"src":"https://scorm-builder-gcs.b-cdn.net/topics/default/AIPlatforms-M10-T1/videos/actual_task5_3afb020c.mp4","type":"local"}},{"title":"Installation Complete","description":"","instructions":"## Installation Complete\r\n\r\nAfter finishing the installation, you should see the OpenClaw TUI interface/dashboard running successfully.\r\n\r\nThis confirms that:\r\n\r\n- OpenClaw was installed correctly\r\n- Skills were configured successfully\r\n- Hooks were installed\r\n- The selected channel integration is ready to use\r\n\r\nYou can now start interacting with your OpenClaw agent.","images":[{"src":"assets/images/task_step-Screenshot_from_2026-05-07_14-49-58_11296f5f.png","alt":"Step image"}],"taskPage":null},{"title":"Configure Automatically","description":"","instructions":"## Update Telegram Bot Token\r\n\r\nProvide the new Telegram bot token to OpenClaw using the following prompt:\r\n\r\n```text\r\nUpdate the Telegram integration with this new bot token:\r\n\r\n<NEW_BOT_TOKEN>\r\n```\r\n\r\nThe above prompt is given to OpenClaw, and it automatically performs the following actions:\r\n\r\n- Replaces the old Telegram bot token\r\n- Restarts/reloads the Telegram integration\r\n- Activates the new Telegram bot automatically","images":[{"src":"assets/images/task_step-Screenshot_from_2026-05-09_12-44-51_e47c5935.png","alt":"Step image"}],"taskPage":null}]},{"id":"task-5","title":"Personalization of OpenClaw","unlock_after":"","steps":[{"title":"Planning AI Agent Behavior and Workflow","description":"","instructions":"Get an idea of how you want your AI agents to behave and prepare a clear description of their functionality. Provide these ideas as a detailed prompt to any AI tool so it can generate or assist in building the agent workflow according to your requirements.","taskPage":null},{"title":"Generate SOUL.md","description":"","instructions":"Provide your AI agent ideas and behavior requirements as a prompt to any AI tool. After generating the response, create and save the output as a Markdown (.md) file. Review the generated content and ensure it matches your project requirements before proceeding further.","taskPage":null},{"title":"Configure the agent","description":"","instructions":"Paste the generated Markdown content into the *Soul option* inside the *Agents tab*. Save the changes and refresh the page so the agent can use the content as its persona and behavior configuration.\r\n\r\nIf you want to use another open-source persona from GitHub, copy the raw file link and paste it into the main agent chat. Then instruct the agent to add or replace the existing *soul.md* file with that persona configuration.","taskPage":null},{"title":"Verify SOUL.md","description":"","instructions":"Open the **Agents tab** and navigate to the **Soul option**. Check whether the `SOUL.md` file has been updated successfully. Then click on the blurred snippet area to reveal and review the content of the file.","images":[{"src":"assets/images/task_step-Screenshot_from_2026-05-13_11-42-26_d4cda9b3.png","alt":"Step image"}],"taskPage":null}]},{"id":"task-6","title":"Fun Task","unlock_after":"","steps":[{"title":"Open the Chat Session in the Dashboard","description":"","instructions":"Go to the dashboard, open the chat session area, and start a new chat where you will interact with OpenClaw for the mini cobot task.","images":[{"src":"assets/images/task_step-Screenshot_2026-05-16_184634_3c6b6889.png","alt":"Step image"}]},{"title":"Paste the Robot Control Context and Trigger an Action","description":"","instructions":"- Copy and paste the full content given below into the chat. \r\n- Once the context is added, **OpenClaw** will use it to understand how to control the robot. \r\n- It will ask which **robot ID** to access, and you should choose a robot between **1 and 8**. \r\n- After that, give a fun command like `make it dance`, then observe the selected robot and verify that it moves.","images":[{"src":"assets/images/task_step-Screenshot_2026-05-16_184748_2e1e1032.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_190042_9f3a6a20.png","alt":"Step image"}],"taskPage":null,"code":{"content":"Robot Action API — Agent Instructions\r\nUse these endpoints to control the robot's predefined actions.\r\n\r\nConnection\r\nBackend base URL: http://192.168.1.16:8000\r\nAsk the user which robot ID they want to control before sending any commands. Robot IDs are integers (e.g. 1, 2, 3...).\r\n\r\nStep 1 — Connect\r\nAlways connect before sending any command.\r\n\r\nPOST http://192.168.1.16:8000/api/robots/{id}/connect\r\nNo body required. Returns 200 on success.\r\n\r\nStep 2 — Check State\r\nVerify the robot is connected and ready.\r\n\r\nGET http://192.168.1.16:8000/api/robots/{id}\r\nResponse:\r\n\r\n{\r\n  \"id\": 10,\r\n  \"name\": \"Robot 10\",\r\n  \"ip\": \"192.168.1.150\",\r\n  \"connected\": true,\r\n  \"angles\": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],\r\n  \"coords\": [150.0, 0.0, 200.0, 0.0, 0.0, 0.0],\r\n  \"is_moving\": false,\r\n  \"error\": null\r\n}\r\nWait until is_moving is false before sending the next command.\r\n\r\nAvailable Actions\r\n1. Dance\r\nChoreographed dance sequence with J2 and J3 limited to ±40 degrees.\r\n\r\nPOST http://192.168.1.16:8000/api/users/robots/{id}/actions/dance\r\nResponse:\r\n\r\n{ \"status\": \"executing\", \"robot_id\": 10, \"action\": \"dance\" }\r\n2. Open Gripper\r\nOpens the gripper fully.\r\n\r\nPOST http://192.168.1.16:8000/api/users/robots/{id}/actions/grip\r\nResponse:\r\n\r\n{ \"status\": \"executing\", \"robot_id\": 10, \"action\": \"grip\" }\r\n3. Close Gripper\r\nCloses the gripper fully.\r\n\r\nPOST http://192.168.1.16:8000/api/users/robots/{id}/actions/grip_close\r\nResponse:\r\n\r\n{ \"status\": \"executing\", \"robot_id\": 10, \"action\": \"grip_close\" }\r\n4. Home Position\r\nMoves all joints to zero position and opens the gripper.\r\n\r\nPOST http://192.168.1.16:8000/api/users/robots/{id}/actions/home\r\nResponse:\r\n\r\n{ \"status\": \"executing\", \"robot_id\": 10, \"action\": \"home\" }\r\nEmergency Stop\r\nImmediately halts all motion.\r\n\r\nPOST http://192.168.1.16:8000/api/robots/{id}/stop\r\nDisconnect\r\nPOST http://192.168.1.16:8000/api/robots/{id}/disconnect\r\nRules\r\nAlways ask for the robot ID before sending any command.\r\nAlways connect first before sending any action.\r\nWait for motion to complete (is_moving = false) before sending the next action.\r\nUse emergency stop immediately if anything goes wrong.\r\nAll POST endpoints accept JSON bodies. No auth required.","language":"bash"}}]},{"id":"task-7","title":"OpenClaw Google Workspace Skill Setup Guide","unlock_after":"","steps":[{"title":"Install the Google Workspace Skill in OpenClaw","description":"Start by asking OpenClaw to install and configure the Google Workspace skill.","instructions":"Open the chat window from the **OpenClaw** sidebar.\r\nIn the **OpenClaw** chat, send the following prompt:\r\n\r\n```\r\nI need you to install and set up the GOG Google Workspace skill.\r\n```","taskPage":null,"images":[{"src":"assets/images/task_step-Screenshot_2026-05-16_120842_e364f1cd.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_120902_1e36763c.png","alt":"Step image"}]},{"title":"Create a Google Cloud Project","description":"Create a new Google Cloud project that will be used for the Google Workspace integration.","instructions":"1. Open Google Cloud Console ([https://console.cloud.google.com](https://console.cloud.google.com))\r\n2. Click **Select a Project** at the top.\r\n3. Click **New Project**.\r\n4. Enter a project name.\r\n5. Click **Create**.","taskPage":null,"images":[{"src":"assets/images/task_step-Screenshot_2026-05-16_121150_409ed17f.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_121222_3511e55e.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_121300_b6d13ae5.png","alt":"Step image"}]},{"title":"Enable Required Google APIs","description":"Enable all Google Workspace APIs required for OpenClaw integration.","instructions":"1.  Select the project you created.\r\n2.  Open the left sidebar menu.\r\n3.  Go to APIs & Services.\r\n4.  Click Enable APIs and Services at the top.\r\n5.  Search for and enable the following APIs one by one:\r\n    *   Gmail API\r\n    *   Google Drive API\r\n    *   Google Docs API\r\n    *   Google Sheets API\r\n    *   People API (for Contacts)\r\n    *   Google Calendar API\r\n\r\nGoogle recommends enabling APIs before configuring OAuth credentials.","images":[{"src":"assets/images/task_step-Screenshot_2026-05-16_121446_6d6b9f32.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_121506_e5274b73.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_121534_ab4ce1c7.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_121814_1110ca6e.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_121844_1837f52b.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_121908_67a22867.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_121920_e47c6398.png","alt":"Step image"}]},{"title":"Open the OAuth Consent Screen Setup","description":"Configure the OAuth consent screen required for Google authentication.","instructions":"1. In APIs & Services, click Credentials.\r\n2. Click Create Credentials.\r\n3. Select OAuth client ID.\r\n4. If prompted, click Configure Consent Screen.","images":[{"src":"assets/images/task_step-Screenshot_2026-05-16_122145_e402826e.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_122159_640df99d.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_122227_c3017077.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_122333_be1683b3.png","alt":"Step image"}]},{"title":"Configure the OAuth Consent Screen","description":"Set up the basic application details and test configuration.","instructions":"1. Click Get Started.\r\n2. Enter any name for the App Name.\r\n3. For User Support Email, select the same Google account you are logged in with.\r\n4. Under Audience, select External.\r\n5. Under Contact Information, enter the same email address.\r\n6. Accept the terms by ticking the checkbox.\r\n7. Click Finish.\r\n\r\nGoogle requires an OAuth consent screen for apps using Workspace APIs.","images":[{"src":"assets/images/task_step-Screenshot_2026-05-16_122410_a4f2c0da.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_122450_cfc11ba2.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_122510_7b787d29.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_122805_47484dac.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_122823_295c26c7.png","alt":"Step image"}]},{"title":"Create OAuth Client Credentials","description":"Generate OAuth credentials that OpenClaw will use to access Google Workspace services.","instructions":"## Steps to Create an OAuth Client ID\r\n\r\n1.  Open Credentials from the APIs & Services sidebar.\r\n2.  Click Create Credentials.\r\n3.  Select OAuth Client ID.\r\n4.  Under Application Type, choose Desktop App.\r\n5.  Enter any name for the OAuth client.\r\n6.  Click Create.\r\n7.  In the popup window, click Download JSON.\r\n8.  Save the downloaded JSON file safely.\r\n\r\n---\r\n\r\n**Important:** Keep the downloaded JSON file secure. It contains your OAuth client credentials.\r\n\r\nGoogle OAuth uses these credentials to authenticate applications.","images":[{"src":"assets/images/task_step-Screenshot_2026-05-16_122905_33e3a641.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_122927_ad1287e1.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_122951_4a9fde61.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_123008_103b4284.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_123034_74c7716e.png","alt":"Step image"}]},{"title":"Add Yourself as a Test User","description":"Add your Google account as a test user so you can authorize the app during testing.","instructions":"1. Open OAuth Consent Screen from APIs & Services.\r\n2. Select Audience from the sidebar.\r\n3. Scroll down to the Test Users section.\r\n4. Click Add Users.\r\n5. Enter the same Gmail address you used earlier.\r\n6. Click Save.\r\n\r\nGoogle requires test users when the app is in testing mode.","images":[{"src":"assets/images/task_step-Screenshot_2026-05-16_140023_f098b9fb.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_140047_a7f848d8.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_140114_306b162a.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_140145_efb3b4da.png","alt":"Step image"}]},{"title":"Connect Google Workspace to OpenClaw","description":"Upload your OAuth credentials to OpenClaw and complete the Google authorization process.","instructions":"### Google Workspace OAuth Setup with OpenClaw\r\n\r\n1.  Open the OpenClaw dashboard.\r\n2.  Upload the downloaded OAuth JSON file.\r\n3.  In the OpenClaw chat, send this prompt:\r\n    ```\r\n    This is my Google Workspace OAuth credentials file and my test user email is \"your-email@gmail.com\".\r\n    ```\r\n    OpenClaw will generate an authorization link.\r\n4.  Open the link in a new browser tab.\r\n5.  Sign in with the same Google account you added as a test user.\r\n6.  Click **Continue** on the Google consent screen.\r\n7.  When permission options appear, click **Select All** or allow all requested permissions.\r\n8.  *After authorization, you may see a “This site can’t be reached” page.* Copy the full URL from the browser address bar.\r\n9.  Paste the copied URL back into the OpenClaw chat.\r\n10. Send the message.\r\n11. OpenClaw should return a successful authentication response.","images":[{"src":"assets/images/task_step-Screenshot_2026-05-16_140302_57cf0d63.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_140436_ec17242b.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_140456_62e5c98a.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_140731_e4ecef22.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_140747_cd5ed160.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_140834_b19088b6.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_140846_6dc5e984.png","alt":"Step image"},{"src":"assets/images/task_step-Screenshot_2026-05-16_142637_e4488858.png","alt":"Step image"}]},{"title":"Verify the Integration","description":"Test whether OpenClaw can access your Google Workspace services successfully.","instructions":"Ask OpenClaw to access any connected service.\r\n\r\n## Example tasks:\r\n* List the latest 5 Gmail messages\r\n* Create a calendar event\r\n* Read a Google Sheet\r\n* Search Google Drive files\r\n* Access Google Contacts\r\n\r\n## Example Prompt\r\n**List my latest 5 Gmail messages.**\r\n\r\n---\r\n\r\n## Connected Google Workspace Services\r\nAfter successful setup, OpenClaw can access:\r\n\r\n* Gmail\r\n* Google Drive\r\n* Google Docs\r\n* Google Sheets\r\n* Google Contacts\r\n* Google Calendar\r\n\r\ndepending on the permissions granted during authorization.","images":[{"src":"assets/images/task_step-Screenshot_2026-05-16_150030_b4a8cfc5.png","alt":"Step image"}]}]}],
+            "taskSteps": [],
+            "content": {"task_statement":"","hero_image":null,"company_logo":{"src":"assets/images/company_logo-default-company-logo.png","alt":"Default Company Logo"},"concepts":[],"hints":[],"task_images":[],"task_requirements":[],"task_steps":[]},
+            "backendUrl": "https://learning-platform-ecosystem.onrender.com",
+            "chatContexts": {}
+        }
+    </script>
+
+    <!-- Main Content Container -->
+    <div id="pageWrapper" class="transition-all duration-300 ease-in-out">
+
+        <!-- Split-Screen Container -->
+        <div id="splitScreenContainer" class="split-screen-container">
+            <div class="split-left-panel" id="splitLeftPanel">
+                <!-- Left panel content will be dynamically inserted here -->
+            </div>
+            <div class="split-right-panel">
+                <div class="split-controls">
+                    <!-- Only "Open in New Tab" button - minimal controls -->
+                    <button class="split-control-btn new-tab-btn" onclick="openInNewTab()" title="Open in New Tab">
+                        <i class="fas fa-external-link-alt"></i>
+                    </button>
+                </div>
+                <div class="iframe-loading" id="iframeLoading">
+                    <div class="spinner"></div>
+                    <div>Loading task workspace...</div>
+                </div>
+                <iframe id="taskIframe" class="task-iframe" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <!-- 1. ENHANCED MODERN HEADER -->
+        <header
+            class="bg-white border-b border-gray-200 sticky top-0 z-40 backdrop-blur-sm bg-white/95 enhanced-header">
+            <div class="relative">
+                <!-- Sidebar toggle button removed - sidebar is now always visible and auto-controlled by chat widget -->
+
+                <!-- Centered Logo & Brand -->
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-center h-16">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 header-logo-hover">
+                                <img src="assets/images/company_logo-default-company-logo.png" alt="Default Company Logo" class="h-12 w-auto">
+                            </div>
+                            <div>
+                                <p
+                                    class="text-xl font-bold bg-clip-text text-transparent bg-[linear-gradient(90deg,#1a3d3e,#2d1a2a,#3a3a3d,#4a1a1a)] header-title-enhanced">
+                                    Understanding OpenClaw Architecture and Core Concepts</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </header>
+
+        <!-- 2. PROFESSIONAL SIDEBAR NAVIGATION -->
+        <aside id="sidebarNavigation"
+            class="fixed left-0 top-16 h-[calc(100vh-4rem)] w-80 bg-white border-r border-gray-200 shadow-medium transform -translate-x-full transition-transform duration-300 ease-in-out z-30">
+            <!-- Sidebar Header -->
+            <div class="p-6 border-b border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-900">Learning Path</h2>
+                    <div class="relative">
+                        <svg class="w-12 h-12 transform -rotate-90">
+                            <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="3" fill="none"
+                                class="text-gray-200"></circle>
+                            <circle id="progressRing" cx="24" cy="24" r="20" stroke="currentColor" stroke-width="3"
+                                fill="none" class="text-nebula-500 transition-all duration-700" stroke-dasharray="125.6"
+                                stroke-dashoffset="125.6" stroke-linecap="round"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span id="progressPercentage" class="text-sm font-semibold text-gray-900">0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between text-sm">
+                    <span class="text-gray-500">Progress</span>
+                    <span id="progressStatus" class="font-medium text-nebula-600">Starting</span>
+                </div>
+            </div>
+
+            <!-- Sidebar Navigation Content -->
+            <div class="flex-1 overflow-y-auto p-4">
+                <!-- Unified Navigation Container -->
+                <div id="unifiedNavigationList" class="space-y-2">
+                    <!-- All navigation items will be dynamically inserted here -->
+                </div>
+            </div>
+
+            <!-- Sidebar Footer -->
+        </aside>
+
+        <!-- Main Content Area with Pagination Support -->
+        <div id="mainContentWrapper" class="transition-all duration-300 ease-in-out h-[calc(100vh-4rem)] flex flex-col">
+
+            <!-- Main Content Area for Pagination -->
+            <div id="main-content" class="flex-1 overflow-hidden">
+                <!-- Page Content Container -->
+                <div id="page-container" class="h-full overflow-y-auto pb-20">
+                    <div id="current-page-content" class="p-6">
+                        <!-- Initial loading state -->
+                        <div class="page-loading">
+                            <div class="page-loading-spinner"></div>
+                            <p class="mt-4 text-gray-600">Initializing learning content...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legacy Content Sections (Hidden in Pagination Mode) -->
+                <div id="legacyContentContainer" class="hidden">
+                    <!-- 3. MODERN HERO SECTION (Legacy) -->
+                    <section id="legacyHeroSection"
+                        class="bg-gradient-to-br from-white via-gray-50 to-nebula-50 border-b border-gray-100">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                            <!-- Task Statement -->
+                            <div class="text-center mb-12">
+                                <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                                    
+                                </h2>
+                                <p class="text-xl text-gray-600 max-w-4xl mx-auto mb-10 leading-relaxed">
+                                    Learning module for Understanding OpenClaw Architecture and Core Concepts
+                                </p>
+                            </div>
+
+                            <!-- Hero Visual -->
+                        </div>
+                    </section>
+
+                    <!-- 3. LEARNING OBJECTIVES SECTION (Legacy) -->
+
+                    <!-- 4. WORK AREA -->
+                    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+                        <!-- Concepts and Tasks - Interleaved Flow -->
+                        <div class="mb-16">
+                            <div class="text-center mb-10">
+                                <h3 class="text-2xl font-bold text-gray-900 mb-4 flex items-center justify-center">
+                                    <i class="fas fa-route text-nebula-500 mr-3"></i>
+                                    Learning Path
+                                </h3>
+                                <p class="text-gray-600 max-w-2xl mx-auto">Progress through concepts and unlock tasks as
+                                    you learn</p>
+                            </div>
+
+                            <!-- Progress Overview -->
+                            <div
+                                class="bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 rounded-3xl p-6 mb-8 border border-blue-200">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-4">
+                                        <div
+                                            class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center">
+                                            <i class="fas fa-graduation-cap text-white text-lg"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-lg font-semibold text-gray-900">Your Progress</h4>
+                                            <p class="text-gray-600 text-sm">Complete concepts to unlock new tasks</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-2xl font-bold text-blue-600" id="conceptsCompletedText">
+                                            0/0</div>
+                                        <div class="text-xs text-gray-500">Concepts Completed</div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <div class="w-full bg-white/60 rounded-full h-3 overflow-hidden shadow-inner">
+                                        <div id="conceptsProgressBar"
+                                            class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500 ease-out"
+                                            style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Interleaved Concepts and Tasks Container -->
+                            <div id="learningPathContainer" class="space-y-8">
+                                <!-- Content will be dynamically inserted here by JavaScript -->
+                            </div>
+                        </div>
+
+
+                        <!-- Legacy Task Steps (Hidden - used as template for new system) -->
+                        <div id="legacyTaskStepsContainer" class="hidden">
+                        </div>
+                    </section>
+
+                    <!-- 5. ENHANCED MULTI-QUESTION KNOWLEDGE CHECK -->
+                    <section id="quiz" class="bg-gradient-to-br from-gray-50 to-white border-t border-gray-200">
+                        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                            <div class="bg-white rounded-3xl shadow-strong overflow-hidden border border-gray-100">
+                                <!-- Quiz Header -->
+                                <div
+                                    class="bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 text-white px-8 py-8">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="flex items-center space-x-4">
+                                            <div
+                                                class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                                                <i class="fas fa-brain text-white text-2xl"></i>
+                                            </div>
+                                            <div>
+                                                <h3 class="text-3xl font-bold">Knowledge Check</h3>
+                                                <p class="text-purple-100 mt-1 text-lg"></p>
+                                            </div>
+                                        </div>
+                                        <!-- Quiz Progress -->
+                                        <div class="text-right">
+                                            <div class="text-2xl font-bold" id="quizProgressText">1 of
+                                                1</div>
+                                            <div class="text-purple-200 text-sm">Questions</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Progress Bar -->
+                                    <div class="w-full bg-white/20 rounded-full h-3 overflow-hidden">
+                                        <div id="quizProgressBar"
+                                            class="h-full bg-gradient-to-r from-white/40 to-white/60 rounded-full transition-all duration-500 ease-out"
+                                            style="width: 33.33%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Quiz Content -->
+                                <div class="p-8">
+                                    <!-- Question Navigation -->
+                                    <div class="flex justify-center mb-8">
+                                        <div class="flex space-x-2" id="questionDots">
+                                            <div class="w-3 h-3 rounded-full bg-gray-300 question-dot"
+                                                data-question=""></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Current Question Container -->
+                                    <div id="quizQuestionContainer">
+                                        <!-- Question will be dynamically loaded here -->
+                                    </div>
+
+                                    <!-- Quiz Navigation -->
+                                    <div class="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+                                        <button id="prevQuestionBtn" onclick="previousQuestion()"
+                                            class="group bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-medium hover:shadow-strong transform hover:-translate-y-1 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                                            <i
+                                                class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform duration-200"></i>
+                                            <span>Previous</span>
+                                        </button>
+
+                                        <div class="flex items-center space-x-4">
+                                            <span id="quizScore" class="text-sm text-gray-600 font-medium">Score: <span
+                                                    id="currentScore">0</span>/1</span>
+                                            <button id="retryQuizBtn" onclick="retryQuiz()"
+                                                class="hidden bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-medium hover:shadow-strong transform hover:-translate-y-1 flex items-center space-x-2">
+                                                <i class="fas fa-redo"></i>
+                                                <span>Retry Quiz</span>
+                                            </button>
+                                        </div>
+
+                                        <button id="nextQuestionBtn" onclick="nextQuestion()"
+                                            class="group bg-gradient-to-r from-nebula-500 to-nebula-purple-500 hover:from-nebula-600 hover:to-nebula-purple-600 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-medium hover:shadow-strong transform hover:-translate-y-1 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                                            <span>Next</span>
+                                            <i
+                                                class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-200"></i>
+                                        </button>
+                                    </div>
+
+                                    <!-- Quiz Results -->
+                                    <div id="quizResults" class="hidden mt-8 quiz-results">
+                                        <div class="text-center relative z-10">
+                                            <div
+                                                class="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <i class="fas fa-trophy text-white text-2xl"></i>
+                                            </div>
+                                            <h4 class="text-2xl font-bold text-white mb-2">Quiz Completed!</h4>
+                                            <div class="quiz-score-display">
+                                                <span id="finalScore">0</span>
+                                            </div>
+                                            <p class="quiz-score-label">Great job on completing the quiz!</p>
+                                            <div class="flex justify-center space-x-4">
+                                                <!-- Only retry button shown per user preference -->
+                                                <button onclick="retryQuiz()"
+                                                    class="retry-quiz-btn flex items-center space-x-2">
+                                                    <i class="fas fa-redo"></i>
+                                                    <span>Retry Quiz</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Enhanced Navigation Footer -->
+                    <footer class="bg-white border-t border-gray-200">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                            <div class="flex flex-col sm:flex-row justify-between items-center gap-6">
+                                <div class="flex gap-4">
+                                    <!-- <button onclick="openSummaryChat()" 
+                                class="group border-2 border-nebula-500 text-nebula-500 px-8 py-4 rounded-2xl font-semibold hover:bg-nebula-500 hover:text-white transition-all duration-300 shadow-soft hover:shadow-medium flex items-center space-x-2">
+                            <i class="fas fa-file-text group-hover:animate-pulse"></i>
+                            <span>Get Summary</span>
+                        </button> -->
+                                    <button id="nextBtn" onclick="proceedToNext()"
+                                        class="group bg-gradient-to-r from-nebula-500 to-nebula-purple-500 text-white px-8 py-4 rounded-2xl font-semibold shadow-medium hover:shadow-strong transition-all duration-300 transform hover:-translate-y-1 hidden flex items-center space-x-2">
+                                        <span>Next Topic</span>
+                                        <i
+                                            class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-200"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+
+                <!-- Code View Modal -->
+                <div id="codeModal"
+                    class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity duration-300">
+                    <div class="bg-white rounded-2xl shadow-strong max-w-4xl w-full max-h-[80vh] overflow-hidden m-4">
+                        <!-- Modal Header -->
+                        <div
+                            class="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-nebula-500 to-nebula-purple-500 text-white">
+                            <h3 class="text-lg font-bold">Full Code</h3>
+                            <button onclick="closeCodeModal()" class="text-white hover:text-gray-200 transition-colors">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <!-- Modal Body (Code Display) -->
+                        <div class="p-6 overflow-y-auto max-h-[60vh]">
+                            <pre
+                                class="rounded-xl p-4 shadow-medium overflow-x-auto"><code id="modalCodeContent" class="language-"></code></pre>
+                        </div>
+                        <!-- Modal Footer -->
+                        <div class="flex justify-end p-4 border-t border-gray-200">
+                            <button id="modalCopyBtn" onclick="copyModalCode()"
+                                class="bg-nebula-500 text-white px-4 py-2 rounded-xl font-semibold hover:bg-nebula-600 transition-all flex items-center space-x-2 shadow-soft">
+                                <i class="fas fa-copy"></i>
+                                <span>Copy Code</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image View Modal with 80/20 Split Layout - Image + Instructions Panel -->
+                <div id="imageModal"
+                    class="fixed inset-0 z-[9999] hidden items-center justify-center transition-all duration-300">
+                    <div class="relative w-full h-full flex">
+
+                        <!-- LEFT: Image Area (80%) - Dark Background -->
+                        <div class="w-4/5 h-full flex flex-col bg-gray-900/95 backdrop-blur-lg relative">
+
+
+
+                            <!-- Image Viewport -->
+                            <div id="modalImageViewport"
+                                class="flex-1 flex items-center justify-center p-8 overflow-hidden">
+                                <img id="modalImage" src="" alt=""
+                                    class="max-w-full max-h-full object-contain rounded-xl shadow-2xl transition-transform duration-300">
+                            </div>
+
+                            <!-- Carousel Navigation Bar - Fixed at Bottom -->
+                            <div id="modalCarouselNav" class="hidden">
+                                <div class="bg-gradient-to-t from-black/50 via-black/30 to-transparent px-6 py-4">
+                                    <div class="flex items-center justify-center gap-4 max-w-lg mx-auto">
+                                        <!-- Previous Button -->
+                                        <button onclick="modalPrevImage()" id="modalPrevBtn"
+                                            class="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/20 text-white font-medium transition-all duration-200 shadow-sm hover:shadow-md hover:scale-105">
+                                            <i
+                                                class="fas fa-arrow-left text-sm group-hover:-translate-x-1 transition-transform"></i>
+                                            <span class="text-sm">Previous</span>
+                                        </button>
+
+                                        <!-- Image Counter -->
+                                        <div
+                                            class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm shadow-md">
+                                            <span id="modalImageIndex" class="text-white font-bold text-lg">1</span>
+                                            <span class="text-white/60">/</span>
+                                            <span id="modalImageTotal" class="text-white/80 text-lg">1</span>
+                                        </div>
+
+                                        <!-- Next Button -->
+                                        <button onclick="modalNextImage()" id="modalNextBtn"
+                                            class="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/20 text-white font-medium transition-all duration-200 shadow-sm hover:shadow-md hover:scale-105">
+                                            <span class="text-sm">Next</span>
+                                            <i
+                                                class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT: Instructions Panel (20%) - Clean Modern Design -->
+                        <div id="modalInstructionsPanel"
+                            class="w-1/5 h-full bg-white border-l border-gray-200 flex flex-col shadow-2xl">
+                            <!-- Panel Header - Modern Clean Design with Close Button -->
+                            <div
+                                class="px-4 py-3 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-7 h-7 bg-gray-100 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-clipboard-list text-gray-600 text-xs"></i>
+                                    </div>
+                                    <h4 class="font-semibold text-gray-800 text-sm">Step Instructions</h4>
+                                </div>
+                                <button onclick="closeImageModal()"
+                                    class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-red-100 flex items-center justify-center transition-all duration-200 group">
+                                    <i class="fas fa-times text-gray-500 group-hover:text-red-500 text-sm"></i>
+                                </button>
+                            </div>
+
+                            <!-- Instructions Content - Markdown Rendered -->
+                            <div id="modalInstructionsContent"
+                                class="flex-1 overflow-y-auto p-4 text-gray-700 text-sm leading-relaxed modal-instructions-content prose prose-sm max-w-none">
+                                <p class="text-gray-400 italic">No instructions available</p>
+                            </div>
+
+                            <!-- Panel Footer - Keyboard Hints -->
+                            <div class="border-t border-gray-100 px-4 py-2.5 bg-gray-50/80">
+                                <div class="flex items-center justify-center gap-3 text-[10px] text-gray-400">
+                                    <span class="flex items-center gap-1"><kbd
+                                            class="px-1 py-0.5 bg-gray-200/80 rounded text-gray-500 font-mono">←</kbd>
+                                        <kbd class="px-1 py-0.5 bg-gray-200/80 rounded text-gray-500 font-mono">→</kbd>
+                                        Navigate</span>
+                                    <span class="flex items-center gap-1"><kbd
+                                            class="px-1 py-0.5 bg-gray-200/80 rounded text-gray-500 font-mono">ESC</kbd>
+                                        Close</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Video View Modal -->
+                <div id="videoModal"
+                    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300">
+                    <div
+                        class="relative bg-black rounded-2xl shadow-strong max-w-6xl w-full max-h-[95vh] overflow-hidden m-2 flex flex-col">
+                        <!-- Modal Header -->
+                        <div
+                            class="flex items-center justify-between p-4 bg-gradient-to-r from-nebula-500 to-nebula-purple-500 text-white">
+                            <h3 class="text-lg font-bold flex items-center">
+                                <i class="fas fa-play-circle mr-2"></i>
+                                Video Player
+                            </h3>
+                            <button onclick="closeVideoModal()"
+                                class="text-white hover:text-gray-200 transition-colors bg-white/20 rounded-full w-8 h-8 flex items-center justify-center hover:bg-white/30">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <!-- Video Container -->
+                        <div class="flex-1 flex items-center justify-center bg-black min-h-[400px]">
+                            <div id="videoContainer" class="w-full h-full aspect-video max-w-full max-h-full">
+                                <!-- Video content will be dynamically inserted here -->
+                            </div>
+                        </div>
+
+                        <!-- Video Caption -->
+                        <div id="videoCaptionContainer" class="hidden p-4 bg-gray-900 text-white">
+                            <p id="videoCaption" class="text-center text-sm"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Template Initialization Script -->
+                <script>
+                    // HTML escaping utility function to prevent XSS and content leakage
+                    function escapeHtml(text) {
+                        if (!text) return '';
+                        // Escape HTML entities for data attributes
+                        return text
+                            .replace(/&/g, '&amp;')
+                            .replace(/"/g, '&quot;')
+                            .replace(/'/g, '&#39;')
+                            .replace(/</g, '&lt;')
+                            .replace(/>/g, '&gt;')
+                            .replace(/\n/g, ' ')  // Replace newlines with spaces
+                            .replace(/\r/g, '')   // Remove carriage returns
+                            .trim();
+                    }
+
+                    // ✅ IMMEDIATE DATA LOADING - Load templateData right away, not in window.onload
+                    (function () {
+                        try {
+                            // Load template data immediately when script runs
+                            window.templateData = JSON.parse(document.getElementById('templateData').textContent);
+                            console.log('✅ Template data loaded immediately:', window.templateData);
+
+                            // Set global variables immediately
+                            window.maxHints = window.templateData.hints ? window.templateData.hints.length : 0;
+                            window.quizData = window.templateData.quiz || null;
+                            window.quizQuestions = window.quizData ? window.quizData.questions || [] : [];
+                            window.currentQuestionIndex = 0;
+                            window.quizAnswers = {};
+                            window.quizScore = 0;
+                            window.quizCompleted = false;
+
+                            window.topicConfig = {
+                                topic: window.templateData.title,
+                                title: window.templateData.title,
+                                description: window.templateData.description,
+                                learning_objectives: window.templateData.learningObjectives || [],
+                                task_statement: window.templateData.taskStatement,
+                                content: window.templateData.content || {},
+                                concepts: window.templateData.concepts || [],
+                                tasks: window.templateData.tasks || [],
+                                quiz: window.templateData.quiz || null,
+                                backendUrl: window.templateData.backendUrl,
+                                contexts: window.templateData.chatContexts || {}
+                            };
+
+                            window.learnerData = {
+                                id: 'anonymous',
+                                name: 'Learner',
+                                progress: 'not_attempted'
+                            };
+
+                            // Extract concepts data for context
+                            if (window.templateData.concepts) {
+                                window.conceptsData = window.templateData.concepts;
+                            }
+
+                            console.log('✅ Global variables set:', {
+                                topic: window.templateData.title,
+                                quiz: window.templateData.quiz,
+                                hints: window.templateData.hints
+                            });
+
+                        } catch (e) {
+                            console.error('❌ Failed to load template data:', e);
+                            // Fallback empty data
+                            window.templateData = {
+                                title: 'Unknown Topic',
+                                taskStatement: 'Unknown Task',
+                                quiz: null,
+                                hints: []
+                            };
+                            window.maxHints = 0;
+                            window.quizCorrectAnswer = 0;
+                            window.topicConfig = {
+                                topic: 'unknown',
+                                title: 'Unknown Topic',
+                                description: '',
+                                learning_objectives: [],
+                                task_statement: '',
+                                content: {},
+                                concepts: [],
+                                tasks: [],
+                                quiz: null,
+                                backendUrl: '',
+                                contexts: {}
+                            };
+                            window.learnerData = { id: 'anonymous', name: 'Learner', progress: 'not_attempted' };
+                        }
+                    })();
+
+                    // Initialize other global variables
+                    window.currentHint = 0;
+                    window.quizCompleted = false;
+                    window.progressStep = 0;
+                    window.revealedHints = [];
+                    window.completedSteps = new Set();
+                    window.quizAttempt = null;
+                    window.hintsStartTime = null;
+
+                    // New v2.0 Learning Path State
+                    window.learningPathState = {
+                        completedConcepts: new Set(),
+                        completedTasks: new Set(),  // Track completed tasks
+                        unlockedTasks: new Set(),
+                        completedTaskSteps: new Set(),
+                        currentConceptIndex: 0,
+                        currentSubConcepts: {},
+                        paginationMode: true  // Enable pagination mode for the new navigation system
+                    };
+
+                    // Update header progress bar and percentage text
+                    function updateProgress(step) {
+                        const progressFill = document.getElementById('progressFill');
+                        const progressPercent = document.getElementById('progressPercent');
+                        const progressText = document.getElementById('progressText');
+
+                        const stepMap = {
+                            1: { pct: 25, label: 'Task Understanding' },
+                            2: { pct: 50, label: 'In Progress' },
+                            3: { pct: 75, label: 'Almost There' },
+                            4: { pct: 100, label: 'Completed' }
+                        };
+
+                        const normalized = stepMap[step] ? step : 1;
+                        window.progressStep = normalized;
+                        const { pct, label } = stepMap[normalized];
+
+                        if (progressFill) progressFill.style.width = pct + '%';
+                        if (progressPercent) progressPercent.textContent = pct + '%';
+                        if (progressText && label) progressText.textContent = label;
+                    }
+
+                    // Chat functions are now handled by chat-system.js
+
+                    // Task system functions are now handled by task-system.js
+
+                    // ✅ ENHANCED INITIALIZATION - Setup all systems
+                    window.onload = function () {
+                        console.log('🚀 Final initialization...');
+
+                        // Initialize SCORM first
+                        if (typeof initSCORM === 'function') {
+                            initSCORM();
+
+                            // Wait for SCORM to initialize, then load learning path state
+                            setTimeout(() => {
+                                if (typeof initializeLearningPathState === 'function') {
+                                    initializeLearningPathState();
+                                    console.log('✅ Learning path state initialized from SCORM');
+
+                                    // Now initialize pagination system after SCORM state is loaded
+                                    if (typeof window.paginationSystem === 'object') {
+                                        window.paginationSystem.initializeWhenReady();
+                                        console.log('✅ Pagination system manually initialized after SCORM load');
+                                    }
+                                }
+                            }, 500);
+                        }
+
+                        // Fallback: Update header with learner data even if SCORM didn't work
+                        setTimeout(() => {
+                            if (typeof updateHeaderWithLearnerData === 'function') {
+                                updateHeaderWithLearnerData();
+                            }
+                        }, 1000);
+
+                        if (typeof initializeTemplate === 'function') {
+                            initializeTemplate();
+                        }
+
+                        // Initialize all systems
+                        if (typeof initializeTaskSystem === 'function') {
+                            initializeTaskSystem();
+                        }
+
+                        if (typeof initializeQuiz === 'function') {
+                            initializeQuiz();
+                        }
+
+                        // Initialize Learning Path v2.0
+                        if (typeof initializeLearningPath === 'function') {
+                            initializeLearningPath();
+                            console.log('✅ Learning Path v2.0 initialized');
+                        }
+
+                        // Auto-set header progress to "In Progress" when steps exist (no Start button)
+                        try {
+                            const steps = (window.templateData && (window.templateData.taskSteps || window.templateData.content?.task_steps)) || [];
+                            if (Array.isArray(steps) && steps.length > 0) {
+                                if (typeof updateProgress === 'function') updateProgress(2);
+                            }
+                        } catch (e) {
+                            console.warn('Progress init skipped:', e);
+                        }
+
+                        // Initialize chat system (consolidated initialization)
+                        if (window.chatSystem && window.templateData && window.topicConfig && window.learnerData) {
+                            window.chatSystem.initialize(window.templateData, window.topicConfig, window.learnerData);
+                            console.log('✅ Chat system initialized');
+                            console.log('📊 Chat configuration:', window.chatService?.getConfigInfo());
+                        }
+
+
+                        console.log('✅ Template fully initialized');
+                        console.log('📊 Context data available:', {
+                            topic: window.templateData.title,
+                            task: window.templateData.taskStatement,
+                            hintsCount: window.maxHints,
+                            hasQuiz: !!window.templateData.quiz,
+                            hasLearningPathV2: !!(window.templateData.concepts && window.templateData.tasks)
+                        });
+                    };
+
+                    // Simple utility functions
+                    function startTask() {
+                        if (typeof updateProgress === 'function') updateProgress(2);
+                    }
+
+
+                    function proceedToNext() {
+                        if (window.quizCompleted) {
+                            alert('🎉 Congratulations! You have successfully completed this topic.\n\nYou may now close this tab and proceed to the next topic in your learning path.');
+                        } else {
+                            alert('Please complete the knowledge check first!');
+                        }
+                    }
+
+                    // Learning Path v2.0 Functions
+                    function initializeLearningPath() {
+                        console.log('🚀 Initializing Learning Path v2.0');
+
+                        if (!window.templateData.concepts || !window.templateData.tasks) {
+                            console.warn('Learning path data not available');
+                            return;
+                        }
+
+                        // Load saved state from SCORM if available
+                        loadLearningPathState();
+
+                        // Render the initial learning path
+                        renderLearningPath();
+
+
+                        // Update progress display
+                        updateConceptsProgress();
+                    }
+
+
+                    function loadLearningPathState() {
+                        try {
+                            // Try to load from SCORM using the complete API
+                            if (window.scormAPIInstance && window.scormAPIInstance.isConnected()) {
+                                const savedState = window.scormAPIInstance.loadStateFromSCORM();
+                                if (savedState) {
+                                    window.learningPathState.completedConcepts = new Set(savedState.completedConcepts || []);
+                                    window.learningPathState.completedTasks = new Set(savedState.completedTasks || []);  // Restore completed tasks
+                                    window.learningPathState.completedQuiz = savedState.completedQuiz || false;  // Restore quiz completion
+                                    window.learningPathState.quizResults = savedState.quizResults || null;  // Restore quiz results
+                                    window.learningPathState.feedbackSubmittedAt = savedState.feedbackSubmittedAt || null;
+                                    window.learningPathState.unlockedTasks = new Set(savedState.unlockedTasks || []);
+                                    window.learningPathState.completedTaskSteps = new Set(savedState.completedTaskSteps || []);
+                                    window.learningPathState.currentConceptIndex = savedState.currentConceptIndex || 0;
+                                    window.learningPathState.currentSubConcepts = savedState.currentSubConcepts || {};
+                                    window.learningPathState.currentPage = savedState.currentPage || null;
+                                    console.log('✅ Learning path state loaded from SCORM');
+                                    return;
+                                }
+                            }
+                        } catch (e) {
+                            console.warn('Failed to load state from SCORM:', e);
+                        }
+
+                        // Initialize with first concept
+                        window.learningPathState.currentConceptIndex = 0;
+                    }
+
+                    function saveLearningPathState() {
+                        try {
+                            const stateToSave = {
+                                completedConcepts: Array.from(window.learningPathState.completedConcepts),
+                                completedTasks: Array.from(window.learningPathState.completedTasks || []),  // Save completed tasks
+                                completedQuiz: window.learningPathState.completedQuiz || false,  // Save quiz completion
+                                quizResults: window.learningPathState.quizResults || null,  // Save quiz results
+                                feedbackSubmittedAt: window.learningPathState.feedbackSubmittedAt || null,
+                                unlockedTasks: Array.from(window.learningPathState.unlockedTasks),
+                                completedTaskSteps: Array.from(window.learningPathState.completedTaskSteps),
+                                currentConceptIndex: window.learningPathState.currentConceptIndex,
+                                currentSubConcepts: window.learningPathState.currentSubConcepts || {},
+                                currentPage: window.learningPathState.currentPage || null
+                            };
+
+                            if (window.scormAPIInstance && window.scormAPIInstance.isConnected()) {
+                                window.scormAPIInstance.saveStateToSCORM(stateToSave);
+                            }
+                        } catch (e) {
+                            console.warn('Failed to save learning path state:', e);
+                        }
+                    }
+
+                    function renderLearningPath() {
+                        const container = document.getElementById('learningPathContainer');
+                        if (!container) return;
+
+                        const concepts = window.templateData.concepts || [];
+                        const tasks = window.templateData.tasks || [];
+                        const taskSteps = window.templateData.taskSteps || [];
+
+                        let html = '';
+                        let conceptIndex = 0;
+
+                        // Create a map of tasks by their unlock_after concept
+                        const tasksByConcept = {};
+                        tasks.forEach(task => {
+                            const unlockAfter = task.unlock_after;
+                            if (!tasksByConcept[unlockAfter]) {
+                                tasksByConcept[unlockAfter] = [];
+                            }
+                            tasksByConcept[unlockAfter].push(task);
+                        });
+
+                        // Render concepts and tasks in interleaved order
+                        concepts.forEach((concept, idx) => {
+                            // Render the concept if it's the current one or already completed
+                            if (idx <= window.learningPathState.currentConceptIndex || window.learningPathState.completedConcepts.has(concept.id)) {
+                                html += renderConcept(concept, idx);
+                            }
+
+                            // Check if this concept unlocks any tasks
+                            const unlockedTasks = tasksByConcept[concept.id] || [];
+                            unlockedTasks.forEach(task => {
+                                if (window.taskRenderer) {
+                                    html += window.taskRenderer.renderTask(task, taskSteps, concept);
+                                } else {
+                                    console.warn('TaskRenderer not available for renderLearningPath');
+                                }
+                            });
+                        });
+
+                        container.innerHTML = html;
+
+                    }
+
+                    function renderConcept(concept, index) {
+                        const isCompleted = window.learningPathState.completedConcepts.has(concept.id);
+                        const isCurrent = index === window.learningPathState.currentConceptIndex;
+                        const isLocked = index > window.learningPathState.currentConceptIndex;
+
+                        // Check if this is a new multi-page concept or legacy single-page concept
+                        const isSubConceptFormat = concept.sub_concepts && concept.sub_concepts.length > 0;
+
+                        if (isSubConceptFormat) {
+                            // New multi-page rendering
+                            return renderMultiPageConcept(concept, index);
+                        } else {
+                            // Legacy single-page rendering (keep for backward compatibility)
+                            return renderLegacyConcept(concept, index);
+                        }
+                    }
+
+                    function renderMultiPageConcept(concept, index) {
+                        const conceptId = concept.id;
+                        const isCompleted = window.learningPathState.completedConcepts.has(conceptId);
+                        const isCurrent = index === window.learningPathState.currentConceptIndex;
+                        const isLocked = index > window.learningPathState.currentConceptIndex;
+
+                        // Initialize sub-concept state if needed
+                        if (!window.learningPathState.currentSubConcepts) {
+                            window.learningPathState.currentSubConcepts = {};
+                        }
+
+                        const currentSubConceptIndex = window.learningPathState.currentSubConcepts[conceptId] || 0;
+                        const currentSubConcept = concept.sub_concepts[currentSubConceptIndex];
+                        const isLastSubConcept = currentSubConceptIndex === concept.sub_concepts.length - 1;
+
+                        // Status determination
+                        let status = 'locked';
+                        let statusGradient = 'from-gray-50 to-gray-100';
+                        let statusIcon = '🔒';
+                        let statusText = 'Coming Soon';
+
+                        if (isCompleted) {
+                            status = 'completed';
+                            statusGradient = 'from-green-100 to-emerald-100';
+                            statusIcon = '✅';
+                            statusText = 'Completed';
+                        } else if (isCurrent) {
+                            status = 'current';
+                            statusGradient = 'from-blue-50 to-indigo-50';
+                            statusIcon = '📚';
+                            statusText = 'In Progress';
+                        }
+
+                        return `
+                <div id="${conceptId}" class="concept-card ${status} bg-white rounded-3xl shadow-medium border hover:shadow-lg transition-all duration-300" data-concept-id="${conceptId}">
+                    <!-- Header with concept title and progress -->
+                    <div class="bg-gradient-to-r ${statusGradient} px-8 py-6 rounded-t-3xl border-b border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-gradient-to-r from-${status === 'completed' ? 'green-500 to-emerald-600' : status === 'current' ? 'blue-500 to-indigo-600' : 'gray-400 to-gray-500'} text-white rounded-2xl flex items-center justify-center font-bold text-lg shadow-lg">
+                                    ${index + 1}
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-gray-900">${index + 1}. ${concept.title}</h4>
+                                    <p class="text-sm text-gray-600 mt-1">${statusText}</p>
+                                </div>
+                            </div>
+
+                            <!-- Quiz button in header -->
+                            ${isLastSubConcept && concept.quiz ? `
+                                <button onclick="openConceptQuiz('${conceptId}')" class="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-medium hover:from-purple-600 hover:to-pink-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                                    📝 Take Quiz
+                                </button>
+                            ` : ''}
+                        </div>
+
+                        <!-- Sub-concept navigation -->
+                        <div class="sub-concept-navigation mt-4 flex items-center justify-between">
+                            <div class="progress-dots flex space-x-2">
+                                ${concept.sub_concepts.map((_, idx) => `
+                                    <div class="w-2 h-2 rounded-full transition-all duration-300 ${idx === currentSubConceptIndex ? 'bg-blue-500 w-8' :
+                                idx < currentSubConceptIndex ? 'bg-green-500' : 'bg-gray-300'
+                            }"></div>
+                                `).join('')}
+                            </div>
+                            <div class="text-sm text-gray-600">
+                                Sub-concept ${currentSubConceptIndex + 1} of ${concept.sub_concepts.length}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content area -->
+                    ${!isLocked ? renderSubConceptContent(currentSubConcept, concept, isLastSubConcept, isCompleted) : `
+                        <div class="p-8 text-center">
+                            <div class="text-6xl mb-4 opacity-50">🔒</div>
+                            <p class="text-gray-500">Complete previous concepts to unlock this content</p>
+                        </div>
+                    `}
+
+                    <!-- Inline Quiz Section -->
+                    ${!isLocked ? renderInlineQuizSection(concept, conceptId) : ''}
+                </div>
+            `;
+                    }
+
+                    function renderInlineQuizSection(concept, conceptId) {
+                        const quiz = concept.quiz;
+                        if (!quiz) return '';
+
+                        return `
+                <div id="quiz-section-${conceptId}" class="hidden mt-8 animate-slideInUp">
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border border-blue-200 overflow-hidden">
+                        <div class="bg-gradient-to-r from-blue-100 to-indigo-100 px-6 py-4 border-b border-blue-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h5 class="text-lg font-bold text-blue-900">
+                                        <i class="fas fa-brain mr-2"></i>
+                                        ${quiz.title}
+                                    </h5>
+                                    <p class="text-blue-700 text-sm mt-1">${quiz.description}</p>
+                                </div>
+                                <button onclick="toggleConceptQuiz('${conceptId}')" class="text-blue-600 hover:text-blue-800 transition-colors">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="quiz-content-${conceptId}" class="p-6">
+                            <div class="text-center py-8 text-blue-600">
+                                <i class="fas fa-brain text-4xl mb-4"></i>
+                                <p class="text-lg">Click the "Take Quiz" button above to start</p>
+                            </div>
+                        </div>
+
+                        <div id="quiz-result-${conceptId}" class="hidden p-6 border-t border-blue-200">
+                            <!-- Quiz results will be shown here -->
+                        </div>
+
+                        <div id="quiz-controls-${conceptId}" class="hidden border-t border-blue-200 px-6 py-4 bg-blue-50">
+                            <div class="flex justify-between items-center">
+                                <div id="quiz-status-${conceptId}" class="text-sm text-blue-700">
+                                    <!-- Status message -->
+                                </div>
+                                <div class="flex space-x-3">
+                                    <button id="chat-tutor-${conceptId}" onclick="openQuizChatTutor('${conceptId}')" class="hidden px-4 py-2 bg-nebula-500 text-white rounded-lg hover:bg-nebula-600 transition-colors">
+                                        <i class="fas fa-comments mr-2"></i>
+                                        Chat Tutor
+                                    </button>
+                                    <button id="retry-quiz-${conceptId}" onclick="retryConceptQuiz('${conceptId}')" class="hidden px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
+                                        <i class="fas fa-redo mr-2"></i>
+                                        Try Again
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+                    }
+
+                    function renderLegacyConcept(concept, index) {
+                        // This is the original renderConcept logic for backward compatibility
+                        const isCompleted = window.learningPathState.completedConcepts.has(concept.id);
+                        const isCurrent = index === window.learningPathState.currentConceptIndex;
+                        const isLocked = index > window.learningPathState.currentConceptIndex;
+
+                        const conceptData = concept.content || concept;
+                        const images = conceptData.images || [];
+                        const singleImage = conceptData.image || concept.image; // Backward compatibility
+                        const quiz = concept.quiz;
+                        const learningContent = concept.learning_content || '';
+
+                        // Process learning content with markdown using the production-grade renderer
+                        let processedContent = '';
+                        if (learningContent !== null && learningContent !== undefined && learningContent !== '') {
+                            try {
+                                if (window.markdownRenderer && window.markdownRenderer.isReady) {
+                                    processedContent = window.markdownRenderer.render(learningContent);
+                                } else {
+                                    // Initialize renderer if not ready and render
+                                    if (window.markdownRenderer) {
+                                        window.markdownRenderer.initialize().then(() => {
+                                            // Re-render learning path after initialization
+                                            if (typeof renderLearningPath === 'function') {
+                                                renderLearningPath();
+                                            }
+                                        });
+                                    }
+                                    // Temporary fallback content
+                                    processedContent = `<div class="loading-content">
+                            <p class="text-gray-600 italic">Loading content...</p>
+                        </div>`;
+                                }
+                            } catch (error) {
+                                console.warn('Error processing markdown:', error);
+                                processedContent = `<div class="error-content text-red-600 p-4 border border-red-200 rounded-lg">
+                        <p class="font-semibold">Content Loading Error</p>
+                        <p class="text-sm">${learningContent}</p>
+                    </div>`;
+                            }
+                        }
+
+                        // Determine if we have images to show
+                        const hasImages = images.length > 0 || singleImage;
+
+                        return `
+                <div id="${concept.id}" class="concept-card ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''} ${isLocked ? 'locked' : ''} bg-white rounded-3xl shadow-medium border ${isCompleted ? 'border-green-200 bg-green-50' : isLocked ? 'border-gray-200 opacity-60' : 'border-blue-200'} overflow-hidden" data-concept-id="${concept.id}">
+                    <!-- Concept Header -->
+                    <div class="bg-gradient-to-r ${isCompleted ? 'from-green-100 to-emerald-100' : isLocked ? 'from-gray-50 to-gray-100' : 'from-blue-50 to-indigo-50'} px-8 py-6 border-b ${isCompleted ? 'border-green-200' : isLocked ? 'border-gray-200' : 'border-blue-200'}">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-r ${isCompleted ? 'from-green-500 to-emerald-500' : isLocked ? 'from-gray-400 to-gray-500' : 'from-blue-500 to-indigo-500'} rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-medium">
+                                ${index + 1}
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-xl font-bold text-gray-900">${index + 1}. ${concept.title}</h4>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                ${isCompleted ?
+                                '<span class="text-green-600 font-semibold"><i class="fas fa-check-circle mr-2"></i>Completed</span>' :
+                                isLocked ?
+                                    '<span class="text-gray-500 font-semibold"><i class="fas fa-lock mr-2"></i>Locked</span>' :
+                                    quiz ?
+                                        `<button onclick="toggleConceptQuiz('${concept.id}')" class="text-sm px-4 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-semibold hover:from-blue-600 hover:to-indigo-600 transition-all duration-300 shadow-sm hover:shadow-md">
+                                        <i class="fas fa-brain mr-1"></i>
+                                        <span>Take Quiz</span>
+                                    </button>` :
+                                        `<button onclick="markConceptCompleted('${concept.id}')" class="text-sm px-4 py-2 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold hover:from-green-600 hover:to-emerald-600 transition-all duration-300 shadow-sm hover:shadow-md">
+                                        <i class="fas fa-check mr-1"></i>
+                                        <span>Mark Complete</span>
+                                    </button>`
+                            }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Concept Content -->
+                    ${!isLocked ? `
+                    <div class="p-8 bg-white">
+                        <!-- Single Image -->
+                        ${hasImages ? `
+                        <div class="mb-8">
+                            ${renderSingleImage(singleImage, concept.id)}
+                        </div>
+                        ` : ''}
+
+                        <!-- Learning Content with Markdown Support -->
+                        ${processedContent ? `
+                        <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed mb-8 learning-content">
+                            ${processedContent}
+                        </div>
+                        ` : ''}
+
+                        <!-- Action Buttons -->
+                        <div class="flex flex-wrap gap-3">
+                            <button onclick="openLearnMore('${conceptData.learn_more_context || concept.id}', '${index + 1}. ${concept.title}')"
+                                    class="inline-flex items-center px-4 py-2 rounded-lg bg-nebula-500 text-white hover:bg-nebula-600 shadow-sm transition-colors">
+                                <i class="fas fa-comments mr-2"></i>
+                                <span>Chat Tutor</span>
+                            </button>
+                            ${quiz ? `
+                            <button onclick="toggleConceptQuiz('${concept.id}')"
+                                    class="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 shadow-sm transition-colors">
+                                <i class="fas fa-brain mr-2"></i>
+                                <span>Take Quiz</span>
+                            </button>` : ''}
+                        </div>
+
+                        <!-- Inline Quiz Section -->
+                        ${renderInlineQuizSection(concept, concept.id)}
+                    </div>
+                    ` : '<div class="p-8 text-center text-gray-500">Complete previous concepts to unlock this content</div>'}
+                </div>
+            `;
+                    }
+
+
+                    function renderSingleImage(image, conceptId) {
+                        if (!image || !image.src) return '';
+
+                        return `
+                <div class="concept-image-single" data-concept-id="${conceptId}">
+                    <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-4 shadow-soft">
+                        <img src="${image.src}" alt="${image.alt || 'Concept image'}" class="w-full h-96 object-cover rounded-xl shadow-medium">
+                        ${image.alt ? `
+                        <div class="mt-3 px-4 py-2 bg-white/80 backdrop-blur rounded-lg">
+                            <p class="text-sm text-gray-700 text-center">${image.alt}</p>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+                    }
+
+
+                    // Multi-page concept navigation functions - Define globally so they're accessible
+                    function renderSubConceptContent(subConcept, parentConcept, isLastSubConcept, isConceptCompleted) {
+                        // Process learning content with markdown using the production-grade renderer
+                        let processedContent = '';
+                        if (subConcept.learning_content !== null && subConcept.learning_content !== undefined && subConcept.learning_content !== '') {
+                            try {
+                                if (window.markdownRenderer && window.markdownRenderer.isReady) {
+                                    processedContent = window.markdownRenderer.render(subConcept.learning_content);
+                                } else {
+                                    // Initialize renderer if not ready and render
+                                    if (window.markdownRenderer) {
+                                        window.markdownRenderer.initialize().then(() => {
+                                            // Re-render learning path after initialization
+                                            if (typeof renderLearningPath === 'function') {
+                                                renderLearningPath();
+                                            }
+                                        });
+                                    }
+                                    // Temporary fallback content
+                                    processedContent = `<div class="loading-content">
+                            <p class="text-gray-600 italic">Loading content...</p>
+                        </div>`;
+                                }
+                            } catch (error) {
+                                console.warn('Error processing markdown:', error);
+                                processedContent = `<div class="error-content text-red-600 p-4 border border-red-200 rounded-lg">
+                        <p class="font-semibold">Content Loading Error</p>
+                        <p class="text-sm">${subConcept.learning_content}</p>
+                    </div>`;
+                            }
+                        }
+
+                        return `
+                <div class="p-8 bg-white rounded-b-3xl">
+                    <!-- Sub-concept title -->
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">${subConcept.title}</h3>
+
+                    <!-- Image -->
+                    ${subConcept.image ? `
+                        <div class="mb-6 rounded-2xl overflow-hidden shadow-lg">
+                            <img src="${subConcept.image}" alt="${subConcept.title}" class="w-full h-64 object-cover">
+                        </div>
+                    ` : ''}
+
+                    <!-- Learning content (markdown) -->
+                    ${processedContent ? `
+                        <div class="prose prose-lg max-w-none mb-8 learning-content">
+                            ${processedContent}
+                        </div>
+                    ` : ''}
+
+                    <!-- Voice Assistant -->
+                    <div class="mb-6">
+                        <div class="voice-assistant-container" id="voice-container-${subConcept.id}">
+                            <div class="voice-assistant-placeholder" id="voice-placeholder-${subConcept.id}">
+                                <div class="voice-assistant-illustration">
+                                    <i class="fas fa-microphone-alt text-4xl text-blue-500 mb-4"></i>
+                                    <h4 class="text-lg font-semibold text-gray-900 mb-2">Voice Assistant Available</h4>
+                                    <p class="text-sm text-gray-600 mb-6 text-center max-w-xs mx-auto">
+                                        Get interactive help with this topic using our AI voice assistant
+                                    </p>
+                                    <button
+                                        onclick="activateVoiceAssistant('${subConcept.id}', '${encodeURIComponent(escapeHtml(subConcept.bot_context || ''))}')"
+                                        class="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl font-medium hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center mx-auto">
+                                        <i class="fas fa-microphone mr-2"></i>
+                                        Use Live Voice Assistant
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- This iframe will be inserted dynamically when user clicks the button -->
+                        </div>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="flex items-center justify-between">
+                        <!-- Previous button -->
+                        <button
+                            onclick="navigateSubConcept('${parentConcept.id}', -1)"
+                            class="px-6 py-3 bg-gray-500 text-white rounded-xl font-medium hover:bg-gray-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${window.learningPathState.currentSubConcepts[parentConcept.id] === 0 ? 'opacity-50 cursor-not-allowed' : ''}"
+                            ${window.learningPathState.currentSubConcepts[parentConcept.id] === 0 ? 'disabled' : ''}>
+                            ← Previous
+                        </button>
+
+                        <!-- Chat Tutor button -->
+                        <button
+                            onclick="openLearnMore('${escapeHtml(subConcept.bot_context || parentConcept.title)}', '${parentConcept.id}')"
+                            class="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl font-medium hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                            💬 Chat Tutor
+                        </button>
+
+                        <!-- Next/Quiz button -->
+                        ${isLastSubConcept ? `
+                            <button
+                                onclick="openConceptQuiz('${parentConcept.id}')"
+                                class="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-medium hover:from-purple-600 hover:to-pink-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                                📝 Take Quiz
+                            </button>
+                        ` : `
+                            <button
+                                onclick="navigateSubConcept('${parentConcept.id}', 1)"
+                                class="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl font-medium hover:from-green-600 hover:to-emerald-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                                Next →
+                            </button>
+                        `}
+                    </div>
+                </div>
+            `;
+                    }
+
+                    function navigateSubConcept(conceptId, direction) {
+                        const concept = window.templateData.concepts.find(c => c.id === conceptId);
+                        if (!concept || !concept.sub_concepts) return;
+
+                        const currentIndex = window.learningPathState.currentSubConcepts[conceptId] || 0;
+                        const newIndex = currentIndex + direction;
+
+                        // Boundary checks
+                        if (newIndex < 0 || newIndex >= concept.sub_concepts.length) return;
+
+                        // Update current sub-concept
+                        window.learningPathState.currentSubConcepts[conceptId] = newIndex;
+                        saveLearningPathState();
+
+                        // Re-render the concept
+                        const conceptIndex = window.templateData.concepts.findIndex(c => c.id === conceptId);
+                        const conceptElement = document.querySelector(`[data-concept-id="${conceptId}"]`);
+                        if (conceptElement) {
+                            const newHTML = renderConcept(concept, conceptIndex);
+                            conceptElement.outerHTML = newHTML;
+                        }
+
+                        // Smooth scroll to concept
+                        setTimeout(() => {
+                            const updatedElement = document.querySelector(`[data-concept-id="${conceptId}"]`);
+                            if (updatedElement) {
+                                updatedElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }, 100);
+                    }
+
+                    // Voice Assistant helper functions
+                    function buildVoiceAssistantUrl(prompt) {
+                        const baseUrl = 'https://voice-bot-759854934093.us-central1.run.app/widget.html';
+                        if (!prompt || prompt.trim() === '') {
+                            return baseUrl;
+                        }
+                        // Note: prompt is already encoded when passed from the onclick handler
+                        const joiner = baseUrl.includes('?') ? '&' : '?';
+                        return `${baseUrl}${joiner}topics=${prompt}&widget=true`;
+                    }
+
+                    function activateVoiceAssistant(subConceptId, encodedPrompt) {
+                        const container = document.getElementById(`voice-container-${subConceptId}`);
+                        const placeholder = document.getElementById(`voice-placeholder-${subConceptId}`);
+
+                        if (!container || !placeholder) return;
+
+                        // Create the iframe with loader
+                        const iframeHTML = `
+                <div class="voice-assistant-loader" id="voice-loader-${subConceptId}">
+                    <div class="loader-spinner"></div>
+                    <p class="text-sm text-gray-600 mt-2">Loading voice assistant...</p>
+                </div>
+                <iframe
+                    id="voice-iframe-${subConceptId}"
+                    src="${buildVoiceAssistantUrl(encodedPrompt)}"
+                    class="w-full h-64 rounded-2xl border border-gray-300"
+                    allow="microphone"
+                    title="Voice Assistant"
+                    onload="hideVoiceLoader('${subConceptId}')">
+                </iframe>
+                <button
+                    onclick="deactivateVoiceAssistant('${subConceptId}')"
+                    class="voice-assistant-close"
+                    title="Close Voice Assistant">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+
+                        // Replace placeholder with iframe
+                        placeholder.style.display = 'none';
+                        container.insertAdjacentHTML('beforeend', iframeHTML);
+                    }
+
+                    function deactivateVoiceAssistant(subConceptId) {
+                        const container = document.getElementById(`voice-container-${subConceptId}`);
+                        const placeholder = document.getElementById(`voice-placeholder-${subConceptId}`);
+                        const iframe = document.getElementById(`voice-iframe-${subConceptId}`);
+                        const loader = document.getElementById(`voice-loader-${subConceptId}`);
+                        const closeButton = container.querySelector('.voice-assistant-close');
+
+                        // Remove iframe, loader, and close button
+                        if (iframe) iframe.remove();
+                        if (loader) loader.remove();
+                        if (closeButton) closeButton.remove();
+
+                        // Show placeholder again
+                        if (placeholder) {
+                            placeholder.style.display = 'flex';
+                        }
+                    }
+
+                    function hideVoiceLoader(subConceptId) {
+                        const loader = document.getElementById(`voice-loader-${subConceptId}`);
+                        if (loader) {
+                            loader.style.display = 'none';
+                        }
+                    }
+
+                    function openConceptQuiz(conceptId) {
+                        const concept = window.templateData.concepts.find(c => c.id === conceptId);
+                        if (!concept || !concept.quiz) return;
+
+                        // Use existing quiz system but pass concept-level context
+                        if (typeof toggleConceptQuiz === 'function') {
+                            toggleConceptQuiz(conceptId);
+                        } else {
+                            console.error('Quiz system not loaded');
+                        }
+                    }
+
+
+                    function markConceptCompleted(conceptId) {
+                        if (!window.learningPathState.completedConcepts.has(conceptId)) {
+                            window.learningPathState.completedConcepts.add(conceptId);
+
+                            // Move to next concept
+                            const concepts = window.templateData.concepts || [];
+                            const currentIndex = concepts.findIndex(c => c.id === conceptId);
+                            if (currentIndex !== -1 && currentIndex < concepts.length - 1) {
+                                window.learningPathState.currentConceptIndex = currentIndex + 1;
+                            }
+
+                            // Save state and re-render
+                            saveLearningPathState();
+                            renderLearningPath();
+                            updateConceptsProgress();
+
+                            // Dispatch event for sidebar synchronization
+                            document.dispatchEvent(new CustomEvent('conceptCompleted', {
+                                detail: { conceptId }
+                            }));
+
+                            console.log(`✅ Concept ${conceptId} completed`);
+                        }
+                    }
+
+                    function updateConceptsProgress() {
+                        const concepts = window.templateData.concepts || [];
+                        const tasks = window.templateData.tasks || [];  // Fixed: was allTasks
+                        const hasQuiz = !!window.templateData.quiz;
+
+                        // Calculate concepts progress (with null check)
+                        const completedConcepts = window.learningPathState.completedConcepts ?
+                            window.learningPathState.completedConcepts.size : 0;
+                        const totalConcepts = concepts.length;
+
+                        // Calculate tasks progress (with null check - may not exist in old state)
+                        const completedTasks = window.learningPathState.completedTasks ?
+                            window.learningPathState.completedTasks.size : 0;
+                        const totalTasks = tasks.length;
+
+                        // Calculate quiz progress (if quiz exists)
+                        const completedQuiz = window.learningPathState.completedQuiz ? 1 : 0;
+                        const totalQuiz = hasQuiz ? 1 : 0;
+
+                        // Overall progress (concepts + tasks + quiz)
+                        const totalItems = totalConcepts + totalTasks + totalQuiz;
+                        const completedItems = completedConcepts + completedTasks + completedQuiz;
+                        const overallPercentage = totalItems > 0 ? (completedItems / totalItems) * 100 : 0;
+
+                        // Update progress text
+                        const progressText = document.getElementById('conceptsCompletedText');
+                        if (progressText) {
+                            progressText.textContent = `${completedItems}/${totalItems}`;
+                        }
+
+                        // Update progress bar with overall progress
+                        const progressBar = document.getElementById('conceptsProgressBar');
+                        if (progressBar) {
+                            progressBar.style.width = `${overallPercentage}%`;
+                        }
+
+                        console.log(`📊 Progress: ${completedItems}/${totalItems} (${overallPercentage.toFixed(1)}%) - Concepts: ${completedConcepts}/${totalConcepts}, Tasks: ${completedTasks}/${totalTasks}, Quiz: ${completedQuiz}/${totalQuiz}`);
+                    }
+
+                    /**
+                     * Mark a task as completed
+                     * Similar to markConceptCompleted but for tasks
+                     */
+                    function markTaskCompleted(taskId) {
+                        // Ensure completedTasks Set exists (may not exist in old state)
+                        if (!window.learningPathState.completedTasks) {
+                            window.learningPathState.completedTasks = new Set();
+                        }
+
+                        if (!window.learningPathState.completedTasks.has(taskId)) {
+                            window.learningPathState.completedTasks.add(taskId);
+
+                            // Save state to SCORM
+                            saveLearningPathState();
+
+                            // Update progress display
+                            updateConceptsProgress();
+
+                            // Re-render learning path if needed
+                            renderLearningPath();
+
+                            // Dispatch event for sidebar synchronization
+                            document.dispatchEvent(new CustomEvent('taskCompleted', {
+                                detail: { taskId }
+                            }));
+
+                            console.log(`✅ Task ${taskId} completed`);
+
+                            return true;
+                        }
+                        return false;
+                    }
+
+
+                    // Export utility functions
+                    window.startTask = startTask;
+                    window.proceedToNext = proceedToNext;
+
+                    // Export learning path functions
+                    window.initializeLearningPath = initializeLearningPath;
+                    window.markConceptCompleted = markConceptCompleted;
+                    window.markTaskCompleted = markTaskCompleted;  // Export task completion function
+                    window.markTaskStepCompleted = markTaskStepCompleted;
+                    window.renderLearningPath = renderLearningPath;
+                    window.saveLearningPathState = saveLearningPathState;  // Export for quiz-system.js
+                    window.updateConceptsProgress = updateConceptsProgress;  // Export for quiz-system.js
+
+                    // Inline Concept Quiz System
+                    window.quizAttempts = {};
+                    window.quizResults = {}; // Store quiz results to restore when reopening
+
+                    function toggleConceptQuiz(conceptId) {
+                        const quizSection = document.getElementById(`quiz-section-${conceptId}`);
+                        console.log('🎯 toggleConceptQuiz called for:', conceptId, 'quizSection:', quizSection);
+
+                        if (!quizSection) {
+                            console.error('❌ Quiz section not found for:', conceptId);
+                            return;
+                        }
+
+                        console.log('🎯 Current classes:', quizSection.className);
+                        console.log('🎯 Contains hidden:', quizSection.classList.contains('hidden'));
+                        console.log('🎯 Display style:', window.getComputedStyle(quizSection).display);
+
+                        // Try different possible locations for concepts data
+                        let concepts = [];
+                        if (window.templateData.concepts && Array.isArray(window.templateData.concepts)) {
+                            concepts = window.templateData.concepts;
+                        } else if (window.templateData.content && window.templateData.content.concepts && Array.isArray(window.templateData.content.concepts)) {
+                            concepts = window.templateData.content.concepts;
+                        }
+
+                        const concept = concepts.find(c => c.id === conceptId);
+                        console.log('🎯 Found concept:', !!concept, 'Has quiz:', !!(concept && concept.quiz));
+
+                        if (!concept || !concept.quiz) {
+                            console.error('❌ Concept or quiz not found:', conceptId);
+                            return;
+                        }
+
+                        // Force add hidden class if it doesn't exist but should be hidden
+                        const shouldBeHidden = quizSection.classList.contains('hidden') || window.getComputedStyle(quizSection).display === 'none';
+
+                        if (shouldBeHidden) {
+                            // Show quiz - Force visibility with multiple methods
+                            console.log('🎯 Showing quiz section...');
+                            quizSection.classList.remove('hidden');
+
+                            // Force visibility using multiple methods to override CSS
+                            quizSection.style.display = 'block';
+                            quizSection.style.visibility = 'visible';
+                            quizSection.style.opacity = '1';
+                            quizSection.style.height = 'auto';
+                            quizSection.style.minHeight = '400px'; // Force minimum height
+                            quizSection.style.width = '100%';
+                            quizSection.style.overflow = 'visible';
+                            quizSection.style.position = 'relative';
+                            quizSection.style.zIndex = '1000';
+
+                            // Force content area to expand
+                            const contentDiv = document.getElementById(`quiz-content-${conceptId}`);
+                            if (contentDiv) {
+                                contentDiv.style.display = 'block';
+                                contentDiv.style.height = 'auto';
+                                contentDiv.style.minHeight = '300px';
+                                contentDiv.style.width = '100%';
+                            }
+
+                            // Remove any potential hidden styles
+                            quizSection.style.setProperty('display', 'block', 'important');
+                            quizSection.classList.remove('hidden');
+                            quizSection.classList.remove('invisible');
+
+                            console.log('🎯 Classes after show:', quizSection.className);
+                            console.log('🎯 Final display style:', window.getComputedStyle(quizSection).display);
+                            console.log('🎯 Quiz section now visible, loading quiz...');
+                            loadConceptQuiz(conceptId);
+
+                            // Scroll to quiz
+                            setTimeout(() => {
+                                quizSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            }, 100);
+                        } else {
+                            // Hide quiz
+                            console.log('🎯 Hiding quiz section...');
+                            quizSection.classList.add('hidden');
+                            resetQuizState(conceptId);
+                        }
+                    }
+
+                    function loadConceptQuiz(conceptId) {
+
+                        // Try different possible locations for concepts data
+                        let concepts = [];
+                        if (window.templateData.concepts && Array.isArray(window.templateData.concepts)) {
+                            concepts = window.templateData.concepts;
+                        } else if (window.templateData.content && window.templateData.content.concepts && Array.isArray(window.templateData.content.concepts)) {
+                            concepts = window.templateData.content.concepts;
+                        }
+
+                        const concept = concepts.find(c => c.id === conceptId);
+
+                        if (!concept || !concept.quiz) {
+                            console.error('❌ No concept or quiz in loadConceptQuiz');
+                            return;
+                        }
+
+                        // Ensure quizAttempts is initialized
+                        if (!window.quizAttempts) {
+                            window.quizAttempts = {};
+                        }
+
+                        // Initialize attempts tracking if not exists
+                        if (!window.quizAttempts[conceptId]) {
+                            window.quizAttempts[conceptId] = {
+                                attempts: 0,
+                                questionsShown: []
+                            };
+                        }
+
+                        // Check if there's a previous result to restore
+                        if (window.quizResults[conceptId] && window.quizResults[conceptId].isCorrect === false) {
+                            restoreQuizResult(conceptId);
+                        } else {
+                            // Reset UI and load new question
+                            resetQuizState(conceptId);
+
+                            // Load a random question
+                            loadQuizQuestion(conceptId);
+                        }
+                    }
+
+                    function loadQuizQuestion(conceptId) {
+                        console.log('🎯 loadQuizQuestion called for:', conceptId);
+
+                        // Try different possible locations for concepts data
+                        let concepts = [];
+                        if (window.templateData.concepts && Array.isArray(window.templateData.concepts)) {
+                            concepts = window.templateData.concepts;
+                        } else if (window.templateData.content && window.templateData.content.concepts && Array.isArray(window.templateData.content.concepts)) {
+                            concepts = window.templateData.content.concepts;
+                        }
+
+                        const concept = concepts.find(c => c.id === conceptId);
+
+                        if (!concept || !concept.quiz) {
+                            console.error('❌ Concept or quiz not found:', conceptId);
+                            return;
+                        }
+
+                        const quiz = concept.quiz;
+
+                        // Ensure quizAttempts is initialized
+                        if (!window.quizAttempts || !window.quizAttempts[conceptId]) {
+                            console.error('❌ quizAttempts not properly initialized for:', conceptId);
+                            return;
+                        }
+
+                        // Select a random question that hasn't been shown yet
+                        const availableQuestions = quiz.questions.filter(q =>
+                            !window.quizAttempts[conceptId].questionsShown.includes(q.id)
+                        );
+
+                        console.log('📊 Available questions:', availableQuestions.length, 'Already shown:', window.quizAttempts[conceptId].questionsShown);
+
+                        // If all questions have been shown, reset the questions shown
+                        if (availableQuestions.length === 0) {
+                            window.quizAttempts[conceptId].questionsShown = [];
+                        }
+
+                        const questionsToSelect = availableQuestions.length > 0 ? availableQuestions : quiz.questions;
+                        const selectedQuestion = questionsToSelect[Math.floor(Math.random() * questionsToSelect.length)];
+                        console.log('🎯 Selected question:', selectedQuestion);
+
+                        // Mark this question as shown
+                        window.quizAttempts[conceptId].questionsShown.push(selectedQuestion.id);
+                        window.quizAttempts[conceptId].attempts++;
+
+                        // Store current question
+                        window[`currentQuizQuestion_${conceptId}`] = selectedQuestion;
+                        console.log('🎯 Stored current question for:', conceptId);
+
+                        // Render question
+                        console.log('🎯 About to render question...');
+                        renderInlineQuizQuestion(conceptId, selectedQuestion);
+                        console.log('🎯 Question rendering complete');
+                    }
+
+                    function renderInlineQuizQuestion(conceptId, question) {
+                        const contentDiv = document.getElementById(`quiz-content-${conceptId}`);
+                        console.log('🎯 renderInlineQuizQuestion called for:', conceptId, 'contentDiv:', contentDiv, 'question:', !!question);
+                        if (!contentDiv) {
+                            console.error('❌ Content div not found for concept:', conceptId);
+                            return;
+                        }
+
+                        const optionsHtml = question.options.map((option, index) => {
+                            const inputType = question.type === 'multiple' ? 'checkbox' : 'radio';
+                            const inputName = question.type === 'multiple' ? `option_${index}_${conceptId}` : `quiz_option_${conceptId}`;
+
+                            return `
+                    <label class="flex items-start space-x-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
+                        <input type="${inputType}" name="${inputName}" value="${index}" class="mt-1 text-blue-600 focus:ring-blue-500">
+                        <span class="text-gray-700">${option}</span>
+                    </label>
+                `;
+                        }).join('');
+
+                        const newHtml = `
+                <div class="space-y-4">
+                    <div class="bg-white border border-blue-200 rounded-lg p-4">
+                        <h4 class="text-lg font-semibold text-blue-900 mb-2">Question</h4>
+                        <p class="text-blue-800">${question.question}</p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h5 class="font-medium text-gray-900">Select your answer${question.type === 'multiple' ? 's' : ''}:</h5>
+                        ${optionsHtml}
+                    </div>
+
+                    <div class="pt-4">
+                        <button onclick="submitInlineQuizAnswer('${conceptId}')" class="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all duration-300 shadow-md hover:shadow-lg">
+                            <i class="fas fa-check mr-2"></i>
+                            Submit Answer
+                        </button>
+                    </div>
+                </div>
+            `;
+
+                        console.log('🎯 Setting quiz HTML content:', newHtml.substring(0, 100) + '...');
+                        contentDiv.innerHTML = newHtml;
+
+                        // Force dimensions after content is set
+                        contentDiv.style.display = 'block';
+                        contentDiv.style.height = 'auto';
+                        contentDiv.style.minHeight = '300px';
+                        contentDiv.style.width = '100%';
+                        contentDiv.style.overflow = 'visible';
+
+                        // Also force parent quiz section to expand
+                        const quizSection = document.getElementById(`quiz-section-${conceptId}`);
+                        if (quizSection) {
+                            quizSection.style.minHeight = '400px';
+                            quizSection.style.width = '100%';
+                            quizSection.style.overflow = 'visible';
+                        }
+
+                        console.log('🎯 Quiz content set successfully, new innerHTML length:', contentDiv.innerHTML.length);
+
+                        // Debug check if quiz section is still visible
+                        setTimeout(() => {
+                            const quizSectionAfter = document.getElementById(`quiz-section-${conceptId}`);
+                            if (quizSectionAfter) {
+                                console.log('🎯 Quiz section visibility check after content load:');
+                                console.log('   Display style:', window.getComputedStyle(quizSectionAfter).display);
+                                console.log('   Visibility:', window.getComputedStyle(quizSectionAfter).visibility);
+                                console.log('   OffsetHeight:', quizSectionAfter.offsetHeight);
+                                console.log('   OffsetWidth:', quizSectionAfter.offsetWidth);
+                                console.log('   Classes:', quizSectionAfter.className);
+                            }
+                        }, 100);
+                    }
+
+                    function submitInlineQuizAnswer(conceptId) {
+                        const question = window[`currentQuizQuestion_${conceptId}`];
+                        if (!question) return;
+
+                        let selectedAnswers = [];
+
+                        if (question.type === 'multiple') {
+                            const checkboxes = document.querySelectorAll(`input[type="checkbox"][name^="option_"]:checked`);
+                            selectedAnswers = Array.from(checkboxes).map(cb => parseInt(cb.value));
+                        } else {
+                            const radio = document.querySelector(`input[type="radio"][name="quiz_option_${conceptId}"]:checked`);
+                            selectedAnswers = radio ? [parseInt(radio.value)] : [];
+                        }
+
+                        const isCorrect = question.type === 'multiple' ?
+                            arraysEqual(selectedAnswers, question.correct_answers) :
+                            selectedAnswers.length === 1 && selectedAnswers[0] === question.correct_answer;
+
+                        showInlineQuizResult(conceptId, isCorrect, question, selectedAnswers);
+                    }
+
+                    function showInlineQuizResult(conceptId, isCorrect, question, selectedAnswers) {
+                        // Store the result for potential restoration
+                        window.quizResults[conceptId] = {
+                            isCorrect: isCorrect,
+                            question: question,
+                            selectedAnswers: selectedAnswers
+                        };
+
+                        const contentDiv = document.getElementById(`quiz-content-${conceptId}`);
+                        const resultDiv = document.getElementById(`quiz-result-${conceptId}`);
+                        const controlsDiv = document.getElementById(`quiz-controls-${conceptId}`);
+                        const statusDiv = document.getElementById(`quiz-status-${conceptId}`);
+
+                        if (!contentDiv || !resultDiv || !controlsDiv || !statusDiv) return;
+
+                        // Hide content, show result and controls
+                        contentDiv.classList.add('hidden');
+                        resultDiv.classList.remove('hidden');
+                        controlsDiv.classList.remove('hidden');
+
+                        const resultHtml = `
+                <div class="space-y-4">
+                    <div class="${isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'} border rounded-lg p-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="${isCorrect ? 'text-green-600' : 'text-red-600'}">
+                                <i class="fas ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'} text-2xl"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold ${isCorrect ? 'text-green-900' : 'text-red-900'}">
+                                ${isCorrect ? 'Correct!' : 'Incorrect'}
+                            </h4>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                        <h5 class="font-semibold text-gray-900 mb-2">Explanation:</h5>
+                        <p class="text-gray-700">${question.explanation}</p>
+                    </div>
+                </div>
+            `;
+
+                        resultDiv.innerHTML = resultHtml;
+
+                        // Update status and buttons
+                        if (isCorrect) {
+                            // Clear stored result since concept is completed
+                            delete window.quizResults[conceptId];
+
+                            // Mark concept as completed
+                            markConceptCompleted(conceptId);
+
+                            // Dispatch quiz completion event
+                            document.dispatchEvent(new CustomEvent('conceptQuizCompleted', {
+                                detail: { conceptId, passed: true }
+                            }));
+
+                            statusDiv.textContent = '✅ Concept completed successfully!';
+
+                            // Hide remediation buttons
+                            document.getElementById(`chat-tutor-${conceptId}`).classList.add('hidden');
+                            document.getElementById(`retry-quiz-${conceptId}`).classList.add('hidden');
+                        } else {
+                            // Show remediation options
+                            statusDiv.textContent = '❌ Incorrect. Please review the concept and try again.';
+                            document.getElementById(`chat-tutor-${conceptId}`).classList.remove('hidden');
+                            document.getElementById(`retry-quiz-${conceptId}`).classList.remove('hidden');
+                        }
+                    }
+
+                    function resetQuizState(conceptId) {
+                        const contentDiv = document.getElementById(`quiz-content-${conceptId}`);
+                        const resultDiv = document.getElementById(`quiz-result-${conceptId}`);
+                        const controlsDiv = document.getElementById(`quiz-controls-${conceptId}`);
+                        const statusDiv = document.getElementById(`quiz-status-${conceptId}`);
+
+                        if (contentDiv) {
+                            contentDiv.innerHTML = `
+                    <div class="text-center py-8 text-blue-600">
+                        <i class="fas fa-spinner fa-spin text-4xl mb-4"></i>
+                        <p class="text-lg">Loading quiz question...</p>
+                    </div>
+                `;
+                        }
+                        if (resultDiv) resultDiv.classList.add('hidden');
+                        if (controlsDiv) controlsDiv.classList.add('hidden');
+                        if (statusDiv) statusDiv.textContent = '';
+
+                        // Clear stored question
+                        window[`currentQuizQuestion_${conceptId}`] = null;
+                    }
+
+                    function retryConceptQuiz(conceptId) {
+                        loadQuizQuestion(conceptId);
+
+                        // Reset UI
+                        const contentDiv = document.getElementById(`quiz-content-${conceptId}`);
+                        const resultDiv = document.getElementById(`quiz-result-${conceptId}`);
+                        const controlsDiv = document.getElementById(`quiz-controls-${conceptId}`);
+                        const statusDiv = document.getElementById(`quiz-status-${conceptId}`);
+
+                        if (contentDiv) contentDiv.classList.remove('hidden');
+                        if (resultDiv) resultDiv.classList.add('hidden');
+                        if (controlsDiv) controlsDiv.classList.add('hidden');
+                        if (statusDiv) statusDiv.textContent = '';
+                    }
+
+                    function openQuizChatTutor(conceptId) {
+                        const concept = window.templateData.concepts.find(c => c.id === conceptId);
+                        if (concept && concept.content && concept.content.learn_more_context) {
+                            // Open chat with specific remediation context
+                            openLearnMore(concept.content.learn_more_context, `${concept.title} - Quiz Remediation`);
+                        } else if (concept) {
+                            openLearnMore(conceptId, `${concept.title} - Quiz Remediation`);
+                        }
+                        toggleConceptQuiz(conceptId); // Close quiz after opening chat
+                    }
+
+                    function restoreQuizResult(conceptId) {
+                        const result = window.quizResults[conceptId];
+                        if (!result) return;
+
+                        // Restore the stored result
+                        showInlineQuizResult(conceptId, result.isCorrect, result.question, result.selectedAnswers);
+                    }
+
+                    // Utility function
+                    function arraysEqual(a, b) {
+                        if (a.length !== b.length) return false;
+                        const sortedA = [...a].sort();
+                        const sortedB = [...b].sort();
+                        return sortedA.every((val, index) => val === sortedB[index]);
+                    }
+
+                    // Export quiz functions
+                    window.toggleConceptQuiz = toggleConceptQuiz;
+                    window.submitInlineQuizAnswer = submitInlineQuizAnswer;
+                    window.retryConceptQuiz = retryConceptQuiz;
+                    window.openQuizChatTutor = openQuizChatTutor;
+
+                    // Task functions are now handled by TaskRenderer and exported from core-functions.js
+
+                    // Image modal carousel state
+                    let modalCarouselImages = [];
+                    let modalCarouselIndex = 0;
+                    let modalStepInstructions = ''; // Store current step instructions for modal
+
+                    // Image modal handlers with carousel support and instructions panel
+                    function openImageModal(src, alt, carouselImages, currentIndex, stepInstructions) {
+                        try {
+                            const modal = document.getElementById('imageModal');
+                            const img = document.getElementById('modalImage');
+                            const nav = document.getElementById('modalCarouselNav');
+                            const indexEl = document.getElementById('modalImageIndex');
+                            const totalEl = document.getElementById('modalImageTotal');
+                            const instructionsContent = document.getElementById('modalInstructionsContent');
+                            const instructionsPanel = document.getElementById('modalInstructionsPanel');
+
+                            // Update instructions panel
+                            if (instructionsContent) {
+                                if (stepInstructions && stepInstructions.trim()) {
+                                    modalStepInstructions = stepInstructions;
+                                    // Parse markdown if window.markdownRenderer is available
+                                    if (window.markdownRenderer && typeof window.markdownRenderer.render === 'function') {
+                                        instructionsContent.innerHTML = window.markdownRenderer.render(stepInstructions);
+                                    } else {
+                                        // Basic HTML rendering with line breaks
+                                        instructionsContent.innerHTML = stepInstructions.replace(/\n/g, '<br>');
+                                    }
+                                    if (instructionsPanel) instructionsPanel.classList.remove('hidden');
+                                } else {
+                                    modalStepInstructions = '';
+                                    instructionsContent.innerHTML = '<p class="text-gray-400 italic">No instructions available for this image</p>';
+                                    // Still show panel but with empty message
+                                    if (instructionsPanel) instructionsPanel.classList.remove('hidden');
+                                }
+                            }
+
+                            // Check if carousel images were passed
+                            if (carouselImages && carouselImages.length > 1) {
+                                modalCarouselImages = carouselImages;
+                                modalCarouselIndex = currentIndex || 0;
+
+                                // Show navigation
+                                if (nav) nav.classList.remove('hidden');
+                                if (indexEl) indexEl.textContent = modalCarouselIndex + 1;
+                                if (totalEl) totalEl.textContent = modalCarouselImages.length;
+
+                                // Use current index image
+                                const currentImg = modalCarouselImages[modalCarouselIndex];
+                                if (img) {
+                                    img.src = currentImg.src;
+                                    img.alt = currentImg.alt || '';
+                                }
+                            } else {
+                                // Single image mode
+                                modalCarouselImages = [];
+                                modalCarouselIndex = 0;
+
+                                // Hide navigation
+                                if (nav) nav.classList.add('hidden');
+
+                                if (img) {
+                                    img.src = src;
+                                    img.alt = alt || '';
+                                }
+                            }
+
+                            if (modal) {
+                                modal.classList.remove('hidden');
+                                modal.classList.add('flex');
+                            }
+
+                        } catch (e) {
+                            console.warn('Unable to open image modal:', e);
+                        }
+                    }
+
+                    function closeImageModal() {
+                        const modal = document.getElementById('imageModal');
+                        const img = document.getElementById('modalImage');
+                        const nav = document.getElementById('modalCarouselNav');
+                        const instructionsContent = document.getElementById('modalInstructionsContent');
+
+                        // Reset carousel state
+                        modalCarouselImages = [];
+                        modalCarouselIndex = 0;
+                        modalStepInstructions = '';
+
+                        if (modal) {
+                            modal.classList.add('hidden');
+                            modal.classList.remove('flex');
+                        }
+                        if (img) {
+                            img.src = '';
+                            img.alt = '';
+                        }
+                        if (nav) {
+                            nav.classList.add('hidden');
+                        }
+                        if (instructionsContent) {
+                            instructionsContent.innerHTML = '<p class="text-gray-400 italic">No instructions available</p>';
+                        }
+                    }
+
+                    function modalPrevImage() {
+                        if (modalCarouselImages.length === 0) return;
+                        modalCarouselIndex = (modalCarouselIndex - 1 + modalCarouselImages.length) % modalCarouselImages.length;
+                        updateModalImage();
+                    }
+
+                    function modalNextImage() {
+                        if (modalCarouselImages.length === 0) return;
+                        modalCarouselIndex = (modalCarouselIndex + 1) % modalCarouselImages.length;
+                        updateModalImage();
+                    }
+
+                    function updateModalImage() {
+                        const img = document.getElementById('modalImage');
+                        const indexEl = document.getElementById('modalImageIndex');
+
+                        if (modalCarouselImages.length > 0 && img) {
+                            const currentImg = modalCarouselImages[modalCarouselIndex];
+                            img.src = currentImg.src;
+                            img.alt = currentImg.alt || '';
+                        }
+                        if (indexEl) {
+                            indexEl.textContent = modalCarouselIndex + 1;
+                        }
+                    }
+
+                    // Helper function to decode Base64-encoded UTF-8 string
+                    function decodeInstructionsB64(base64Str) {
+                        if (!base64Str) return '';
+                        try {
+                            return decodeURIComponent(escape(atob(base64Str)));
+                        } catch (e) {
+                            console.warn('Failed to decode Base64 instructions:', e);
+                            return '';
+                        }
+                    }
+
+                    // Wrapper function for single images with Base64 encoded instructions
+                    function openImageModalB64(src, alt, instructionsB64) {
+                        const instructions = decodeInstructionsB64(instructionsB64);
+                        openImageModal(src, alt, null, 0, instructions);
+                    }
+
+                    // Helper function to open carousel image modal from task step
+                    // Reads images and Base64-encoded instructions from data attributes
+                    function openCarouselImageModal(stepId, currentIndex) {
+                        try {
+                            const carouselContainer = document.querySelector(`[data-carousel="step"][data-step-index="${stepId}"]`);
+                            if (carouselContainer && carouselContainer.dataset.images) {
+                                const images = JSON.parse(carouselContainer.dataset.images);
+                                // Get Base64-encoded step instructions and decode
+                                const instructionsB64 = carouselContainer.dataset.instructionsB64 || '';
+                                const stepInstructions = decodeInstructionsB64(instructionsB64);
+                                if (images && images.length > 0) {
+                                    openImageModal(images[currentIndex].src, images[currentIndex].alt, images, currentIndex, stepInstructions);
+                                }
+                            }
+                        } catch (e) {
+                            console.warn('Unable to open carousel image modal:', e);
+                        }
+                    }
+
+                    // Export modal navigation functions
+                    window.openImageModal = openImageModal;
+                    window.openImageModalB64 = openImageModalB64;
+                    window.closeImageModal = closeImageModal;
+                    window.modalPrevImage = modalPrevImage;
+                    window.modalNextImage = modalNextImage;
+                    window.openCarouselImageModal = openCarouselImageModal;
+
+                    // Close on ESC and arrow key navigation
+                    function isImageModalOpen() {
+                        const modal = document.getElementById('imageModal');
+                        return !!(modal && !modal.classList.contains('hidden'));
+                    }
+
+                    function isCodeModalOpen() {
+                        const modal = document.getElementById('codeModal');
+                        return !!(modal && !modal.classList.contains('hidden'));
+                    }
+
+                    document.addEventListener('keydown', function (ev) {
+                        if (ev.key === 'Escape') {
+                            if (isImageModalOpen()) closeImageModal();
+                            if (isCodeModalOpen()) closeCodeModal();
+                        }
+                        // Arrow key navigation for image modal
+                        // IMPORTANT: must preventDefault and stopPropagation to prevent page navigation
+                        if (isImageModalOpen() && modalCarouselImages.length > 0) {
+                            if (ev.key === 'ArrowLeft') {
+                                ev.preventDefault();
+                                ev.stopPropagation();
+                                modalPrevImage();
+                            }
+                            if (ev.key === 'ArrowRight') {
+                                ev.preventDefault();
+                                ev.stopPropagation();
+                                modalNextImage();
+                            }
+                        }
+                    });
+
+                    document.getElementById('imageModal').addEventListener('click', function (ev) {
+                        if (ev.target === this) closeImageModal();
+                    });
+
+                    document.getElementById('codeModal').addEventListener('click', function (ev) {
+                        if (ev.target === this) closeCodeModal();
+                    });
+
+                    // Removed zoom/pan behavior for image modal; simple open/close only.
+
+                    // Video modal handlers
+                    function openVideoModal(type, src, caption) {
+                        try {
+                            const modal = document.getElementById('videoModal');
+                            const container = document.getElementById('videoContainer');
+                            const captionContainer = document.getElementById('videoCaptionContainer');
+                            const captionElement = document.getElementById('videoCaption');
+
+                            if (container) {
+                                container.innerHTML = '';
+
+                                if (type === 'local') {
+                                    // Local video: use HTML5 video element
+                                    const video = document.createElement('video');
+                                    video.className = 'w-full h-full object-contain';
+                                    video.controls = true;
+                                    video.autoplay = true;
+                                    video.innerHTML = `
+                            <source src="${src}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        `;
+                                    container.appendChild(video);
+                                } else if (type === 'embed') {
+                                    // Embed video: use the embed URL directly (should already be processed)
+                                    const embedUrl = src;
+
+                                    const iframe = document.createElement('iframe');
+                                    iframe.className = 'w-full h-full border-0';
+                                    iframe.src = embedUrl;
+                                    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+                                    iframe.allowFullscreen = true;
+                                    iframe.title = 'Video Player';
+                                    container.appendChild(iframe);
+                                }
+                            }
+
+                            // Set caption if provided
+                            if (caption && captionElement && captionContainer) {
+                                captionElement.textContent = caption;
+                                captionContainer.classList.remove('hidden');
+                            } else if (captionContainer) {
+                                captionContainer.classList.add('hidden');
+                            }
+
+                            // Show modal
+                            if (modal) {
+                                modal.classList.remove('hidden');
+                                modal.classList.add('flex');
+                            }
+
+                        } catch (e) {
+                            console.error('Error opening video modal:', e);
+                            alert('Error playing video. Please try again.');
+                        }
+                    }
+
+                    function closeVideoModal() {
+                        const modal = document.getElementById('videoModal');
+                        const container = document.getElementById('videoContainer');
+
+                        // Clear video content to stop playback
+                        if (container) {
+                            container.innerHTML = '';
+                        }
+
+                        // Hide modal
+                        if (modal) {
+                            modal.classList.add('hidden');
+                            modal.classList.remove('flex');
+                        }
+                    }
+
+                    // Check if video modal is open
+                    function isVideoModalOpen() {
+                        const modal = document.getElementById('videoModal');
+                        return !!(modal && !modal.classList.contains('hidden'));
+                    }
+
+                    // Close on ESC key
+                    document.addEventListener('keydown', function (ev) {
+                        if (ev.key === 'Escape') {
+                            if (isImageModalOpen()) closeImageModal();
+                            if (isVideoModalOpen()) closeVideoModal();
+                        }
+                    });
+
+                    // Close on backdrop click for video modal
+                    document.getElementById('videoModal').addEventListener('click', function (ev) {
+                        if (ev.target === this) closeVideoModal();
+                    });
+
+                    // Expose globally for inline handlers
+                    window.openImageModal = openImageModal;
+                    window.closeImageModal = closeImageModal;
+                    window.openVideoModal = openVideoModal;
+                    window.closeVideoModal = closeVideoModal;
+                </script>
+
+
+
+                <!-- Close main content wrapper -->
+            </div>
+            <!-- Close page wrapper -->
+        </div>
+
+</body>
+
+</html>

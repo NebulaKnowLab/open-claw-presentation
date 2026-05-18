@@ -1,0 +1,1837 @@
+/**
+ * SCORM Builder Pagination Styles
+ * Styles for page-based navigation and pagination controls
+ * Follows existing design system and enhances with pagination-specific elements
+ */
+
+/* ========== Enhanced Header Styles ========== */
+
+/* Enhanced Header Title Styling */
+.header-title-enhanced {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    background: linear-gradient(135deg, #1a3d3e 0%, #2d1a2a 25%, #3a3a3d 75%, #4a1a1a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo Hover Effect */
+.header-logo-hover {
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.header-logo-hover:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 4px 8px rgba(74, 155, 142, 0.2));
+}
+
+/* Header Container - Enhanced */
+.enhanced-header {
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.98);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+}
+
+/* ========== Learning Objectives Grid Layout ========== */
+
+/* Center learning objectives cards when there's only 1 or 2 cards on desktop */
+@media (min-width: 1024px) {
+    #legacyLearningObjectives .grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+
+    /* When there's only one objective */
+    #legacyLearningObjectives .grid:only-child>div:only-child {
+        flex: 0 0 calc(33.333% - 1rem);
+        max-width: 400px;
+    }
+
+    /* When there are exactly two objectives */
+    #legacyLearningObjectives .grid>div:first-child:nth-last-child(2),
+    #legacyLearningObjectives .grid>div:first-child:nth-last-child(2)~div {
+        flex: 0 0 calc(33.333% - 1rem);
+        max-width: 400px;
+    }
+}
+
+/* ========== Pagination Controls ========== */
+
+/* Absolute Bottom Pagination Bar - contained within main content */
+#pagination-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.95));
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border-color, #e5e7eb);
+    padding: 1rem 2rem;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+#pagination-controls.collapsed {
+    transform: translateY(calc(100% - 40px));
+}
+
+/* Pagination Buttons */
+.pagination-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid var(--primary-color, #6366f1);
+    border-radius: 0.5rem;
+    background: var(--primary-color, #6366f1);
+    color: white;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.pagination-button:hover:not(:disabled) {
+    background: var(--primary-hover, #4f46e5);
+    border-color: var(--primary-hover, #4f46e5);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.pagination-button:focus {
+    outline: 2px solid var(--focus-color, #6366f1);
+    outline-offset: 2px;
+}
+
+.pagination-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--gray-300, #d1d5db);
+    border-color: var(--gray-300, #d1d5db);
+    transform: none;
+}
+
+.pagination-button:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.pagination-button.secondary {
+    background: transparent;
+    color: var(--primary-color, #6366f1);
+    border-color: var(--primary-color, #6366f1);
+}
+
+.pagination-button.secondary:hover:not(:disabled) {
+    background: var(--primary-color, #6366f1);
+    color: white;
+}
+
+/* Page Counter and Progress */
+.page-counter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary, #6b7280);
+}
+
+.page-counter-text {
+    font-weight: 500;
+    color: var(--text-primary, #374151);
+}
+
+.page-progress-container {
+    width: 200px;
+    height: 6px;
+    background: var(--gray-200, #e5e7eb);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.page-progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color, #6366f1), var(--primary-light, #818cf8));
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 3px;
+    position: relative;
+}
+
+.page-progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* ========== Main Content Area ========== */
+
+/* Main Content Container for Pagination */
+#main-content {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main Content Wrapper - needs relative positioning for absolute pagination */
+#mainContentWrapper {
+    position: relative;
+}
+
+
+/* Page Content Container */
+#page-container {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 2rem;
+    /* Normal padding for content spacing */
+    background: var(--bg-primary, #ffffff);
+}
+
+#current-page-content {
+    padding: 2rem;
+    width: 90%;
+    max-width: none;
+    margin: 0 auto;
+}
+
+/* ========== Page Content Styles ========== */
+
+.page-content {
+    animation: slideInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 400px;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Page Transition Effects */
+.page-transitioning {
+    opacity: 0.5;
+    transform: scale(0.98);
+    transition: all 0.3s ease;
+}
+
+.page-transition-complete {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ========== Introduction Page Styles ========== */
+.introduction-page {
+    text-align: center;
+    padding: 0.5rem 2rem;
+}
+
+/* Hero section no longer has card wrapper - styles removed */
+
+/* Hero Image Optimization - Smart Height and Width */
+.introduction-page .hero-image-full {
+    max-width: 95%;
+    max-height: min(70vh, 600px);
+    display: block;
+    margin: 0 auto;
+    border-radius: 1.5rem;
+    object-fit: contain;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.introduction-page #legacyLearningObjectives {
+    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.introduction-page .learning-objectives {
+    background: linear-gradient(135deg, var(--bg-secondary, #f9fafb) 0%, #e5e7eb 100%);
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: left;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* ========== Concept Page Styles ========== */
+.concept-page {
+    line-height: 1.6;
+}
+
+.concept-page .concept-header {
+    border-bottom: 2px solid var(--primary-color, #6366f1);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+.concept-page .concept-title {
+    color: var(--text-primary, #111827);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.concept-page .sub-concept-title {
+    color: var(--text-secondary, #374151);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Learning Content Styling */
+.learning-content {
+    font-size: 1.125rem;
+    color: var(--text-primary, #374151);
+    line-height: 1.7;
+}
+
+.learning-content h1,
+.learning-content h2,
+.learning-content h3,
+.learning-content h4,
+.learning-content h5,
+.learning-content h6 {
+    color: var(--text-primary, #111827);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.learning-content p {
+    margin-bottom: 1.5rem;
+}
+
+.learning-content ul,
+.learning-content ol {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+.learning-content li {
+    margin-bottom: 0.5rem;
+}
+
+.learning-content code {
+    background: var(--bg-code, #f3f4f6);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-family: var(--font-mono, 'Courier New', monospace);
+    font-size: 0.875rem;
+}
+
+.learning-content pre {
+    background: var(--bg-code, #1f2937);
+    color: var(--text-code, #f9fafb);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+}
+
+.learning-content blockquote {
+    border-left: 4px solid var(--primary-color, #6366f1);
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: var(--text-secondary, #6b7280);
+}
+
+/* ========== Embedded Quiz Styles ========== */
+.embedded-quiz {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: var(--bg-secondary, #f3f4f6);
+    border-radius: 0.75rem;
+    border-left: 4px solid var(--primary-color, #6366f1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.embedded-quiz .quiz-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+
+.embedded-quiz .quiz-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary, #111827);
+}
+
+.embedded-quiz .quiz-icon {
+    font-size: 1.5rem;
+}
+
+.embedded-quiz .quiz-description {
+    color: var(--text-secondary, #6b7280);
+    margin-bottom: 1.5rem;
+}
+
+/* ========== Task Page Styles ========== */
+.task-page {
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
+}
+
+.task-page .task-header {
+    background: linear-gradient(135deg, var(--primary-color, #6366f1), var(--primary-light, #818cf8));
+    color: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.task-page .task-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.task-page .task-description {
+    font-size: 1.125rem;
+    opacity: 0.9;
+}
+
+.task-page .task-content {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* ========== Enhanced Task Page Styles ========== */
+.task-page .task-step {
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-radius: 1.5rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.task-page .task-step:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Nebula-themed step headers */
+.task-page .task-step .bg-blue-50 {
+    background: linear-gradient(135deg, #e6fffa 0%, #faf5ff 50%, #e6fffa 100%) !important;
+}
+
+.task-page .task-step .from-blue-500 {
+    background-color: #4A9B8E !important;
+}
+
+.task-page .task-step .to-indigo-500 {
+    background-color: #6B4C93 !important;
+}
+
+.task-page .task-step .text-blue-500 {
+    color: #4A9B8E !important;
+}
+
+.task-page .task-step .text-indigo-500 {
+    color: #6B4C93 !important;
+}
+
+/* Enhanced instruction and code icons */
+.task-page .task-step .fa-list-ol {
+    color: #4A9B8E !important;
+}
+
+.task-page .task-step .fa-code {
+    color: #6B4C93 !important;
+}
+
+/* Improved button styles */
+.task-page .task-step button {
+    transition: all 0.3s ease;
+}
+
+.task-page .task-step button:hover {
+    transform: translateY(-1px);
+}
+
+/* ========== Final Quiz Page Styles ========== */
+.final-quiz-page {
+    /* max-width: 800px; <- REMOVED to allow 90% width */
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.final-quiz-page .final-quiz-header {
+    background: linear-gradient(135deg, var(--success-color, #10b981), var(--success-light, #34d399));
+    color: white;
+    padding: 3rem 2rem;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+}
+
+.final-quiz-page .final-quiz-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.final-quiz-page .final-quiz-description {
+    font-size: 1.25rem;
+    opacity: 0.9;
+}
+
+/* Enhanced Quiz Completion Styles - Modern gradient + Professional */
+.quiz-results {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    margin: 2rem 0;
+}
+
+.quiz-score-display {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 1rem 0;
+}
+
+.quiz-score-label {
+    font-size: 1.25rem;
+    color: #fff;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+}
+
+/* Confetti animation for passing scores */
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    animation: confetti-fall 3s linear forwards;
+}
+
+/* Retry button styling */
+.retry-quiz-btn {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.retry-quiz-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+/* ========== Enhanced Sidebar Styles for Pagination ========== */
+
+/* Sidebar Item States */
+
+/* Expandable Concept Sections */
+.sidebar-item.expanded .sidebar-children {
+    max-height: 2000px;
+    /* Increased from 500px to accommodate many sub-concepts */
+    opacity: 1;
+    transition: max-height 0.4s ease-out, opacity 0.3s ease;
+}
+
+.sidebar-item.collapsed .sidebar-children {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.sidebar-children {
+    padding-left: 1rem;
+    margin-top: 0.5rem;
+}
+
+.sidebar-child-item {
+    padding: 0.5rem 1rem;
+    margin: 0.25rem 0;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+}
+
+.sidebar-child-item:hover {
+    background: var(--bg-hover, #f3f4f6);
+    transform: translateX(2px);
+}
+
+.sidebar-child-item.current-page {
+    background: var(--primary-color, #6366f1);
+    color: white;
+}
+
+.sidebar-child-item.locked {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-left: 3px solid #94a3b8 !important;
+    color: #64748b !important;
+}
+
+.sidebar-child-item.completed::after {
+    content: '✓';
+    float: right;
+    color: var(--success-color, #10b981);
+    font-weight: bold;
+}
+
+/* ========== Loading and States ========== */
+
+.page-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+}
+
+.page-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--gray-200, #e5e7eb);
+    border-top: 4px solid var(--primary-color, #6366f1);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.page-error {
+    text-align: center;
+    padding: 3rem;
+    color: var(--error-color, #ef4444);
+}
+
+.page-error-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+/* ========== Responsive Design ========== */
+
+@media (max-width: 768px) {
+    #pagination-controls {
+        padding: 0.75rem 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .pagination-button {
+        min-width: 100px;
+        padding: 0.625rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .page-progress-container {
+        width: 150px;
+    }
+
+    #current-page-content {
+        padding: 1rem;
+    }
+
+    .concept-page .concept-title {
+        font-size: 1.5rem;
+    }
+
+    .concept-page .sub-concept-title {
+        font-size: 1.25rem;
+    }
+
+    .embedded-quiz {
+        margin-top: 2rem;
+        padding: 1.5rem;
+    }
+
+    .task-page .task-header {
+        padding: 1.5rem;
+    }
+
+    .task-page .task-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-progress-container {
+        width: 120px;
+    }
+
+    .page-counter {
+        font-size: 0.75rem;
+    }
+
+    .pagination-button {
+        min-width: 80px;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    #current-page-content {
+        padding: 0.75rem;
+    }
+
+    .embedded-quiz {
+        padding: 1rem;
+    }
+}
+
+/* ========== Page Navigation Styles ========== */
+.page-navigation {
+    border-top: 1px solid var(--border-color, #e5e7eb);
+    margin-top: 3rem;
+    padding-top: 2rem;
+    background: linear-gradient(to bottom, transparent, rgba(249, 250, 251, 0.5));
+}
+
+.page-navigation .flex {
+    gap: 1rem;
+}
+
+/* Ensure buttons don't wrap on smaller screens */
+@media (max-width: 640px) {
+    .page-navigation .flex {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch !important;
+    }
+
+    .page-navigation button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .page-navigation .flex>div:first-child:empty,
+    .page-navigation .flex>div:last-child:empty {
+        display: none;
+    }
+}
+
+/* ========== Sidebar Visual Distinction Styles ========== */
+
+/* Base sidebar item styles */
+.sidebar-item {
+    position: relative;
+    margin-bottom: 0.25rem;
+    border-radius: 0.5rem;
+    border: 1px solid transparent;
+}
+
+/* Apply transitions only to specific properties for hover effects */
+.sidebar-item.introduction,
+.sidebar-item.concept,
+.sidebar-item.task,
+.sidebar-item.final-quiz,
+.sidebar-item.sub-concept {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Introduction Items - Modern elegant theme */
+.sidebar-item.introduction {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+    border: 1px solid #e2e8f0 !important;
+    border-left: 4px solid #64748b !important;
+    font-weight: 700 !important;
+    box-shadow: 0 2px 8px rgba(100, 116, 139, 0.1) !important;
+    margin-bottom: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+}
+
+.sidebar-item.introduction:hover {
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%) !important;
+    transform: translateX(2px);
+    box-shadow: 0 4px 12px rgba(100, 116, 139, 0.2) !important;
+}
+
+/* Concept Items - Secondary teal theme */
+.sidebar-item.concept {
+    background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%) !important;
+    border: 1px solid #5eead4 !important;
+    border-left: 4px solid #14b8a6 !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 8px rgba(20, 184, 166, 0.15) !important;
+    margin-bottom: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+}
+
+.sidebar-item.concept:hover {
+    background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%) !important;
+    transform: translateX(2px);
+    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.25) !important;
+}
+
+.sidebar-item.concept.expanded {
+    background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+    border-color: #a78bfa;
+}
+
+/* Task Items - Modern Teal theme */
+.sidebar-item.task {
+    background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%) !important;
+    border: 1px solid #7dd3fc !important;
+    border-left: 4px solid #0891b2 !important;
+    font-weight: 500 !important;
+    box-shadow: 0 2px 8px rgba(8, 145, 178, 0.15) !important;
+    margin-bottom: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+}
+
+.sidebar-item.task:hover {
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%) !important;
+    transform: translateX(2px);
+    box-shadow: 0 4px 12px rgba(8, 145, 178, 0.25) !important;
+}
+
+
+/* Final Assessment Items - Dark green theme */
+.sidebar-item.final-quiz {
+    background: linear-gradient(135deg, #064e3b 0%, #065f46 100%) !important;
+    border: 1px solid #047857 !important;
+    border-left: 4px solid #065f46 !important;
+    font-weight: 700 !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(6, 95, 70, 0.3) !important;
+    margin-bottom: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+}
+
+.sidebar-item.final-quiz:hover {
+    background: linear-gradient(135deg, #047857 0%, #059669 100%) !important;
+    transform: translateX(2px);
+    box-shadow: 0 4px 12px rgba(6, 95, 70, 0.4) !important;
+}
+
+/* Sub-concept Items */
+.sidebar-item.sub-concept {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    border-left: 3px solid #9ca3af !important;
+    font-weight: 500 !important;
+    margin-left: 1.5rem !important;
+    margin-bottom: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.9rem !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 0.5rem !important;
+    min-height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+    color: #374151 !important;
+}
+
+.sidebar-item.sub-concept:hover {
+    background: #f9fafb !important;
+    border-color: #d1d5db !important;
+    border-left-color: #6b7280 !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+    transform: translateX(2px);
+}
+
+
+/* Locked Items - Themed Colors */
+.sidebar-item.locked {
+    opacity: 0.8;
+    position: relative;
+    cursor: not-allowed;
+}
+
+/* Introduction Locked - Muted Teal */
+.sidebar-item.introduction.locked {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%) !important;
+    border: 1px solid #bbf7d0 !important;
+    border-left: 4px solid #86efac !important;
+    color: #64748b !important;
+}
+
+/* Concept Locked - Muted Teal */
+.sidebar-item.concept.locked {
+    background: linear-gradient(135deg, #f7fefc 0%, #f0fdfa 100%) !important;
+    border: 1px solid #a7f3d0 !important;
+    border-left: 4px solid #5eead4 !important;
+    color: #64748b !important;
+}
+
+/* Task Locked - Muted Blue */
+.sidebar-item.task.locked {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+    border: 1px solid #e2e8f0 !important;
+    border-left: 4px solid #94a3b8 !important;
+    color: #64748b !important;
+}
+
+/* Final Quiz Locked - Muted Green with visible text */
+.sidebar-item.final-quiz.locked {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%) !important;
+    border: 1px solid #bbf7d0 !important;
+    border-left: 4px solid #86efac !important;
+    color: #64748b !important;
+}
+
+/* Fix locked final-quiz title text visibility */
+.sidebar-item.final-quiz.locked .sidebar-item-title {
+    color: #64748b !important;
+}
+
+.sidebar-item.final-quiz.locked .status-icon {
+    color: #94a3b8 !important;
+}
+
+/* Disable hover effects for locked items */
+.sidebar-item.locked:hover {
+    transform: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+.sidebar-item.locked:active {
+    transform: none !important;
+}
+
+/* Enhanced Item Title Typography */
+.sidebar-item.introduction .sidebar-item-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #334155;
+}
+
+.sidebar-item.concept .sidebar-item-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #6b21a8;
+}
+
+.sidebar-item.task .sidebar-item-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #065f46;
+}
+
+.sidebar-item.final-quiz .sidebar-item-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: white !important;
+}
+
+.sidebar-item.sub-concept .sidebar-item-title {
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+    line-height: 1.4 !important;
+}
+
+/* Enhanced Concept Header Styles - Consolidated Click Area */
+.sidebar-item-header {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 0.375rem;
+}
+
+.sidebar-item-header:hover {
+    background-color: rgba(74, 155, 142, 0.1);
+    transform: translateX(2px);
+}
+
+.sidebar-item-header:focus {
+    outline: 2px solid #4A9B8E;
+    outline-offset: 2px;
+}
+
+.sidebar-item-header:active {
+    transform: translateX(1px);
+}
+
+/* Chevron Icon Styles */
+.chevron-icon {
+    transition: transform 0.2s ease;
+    opacity: 0.7;
+}
+
+.sidebar-item-header:hover .chevron-icon {
+    opacity: 1;
+}
+
+/* Ensure concept headers have proper pointer cursor */
+.sidebar-item.concept .sidebar-item-header {
+    cursor: pointer;
+}
+
+/* Enhanced Expandable Chevron Styles */
+.sidebar-item.concept .chevron {
+    transition: transform 0.2s ease;
+    color: #14b8a6;
+    width: 16px;
+    height: 16px;
+}
+
+.sidebar-item.concept .chevron-icon {
+    transition: transform 0.2s ease;
+}
+
+/* Current Page Highlighting - Consolidated and Enhanced */
+.sidebar-item.current-page {
+    background: linear-gradient(135deg, #4A9B8E 0%, #059669 100%) !important;
+    border: 1px solid #059669 !important;
+    border-left: 4px solid #065f46 !important;
+    color: white !important;
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(74, 155, 142, 0.4) !important;
+}
+
+.sidebar-item.current-page .sidebar-item-title {
+    color: white !important;
+    font-weight: 700 !important;
+}
+
+.sidebar-item.current-page .nav-content {
+    color: white !important;
+}
+
+.sidebar-item.current-page .chevron,
+.sidebar-item.current-page .status-icon,
+.sidebar-item.current-page .concept-title-area {
+    color: white !important;
+}
+
+/* Specific current page styling for different item types */
+.sidebar-item.introduction.current-page {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    border-color: #047857 !important;
+}
+
+.sidebar-item.concept.current-page {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important;
+    border-color: #6d28d9 !important;
+}
+
+.sidebar-item.task.current-page {
+    background: linear-gradient(135deg, #0e7490 0%, #155e75 100%) !important;
+    border-color: #0c4a6e !important;
+}
+
+.sidebar-item.final-quiz.current-page {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    border-color: #991b1b !important;
+}
+
+.sidebar-item.sub-concept.current-page {
+    background: linear-gradient(135deg, #4A9B8E 0%, #059669 100%) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    border-color: #059669 !important;
+}
+
+/* Status Icons Enhanced */
+.sidebar-item.completed .status-icon {
+    color: #10b981;
+}
+
+/* Themed Locked Status Icons */
+.sidebar-item.locked .status-icon {
+    color: #64748b;
+}
+
+/* Introduction Locked Icon */
+.sidebar-item.introduction.locked .status-icon {
+    color: #86efac;
+}
+
+/* Concept Locked Icon */
+.sidebar-item.concept.locked .status-icon {
+    color: #5eead4;
+}
+
+/* Task Locked Icon */
+.sidebar-item.task.locked .status-icon {
+    color: #94a3b8;
+}
+
+/* Final Quiz Locked Icon */
+.sidebar-item.final-quiz.locked .status-icon {
+    color: #86efac;
+}
+
+/* Sub-concept Locked Icon */
+.sidebar-item.sub-concept.locked .status-icon {
+    color: #94a3b8;
+}
+
+.sidebar-item.current-page .status-icon {
+    color: white;
+}
+
+/* ========== Locked Item Tooltip Styles ========== */
+.lock-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1f2937;
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0;
+    animation: fadeIn 0.2s ease-in forwards;
+    pointer-events: none;
+    max-width: 200px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.lock-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: #1f2937;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.lock-tooltip.hiding {
+    animation: fadeOut 0.15s ease-out forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(-50%) translateY(4px);
+    }
+}
+
+/* ========== Print Styles ========== */
+@media print {
+    .page-navigation {
+        display: none !important;
+    }
+
+    .page-content {
+        animation: none;
+    }
+
+    .sidebar-navigation {
+        display: none !important;
+    }
+}
+
+/* ========== High Contrast and Accessibility ========== */
+@media (prefers-contrast: high) {
+    #pagination-controls {
+        border-top: 2px solid #000000;
+    }
+
+    .pagination-button {
+        border-width: 3px;
+    }
+
+    .page-progress-container {
+        border: 2px solid #000000;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .page-content {
+        animation: none;
+    }
+
+    .page-transitioning {
+        transition: none;
+    }
+
+    .page-progress {
+        transition: none;
+    }
+
+    .pagination-button {
+        transition: none;
+    }
+
+    .sidebar-item.expanded .sidebar-children,
+    .sidebar-item.collapsed .sidebar-children {
+        transition: none;
+    }
+}
+
+/* Voice Widget Container Styles - Old version removed (replaced by toggle system) */
+
+/* Dark Mode Support for Old Voice Widget - Removed (replaced by toggle system) */
+
+/* Mobile Responsive Styles for Old Voice Widget - Removed (desktop only) */
+
+/* Voice Widget Animation States - Old version removed (replaced by toggle system) */
+
+/* Voice Widget Accessible Styles - Old version removed (replaced by toggle system) */
+
+/* Learning Mode Toggle Styles */
+.learning-mode-toggle {
+    margin: 0 0;
+}
+
+.learning-mode-toggle .mode-btn {
+    position: relative;
+    z-index: 10;
+    transition: all 0.2s ease;
+}
+
+.learning-mode-toggle .mode-btn:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.learning-mode-toggle .mode-btn:hover {
+    z-index: 20;
+}
+
+/* Full Width Voice Widget Container - This is OUR wrapper */
+.voice-widget-container-full {
+    margin: 0 auto;
+    max-width: 100%;
+    padding: 0;
+    /* Remove extra padding to match audio player */
+}
+
+.voice-widget-header-full {
+    margin-bottom: 0;
+    /* Removed 2rem margin to match audio player spacing */
+}
+
+.voice-widget-header-full h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.voice-widget-header-full p {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+/* VoiceBot Container Wrapper - This is our container that holds the VoiceBot */
+.voice-bot-container-full {
+    width: 100%;
+    height: 200px;
+    /* Fixed height required for voice widget canvas to render properly */
+    border-radius: 0.75rem;
+    overflow: visible;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background: white;
+}
+
+/* When showing the activation screen (before voice widget loads), allow full content display */
+.voice-bot-container-full:has(.voice-activation-screen),
+.voice-bot-container-full:has(.voice-activation-screen-video),
+.voice-bot-container-full:has(.voice-waiting-screen) {
+    height: auto;
+    min-height: 200px;
+}
+
+/* IMPORTANT: Don't interfere with VoiceBot's internal .voice-bot-container class */
+/* Let VoiceBot's own CSS handle its internal styling */
+.voice-bot-container-full .voice-bot-container {
+    /* Allow VoiceBot to control its own dimensions */
+    width: 100% !important;
+    height: 200px !important;
+    min-height: 200px !important;
+    /* Don't override other styling - let VoiceBot handle it */
+}
+
+/* Voice Widget Loading State for Full Width */
+.voice-widget-loading-full {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    /* Reduced from 400px to 200px to match audio player */
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.voice-widget-loading-full .animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Voice Widget Error States for Full Width */
+.voice-widget-error-full {
+    padding: 1rem;
+    text-align: center;
+    background: white;
+    border-radius: 0.75rem;
+    border: 1px solid #bfdbfe;
+    height: 200px;
+    /* Reduced from 400px to 200px to match audio player */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.voice-widget-error-full h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e40af;
+    margin-bottom: 1rem;
+}
+
+.voice-widget-error-full p {
+    font-size: 1rem;
+    color: #3730a3;
+    margin-bottom: 0;
+}
+
+/* Voice Activation and Waiting Screens */
+.voice-activation-screen {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.voice-waiting-screen {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode Support for Learning Mode Toggle */
+@media (prefers-color-scheme: dark) {
+    .learning-mode-toggle .mode-btn {
+        color: var(--text-secondary);
+    }
+
+    .learning-mode-toggle .mode-btn:hover {
+        color: var(--text-primary);
+    }
+
+    .voice-widget-container-full {
+        background: var(--gray-800);
+    }
+
+    .voice-widget-header-full h3 {
+        color: var(--text-primary);
+    }
+
+    .voice-widget-header-full p {
+        color: var(--text-secondary);
+    }
+
+    /* Voice Bot Container - Dark theme elevation */
+    .voice-bot-container-full {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        background: var(--gray-900);
+    }
+
+    /* Don't interfere with VoiceBot's internal theming - let it handle dark mode itself */
+
+    .voice-widget-loading-full {
+        background: var(--gray-900);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .voice-widget-loading-full .text-gray-600 {
+        color: var(--text-secondary);
+    }
+
+    .voice-widget-error-full {
+        background: var(--gray-900);
+        border-color: #1e3a8a;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .voice-widget-error-full h4 {
+        color: #3b82f6;
+    }
+
+    .voice-widget-error-full p {
+        color: #60a5fa;
+    }
+
+    /* Voice Activation and Waiting Screens - Dark theme */
+    .voice-activation-screen {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .voice-waiting-screen {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Mobile Responsive Styles for Learning Mode Toggle - Removed (desktop only) */
+
+/* Lesson Content Transition Animations */
+.lesson-content {
+    transition: all 0.3s ease-in-out;
+}
+
+.lesson-content.hidden {
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+}
+
+.lesson-content:not(.hidden) {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Read Mode Learning Content Pagination */
+.learning-content-pagination {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.learning-content-frame {
+    --learning-content-slide-height: 860px;
+    position: relative;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+    overflow-anchor: none;
+}
+
+.learning-content-frame.is-paginated {
+    min-height: var(--learning-content-slide-height);
+}
+
+.learning-content-frame.is-paginated.is-compact-slide {
+    min-height: 0;
+}
+
+.learning-content-frame.is-single-slide {
+    height: auto;
+}
+
+.learning-content-stage,
+.learning-content-slide {
+    padding: 0;
+}
+
+.learning-content-frame.is-paginated .learning-content-stage,
+.learning-content-frame.is-paginated .learning-content-slide {
+    min-height: var(--learning-content-slide-height);
+    height: auto;
+}
+
+.learning-content-frame.is-paginated.is-compact-slide .learning-content-stage,
+.learning-content-frame.is-paginated.is-compact-slide .learning-content-slide {
+    min-height: 0;
+}
+
+.learning-content-slide {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.learning-content-slide.is-transitioning {
+    opacity: 0;
+    transform: translateY(4px);
+}
+
+.learning-content-slide.is-overflowing {
+    height: auto;
+}
+
+.learning-content-frame .learning-content-slide > :first-child {
+    margin-top: 0;
+}
+
+.learning-content-frame .learning-content-slide > :last-child {
+    margin-bottom: 0;
+}
+
+.learning-content-frame .learning-content-slide h1,
+.learning-content-frame .learning-content-slide h2,
+.learning-content-frame .learning-content-slide h3,
+.learning-content-frame .learning-content-slide h4 {
+    margin-top: 0.9rem;
+    margin-bottom: 0.45rem;
+    line-height: 1.2;
+}
+
+.learning-content-frame .learning-content-slide p,
+.learning-content-frame .learning-content-slide ul,
+.learning-content-frame .learning-content-slide ol,
+.learning-content-frame .learning-content-slide blockquote,
+.learning-content-frame .learning-content-slide pre,
+.learning-content-frame .learning-content-slide table {
+    margin-top: 0.35rem;
+    margin-bottom: 0.55rem;
+}
+
+.learning-content-frame .learning-content-slide li {
+    margin-top: 0.15rem;
+    margin-bottom: 0.15rem;
+}
+
+.learning-content-frame .learning-content-slide ul,
+.learning-content-frame .learning-content-slide ol {
+    padding-left: 1.2rem;
+}
+
+.learning-content-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    padding-top: 0.15rem;
+}
+
+.learning-content-controls.hidden {
+    display: none;
+}
+
+.learning-content-control-btn {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(255, 255, 255, 0.8);
+    color: #475569;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: none;
+    font-size: 0.78rem;
+}
+
+.learning-content-control-btn:hover:not(:disabled) {
+    border-color: rgba(20, 184, 166, 0.28);
+    color: #0f766e;
+    background: rgba(240, 253, 250, 0.95);
+}
+
+.learning-content-control-btn:disabled {
+    opacity: 0.32;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.learning-content-progress {
+    min-width: 5.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.28rem;
+}
+
+.learning-content-counter {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #475569;
+    letter-spacing: 0.02em;
+}
+
+.learning-content-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.38rem;
+    min-height: 0.5rem;
+}
+
+.learning-content-dot {
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 9999px;
+    background: rgba(148, 163, 184, 0.42);
+    transition: all 0.2s ease;
+}
+
+.learning-content-dot.is-active {
+    width: 0.95rem;
+    background: linear-gradient(90deg, #14b8a6 0%, #0f766e 100%);
+}
+
+.learning-content-dot-gap {
+    width: 0.75rem;
+    height: 0.12rem;
+    border-radius: 9999px;
+    background: rgba(148, 163, 184, 0.45);
+}
+
+.learning-content-measurement-sandbox {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@media (max-width: 767px) {
+    .learning-content-stage,
+    .learning-content-slide {
+        padding: 0;
+    }
+
+    .learning-content-controls {
+        gap: 0.55rem;
+    }
+
+    .learning-content-progress {
+        min-width: 5rem;
+    }
+}
+
+/* VoiceBot Widget Integration for Full Width */
+/* Let VoiceBot handle its internal structure completely */
+
+/* Focus Management for Learning Mode Toggle */
+.learning-mode-toggle .mode-btn.bg-white:focus-within {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+    border-radius: 0.5rem;
+}
+
+/* Screen Reader Only Class */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ========== Sub-Concept Page Layout Optimization ========== */
+/* Ensures image + audio player fit in single viewport without scrolling */
+
+/* Compact Breadcrumb Header - Positioned at top-left edge */
+.sub-concept-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    margin: 0 0 0.5rem 0;
+    /* Break out of parent padding/width constraints to reach left edge */
+    margin-left: calc(-5% - 2rem);
+    /* -5% (half of 10% unused width) - 2rem (parent padding) */
+    margin-right: calc(-5% - 2rem);
+    margin-top: -2rem;
+    /* Negate parent padding-top */
+    padding-left: calc(5% + 2rem);
+    /* Restore visual alignment for text */
+    color: #374151;
+    font-size: 0.875rem;
+    background: linear-gradient(to right, rgba(249, 250, 251, 0.95), transparent);
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.breadcrumb-concept {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.breadcrumb-separator {
+    font-size: 0.65rem;
+    color: #9ca3af;
+}
+
+.breadcrumb-subconcept {
+    font-weight: 500;
+    color: #6b7280;
+}
+
+/* Sub-concept Image - Styled like hero image */
+.sub-concept-content .concept-image {
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+/* Sub-concept image styling - increased height due to compact breadcrumb */
+.sub-concept-image {
+    max-height: calc(100vh - 310px);
+    max-width: 100%;
+    width: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 1.5rem;
+    object-fit: contain;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Compact mode toggle spacing */
+.sub-concept-content .learning-mode-toggle {
+    margin-bottom: 0;
+}
+
+/* Voice widget container compact spacing */
+.sub-concept-content .voice-widget-container-full {
+    margin-top: 0.5rem !important;
+}
+
+/* Prerecorded audio section compact spacing */
+.sub-concept-content .prerecorded-audio-section {
+    margin-top: 0;
+}
+
+/* Listen mode - non-scrollable static layout */
+.sub-concept-content .lesson-content:not(.hidden) .voice-widget-container-full {
+    position: relative;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-height: 700px) {
+    .sub-concept-image {
+        max-height: calc(100vh - 290px);
+    }
+}
+
+@media (max-height: 600px) {
+    .sub-concept-image {
+        max-height: calc(100vh - 260px);
+    }
+}
+
+/* ========== Sub-Concept Video Player Styles ========== */
+/* Video player styling - matches image styling */
+.sub-concept-content .concept-video {
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.sub-concept-content .concept-video video {
+    max-height: 80vh;
+    max-width: 100%;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    border-radius: 1.5rem;
+    object-fit: contain;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    background: #000;
+}
+
+/* Video embed container styling */
+.sub-concept-content .video-embed-container {
+    max-height: 80vh;
+    margin: 0 auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Video caption styling */
+.sub-concept-content .concept-video p {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-top: 0.75rem;
+    font-style: italic;
+}
+
+/* Responsive video adjustments */
+@media (max-height: 700px) {
+
+    .sub-concept-content .concept-video video,
+    .sub-concept-content .video-embed-container {
+        max-height: 65vh;
+    }
+}
+
+@media (max-height: 600px) {
+
+    .sub-concept-content .concept-video video,
+    .sub-concept-content .video-embed-container {
+        max-height: 60vh;
+    }
+}

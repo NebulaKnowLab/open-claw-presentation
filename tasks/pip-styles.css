@@ -1,0 +1,499 @@
+/**
+ * Picture-in-Picture Styles
+ * 
+ * Styles for PiP-related UI elements in the main page:
+ * - Floating PiP trigger button
+ * - Auto-prompt (shown on tab blur)
+ * - Unsupported browser modal
+ * - Error toasts
+ */
+
+/* ============================================
+   Floating PiP Launcher (Task Pages)
+   ============================================ */
+
+#pip-floating-trigger {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 9997;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    transition: right 0.3s ease, opacity 0.2s ease;
+}
+
+#pip-floating-trigger.hidden {
+    display: none;
+}
+
+#pip-floating-trigger .pip-floating-main {
+    border: none;
+    border-radius: 999px;
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(135deg, #0ea5a2 0%, #4f46e5 100%);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.22), 0 3px 10px rgba(14, 165, 162, 0.25);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+#pip-floating-trigger .pip-floating-main:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.26), 0 4px 14px rgba(14, 165, 162, 0.28);
+}
+
+#pip-floating-trigger .pip-floating-main:active {
+    transform: translateY(0);
+}
+
+#pip-floating-trigger .pip-floating-main i {
+    font-size: 18px;
+}
+
+#pip-floating-trigger .pip-floating-actions {
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+#pip-floating-trigger.active .pip-floating-actions {
+    display: flex;
+}
+
+#pip-floating-trigger .pip-floating-action {
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    background: rgba(255, 255, 255, 0.96);
+    color: #334155;
+    border-radius: 999px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.14);
+    backdrop-filter: blur(8px);
+}
+
+#pip-floating-trigger .pip-floating-action:hover {
+    background: #ffffff;
+    border-color: rgba(14, 165, 162, 0.45);
+    color: #0f766e;
+}
+
+#pip-floating-trigger .pip-floating-action.danger:hover {
+    border-color: rgba(239, 68, 68, 0.35);
+    color: #b91c1c;
+}
+
+#pip-floating-trigger.active .pip-floating-main {
+    background: linear-gradient(135deg, #059669 0%, #0f766e 100%);
+    box-shadow: 0 12px 28px rgba(6, 95, 70, 0.26), 0 3px 10px rgba(5, 150, 105, 0.24);
+}
+
+body.chat-open #pip-floating-trigger {
+    right: calc(40vw + 20px);
+}
+
+/* ============================================
+   Auto-Prompt (Tab Blur Notification)
+   ============================================ */
+
+#pip-auto-prompt {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+#pip-auto-prompt.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.pip-prompt-content {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.pip-prompt-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #14b8a6 0%, #8b5cf6 100%);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+}
+
+.pip-prompt-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.pip-prompt-text strong {
+    font-size: 15px;
+    color: #0f172a;
+    font-weight: 600;
+}
+
+.pip-prompt-text span {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.pip-prompt-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.pip-prompt-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: none;
+}
+
+.pip-prompt-btn.pip-prompt-open {
+    background: linear-gradient(135deg, #14b8a6 0%, #8b5cf6 100%);
+    color: white;
+}
+
+.pip-prompt-btn.pip-prompt-open:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+}
+
+.pip-prompt-btn.pip-prompt-dismiss {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.pip-prompt-btn.pip-prompt-dismiss:hover {
+    background: #e2e8f0;
+}
+
+/* ============================================
+   Unsupported Browser Modal
+   ============================================ */
+
+#pip-unsupported-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+#pip-unsupported-modal.closing {
+    opacity: 0;
+}
+
+.pip-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+}
+
+.pip-modal-content {
+    position: relative;
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    animation: pipModalSlideIn 0.3s ease;
+}
+
+@keyframes pipModalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.pip-modal-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: white;
+    font-size: 28px;
+}
+
+.pip-modal-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+.pip-modal-text {
+    font-size: 14px;
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.pip-modal-text strong {
+    color: #0f172a;
+}
+
+.pip-modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pip-modal-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    border: none;
+}
+
+.pip-modal-btn.primary {
+    background: linear-gradient(135deg, #14b8a6 0%, #8b5cf6 100%);
+    color: white;
+}
+
+.pip-modal-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(20, 184, 166, 0.35);
+}
+
+.pip-modal-btn.secondary {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.pip-modal-btn.secondary:hover {
+    background: #e2e8f0;
+}
+
+/* ============================================
+   Error Toast
+   ============================================ */
+
+.pip-error-toast {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 99999;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 14px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 10px 40px rgba(220, 38, 38, 0.15);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.pip-error-toast.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.pip-error-toast i {
+    font-size: 18px;
+}
+
+/* ============================================
+   PiP Active State Indicator
+   ============================================ */
+
+.pip-active-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    color: white;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    animation: pipPulse 2s infinite;
+}
+
+@keyframes pipPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+    }
+}
+
+.pip-active-indicator i {
+    font-size: 10px;
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================ */
+
+@media (max-width: 640px) {
+    #pip-floating-trigger {
+        right: 14px;
+        bottom: 14px;
+    }
+
+    #pip-floating-trigger .pip-floating-main {
+        width: 46px;
+        height: 46px;
+    }
+
+    #pip-floating-trigger .pip-floating-main i {
+        font-size: 16px;
+    }
+
+    #pip-floating-trigger .pip-floating-action {
+        font-size: 11px;
+        padding: 7px 10px;
+    }
+
+    body.chat-open #pip-floating-trigger {
+        right: 14px;
+    }
+
+    #pip-auto-prompt {
+        bottom: 16px;
+        right: 16px;
+        left: 16px;
+    }
+    
+    .pip-prompt-content {
+        max-width: 100%;
+    }
+    
+    .pip-prompt-actions {
+        flex-direction: column;
+    }
+    
+    .pip-modal-content {
+        padding: 24px;
+        margin: 16px;
+    }
+    
+    .pip-modal-actions {
+        flex-direction: column;
+    }
+    
+    .pip-error-toast {
+        left: 16px;
+        right: 16px;
+    }
+}
+
+/* ============================================
+   Dark Mode Support (if applicable)
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+    .pip-prompt-content {
+        background: #1e293b;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+    
+    .pip-prompt-text strong {
+        color: #f1f5f9;
+    }
+    
+    .pip-prompt-text span {
+        color: #94a3b8;
+    }
+    
+    .pip-prompt-btn.pip-prompt-dismiss {
+        background: #334155;
+        color: #cbd5e1;
+    }
+    
+    .pip-prompt-btn.pip-prompt-dismiss:hover {
+        background: #475569;
+    }
+    
+    .pip-modal-content {
+        background: #1e293b;
+    }
+    
+    .pip-modal-title {
+        color: #f1f5f9;
+    }
+    
+    .pip-modal-text {
+        color: #94a3b8;
+    }
+    
+    .pip-modal-text strong {
+        color: #f1f5f9;
+    }
+    
+    .pip-modal-btn.secondary {
+        background: #334155;
+        color: #cbd5e1;
+    }
+    
+    .pip-modal-btn.secondary:hover {
+        background: #475569;
+    }
+}

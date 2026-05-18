@@ -1,0 +1,944 @@
+/* Split-Screen Layout */
+.split-screen-container {
+    position: fixed;
+    top: 65px;
+    /* Header height */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    grid-template-columns: 25% 75%;
+    /* Left panel 25%, Task workspace 75% */
+    background: white;
+    z-index: 45;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Raise header z-index above split-screen so close button is clickable */
+body.split-screen-active header {
+    z-index: 100 !important;
+    pointer-events: auto !important;
+}
+
+/* Ensure modals appear above split-screen */
+body.split-screen-active .fixed.z-50 {
+    z-index: 9999 !important;
+}
+
+/* Ensure modal close buttons are clickable in split-screen mode */
+body.split-screen-active .fixed.z-50 button {
+    position: relative;
+    z-index: 10000;
+    pointer-events: auto;
+}
+
+/* Fix image modal close button position in split-screen */
+body.split-screen-active #imageModal button[onclick*="closeImageModal"] {
+    position: absolute !important;
+    top: 0.75rem !important;
+    right: 0.75rem !important;
+    left: auto !important;
+    transform: none !important;
+}
+
+/* Ensure video controls are accessible */
+body.split-screen-active video {
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 10000;
+}
+
+body.split-screen-active .fixed.z-50 video::-webkit-media-controls-panel {
+    display: flex !important;
+}
+
+/* Ensure video modal works properly in split-screen */
+body.split-screen-active #videoModal video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+}
+
+body.split-screen-active #videoContainer {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.split-screen-container.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Sidebar toggle transformed into close button when split screen is active */
+/* New close button that replaces sidebar toggle during split screen */
+.split-screen-header-close {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    border: 2px solid #fca5a5;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 9999;
+    pointer-events: auto !important;
+}
+
+.split-screen-header-close:hover {
+    background: linear-gradient(135deg, #fecaca, #f87171);
+    border-color: #ef4444;
+    transform: translateY(-50%) scale(1.05);
+}
+
+.split-screen-header-close i {
+    color: #dc2626;
+    font-size: 1.1rem;
+    pointer-events: none;
+    /* Icon should not intercept clicks */
+}
+
+.split-screen-header-close:hover i {
+    color: #fff;
+}
+
+/* Ensure header and its children are clickable when split screen is active */
+body.split-screen-active header .relative {
+    pointer-events: auto;
+}
+
+.split-left-panel {
+    overflow-y: auto;
+    border-right: 1px solid #e5e7eb;
+    background: #f8fafc;
+}
+
+.split-right-panel {
+    position: relative;
+    background: #f9fafb;
+}
+
+/* ============================================
+   Simplified Left Panel Layout for Split Screen
+   Forces vertical stacking: asset → instructions → code
+   ============================================ */
+
+/* Override any grid/flex layouts to force vertical stacking */
+.split-left-panel .task-step-compact-layout,
+.split-left-panel .task-step-expanded-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+}
+
+/* Force grid layouts to single column */
+.split-left-panel .grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+}
+
+/* Asset containers - full width, centered */
+.split-left-panel .task-step-asset-compact,
+.split-left-panel .task-step-asset-expanded,
+.split-left-panel [class*="task-step-asset"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+}
+
+/* Smaller images for narrow panel */
+.split-left-panel .task-step img {
+    max-height: 180px !important;
+    width: 100% !important;
+    object-fit: contain !important;
+}
+
+/* Compact instructions text */
+.split-left-panel .prose {
+    font-size: 0.85rem !important;
+    line-height: 1.5 !important;
+}
+
+.split-left-panel .prose p {
+    margin-bottom: 0.5rem !important;
+}
+
+.split-left-panel .prose h1,
+.split-left-panel .prose h2,
+.split-left-panel .prose h3,
+.split-left-panel .prose h4 {
+    font-size: 1rem !important;
+    margin-top: 0.75rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.split-left-panel .prose ul,
+.split-left-panel .prose ol {
+    margin: 0.5rem 0 !important;
+    padding-left: 1.25rem !important;
+}
+
+.split-left-panel .prose li {
+    margin-bottom: 0.25rem !important;
+}
+
+/* Compact code blocks */
+.split-left-panel .code-block-container pre {
+    max-height: 150px !important;
+    font-size: 0.75rem !important;
+    padding: 0.75rem !important;
+}
+
+/* Smaller step headers */
+.split-left-panel .task-step>div:first-child {
+    padding: 0.75rem 1rem !important;
+}
+
+.split-left-panel .task-step h4 {
+    font-size: 0.95rem !important;
+}
+
+/* Step number badge - smaller */
+.split-left-panel .task-step .w-12.h-12 {
+    width: 2rem !important;
+    height: 2rem !important;
+    font-size: 0.875rem !important;
+}
+
+/* Compact step content padding */
+.split-left-panel .task-step .p-8 {
+    padding: 0.75rem !important;
+}
+
+/* Remove side margins/padding to maximize width */
+.split-left-panel .task-steps-wrapper {
+    padding: 0.5rem 0 !important;
+}
+
+.split-left-panel .p-6 {
+    padding: 0.5rem 0 !important;
+}
+
+/* Task step cards - full width, no horizontal margins */
+.split-left-panel .task-step {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+/* Remove spacing between steps */
+.split-left-panel .space-y-6>*+* {
+    margin-top: 0.5rem !important;
+}
+
+/* Remove border highlight from current step */
+.split-left-panel .task-step.border-teal-500,
+.split-left-panel .task-step.border-2 {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Hide step description in header to save space */
+.split-left-panel .task-step .flex-1 p {
+    display: none !important;
+}
+
+/* Scrollbar styling for left panel */
+.split-left-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.split-left-panel::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+.split-left-panel::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.split-left-panel::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+
+
+.task-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: white;
+}
+
+.split-controls {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 15;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Main floating control button */
+.split-control-toggle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #374151, #1f2937);
+    border: 2px solid white;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 2;
+}
+
+.split-control-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    background: linear-gradient(135deg, #4b5563, #374151);
+}
+
+.split-control-toggle.active {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+/* Expanded control panel */
+.split-control-panel {
+    position: absolute;
+    top: 0;
+    right: 88px;
+    /* Adjusted to account for close button */
+    display: flex;
+    gap: 6px;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 6px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.split-control-panel.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+}
+
+.split-control-btn {
+    padding: 8px 12px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #374151;
+    white-space: nowrap;
+}
+
+.split-control-btn:hover {
+    background: #f8fafc;
+    border-color: #22c55e;
+    color: #16a34a;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15);
+    transform: translateY(-1px);
+}
+
+.split-control-btn:active {
+    transform: translateY(0);
+}
+
+.split-control-btn.close-btn {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    border: 2px solid white;
+    color: white;
+    padding: 8px 10px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.split-control-btn.close-btn:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    border-color: #b91c1c;
+    color: white;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.split-control-btn.new-tab-btn {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border-color: #2563eb;
+    color: white;
+}
+
+.split-control-btn.new-tab-btn:hover {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    border-color: #1d4ed8;
+    color: white;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Tooltip */
+
+
+.split-control-btn.close-btn:hover .split-control-tooltip {
+    opacity: 1;
+}
+
+.task-workspace-btn {
+    background: linear-gradient(to right, #2dd4bf, #0891b2);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.task-workspace-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.task-workspace-btn.active {
+    background: linear-gradient(to right, #dc2626, #b91c1c);
+}
+
+.iframe-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #6b7280;
+}
+
+.iframe-loading .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #e5e7eb;
+    border-top: 3px solid #2dd4bf;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 12px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* Hide main page content when split screen is active */
+.split-screen-active #pageWrapper>*:not(.split-screen-container) {
+    pointer-events: none;
+}
+
+/* ============================================
+   Task Step Adaptive Layout System
+   - Compact: Two-column layout for short content (uses Tailwind grid)
+   - Expanded: Vertical stacked layout for long content
+   ============================================ */
+
+/* Expanded asset - centered and larger */
+.task-step-asset-expanded {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* For images in expanded layout - allow larger display */
+.task-step-asset-expanded img {
+    max-height: 500px;
+    object-fit: contain;
+}
+
+/* Carousel container for multiple images */
+.task-step-carousel-container {
+    min-height: 200px;
+}
+
+/* Responsive adjustments for compact layout */
+@media (max-width: 768px) {
+    /* Compact layout becomes stacked on mobile (handled by Tailwind grid-cols-1) */
+
+    .task-step-asset-expanded {
+        max-width: 100%;
+    }
+
+    .task-step-asset-expanded img {
+        max-height: 350px;
+    }
+}
+
+/* ============================================
+   Task Step Compact Prose Styling
+   Reduces spacing for more efficient content display
+   ============================================ */
+
+/* Reduce spacing in task step prose content */
+.task-step .prose {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Reduce heading margins */
+.task-step .prose h1,
+.task-step .prose h2,
+.task-step .prose h3,
+.task-step .prose h4,
+.task-step .prose h5,
+.task-step .prose h6 {
+    margin-top: 0.75em;
+    margin-bottom: 0.5em;
+}
+
+/* Task step h1 should be smaller and without the prominent border */
+.task-step .prose h1,
+.task-step .learning-content h1 {
+    font-size: 1.25rem;
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+/* First heading shouldn't have top margin */
+.task-step .prose>h1:first-child,
+.task-step .prose>h2:first-child,
+.task-step .prose>h3:first-child,
+.task-step .prose>h4:first-child,
+.task-step .prose>h5:first-child,
+.task-step .prose>h6:first-child {
+    margin-top: 0;
+}
+
+/* Reduce paragraph margins */
+.task-step .prose p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+/* Reduce list margins and spacing */
+.task-step .prose ul,
+.task-step .prose ol {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    padding-left: 1.5em;
+}
+
+/* Ensure ordered lists show numbers */
+.task-step .prose ol {
+    list-style-type: decimal;
+}
+
+.task-step .prose ol li {
+    list-style-type: decimal;
+}
+
+/* Ensure unordered lists show bullets */
+.task-step .prose ul {
+    list-style-type: disc;
+}
+
+.task-step .prose ul li {
+    list-style-type: disc;
+}
+
+.task-step .prose li {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+}
+
+/* Reduce nested list spacing */
+.task-step .prose li>ul,
+.task-step .prose li>ol {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+}
+
+/* Reduce blockquote spacing */
+.task-step .prose blockquote {
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+    padding-left: 1em;
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+}
+
+/* Reduce code block spacing within prose */
+.task-step .prose pre {
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+    padding: 0.75em 1em;
+}
+
+/* Inline code styling */
+.task-step .prose code:not(pre code) {
+    padding: 0.1em 0.3em;
+    font-size: 0.9em;
+}
+
+/* Ensure code block is always full width */
+.task-step .mb-6:has(> pre) {
+    width: 100%;
+}
+
+/* ============================================
+   Prism.js Code Block Styling
+   Production-grade syntax highlighting with VS Code-like appearance
+   ============================================ */
+
+/* Code block container styling */
+.code-block-container {
+    width: 100%;
+}
+
+.code-block-wrapper {
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+/* Prism pre and code base styling */
+.code-block-wrapper pre[class*="language-"],
+.task-step pre[class*="language-"] {
+    margin: 0;
+    padding: 1.25rem 1.5rem;
+    border-radius: 0.75rem;
+    background: #2d2d2d;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    tab-size: 4;
+    overflow-x: auto;
+}
+
+.code-block-wrapper code[class*="language-"],
+.task-step code[class*="language-"] {
+    font-family: 'SF Mono', 'Fira Code', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+}
+
+/* Custom scrollbar for code blocks */
+.code-block-wrapper pre::-webkit-scrollbar {
+    height: 8px;
+    background-color: #3d3d3d;
+}
+
+.code-block-wrapper pre::-webkit-scrollbar-thumb {
+    background-color: #5a5a5a;
+    border-radius: 4px;
+}
+
+.code-block-wrapper pre::-webkit-scrollbar-thumb:hover {
+    background-color: #6a6a6a;
+}
+
+/* Enhanced token colors for better readability */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: #999999;
+    font-style: italic;
+}
+
+.token.punctuation {
+    color: #cccccc;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+    color: #f08d49;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: #7ec699;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+    color: #67cdcc;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+    color: #cc99cd;
+}
+
+.token.function,
+.token.class-name {
+    color: #e5c07b;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+    color: #f8c555;
+}
+
+/* Selection styling */
+.code-block-wrapper pre ::selection,
+.code-block-wrapper code ::selection {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Code modal styling - ensure highlighting works in modal too */
+#codeModal pre[class*="language-"],
+#codeModal code[class*="language-"] {
+    font-family: 'SF Mono', 'Fira Code', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .code-block-wrapper pre[class*="language-"] {
+        padding: 1rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* ============================================
+   Video Play Button Animation
+   Smooth, elegant pulse effect for play icon
+   ============================================ */
+
+/* Custom slower pulse animation for video play button */
+.video-play-pulse {
+    animation: videoPlayPulse 3s ease-in-out infinite;
+}
+
+@keyframes videoPlayPulse {
+
+    0%,
+    100% {
+        opacity: 0.9;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+/* Video play button hover enhancement */
+.video-play-btn {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.video-play-btn:hover .video-play-pulse {
+    animation-play-state: paused;
+    transform: scale(1.15);
+}
+
+/* ============================================
+   Modal Instructions Panel - Compact Markdown
+   Optimized for narrow 20% width panel
+   ============================================ */
+
+/* Base styling for modal instructions content */
+.modal-instructions-content {
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: #374151;
+}
+
+/* Reduce all prose element spacing dramatically */
+.modal-instructions-content.prose {
+    font-size: 0.8125rem;
+}
+
+.modal-instructions-content.prose>*:first-child {
+    margin-top: 0;
+}
+
+.modal-instructions-content.prose>*:last-child {
+    margin-bottom: 0;
+}
+
+/* Headings - smaller and tighter */
+.modal-instructions-content h1,
+.modal-instructions-content h2,
+.modal-instructions-content h3,
+.modal-instructions-content h4,
+.modal-instructions-content h5,
+.modal-instructions-content h6 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-top: 0.75rem;
+    margin-bottom: 0.375rem;
+    color: #1f2937;
+    line-height: 1.35;
+}
+
+.modal-instructions-content h1 {
+    font-size: 0.95rem;
+}
+
+.modal-instructions-content h2 {
+    font-size: 0.9rem;
+}
+
+.modal-instructions-content h3,
+.modal-instructions-content h4,
+.modal-instructions-content h5,
+.modal-instructions-content h6 {
+    font-size: 0.85rem;
+}
+
+/* Paragraphs - compact */
+.modal-instructions-content p {
+    margin-top: 0.375rem;
+    margin-bottom: 0.375rem;
+    font-size: 0.8125rem;
+}
+
+/* Lists - very compact */
+.modal-instructions-content ul,
+.modal-instructions-content ol {
+    margin-top: 0.375rem;
+    margin-bottom: 0.375rem;
+    padding-left: 1.25rem;
+}
+
+.modal-instructions-content li {
+    margin-top: 0.175rem;
+    margin-bottom: 0.175rem;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+}
+
+/* Nested lists */
+.modal-instructions-content li>ul,
+.modal-instructions-content li>ol {
+    margin-top: 0.125rem;
+    margin-bottom: 0.125rem;
+}
+
+/* Ensure list markers show */
+.modal-instructions-content ul {
+    list-style-type: disc;
+}
+
+.modal-instructions-content ol {
+    list-style-type: decimal;
+}
+
+/* Code - inline */
+.modal-instructions-content code:not(pre code) {
+    font-size: 0.75rem;
+    padding: 0.1rem 0.3rem;
+    background: #f3f4f6;
+    border-radius: 0.25rem;
+    color: #dc2626;
+}
+
+/* Code blocks */
+.modal-instructions-content pre {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.7rem;
+    line-height: 1.4;
+    border-radius: 0.375rem;
+    overflow-x: auto;
+    background: #1f2937;
+}
+
+/* Blockquotes */
+.modal-instructions-content blockquote {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    border-left: 3px solid #d1d5db;
+    color: #6b7280;
+    font-size: 0.8rem;
+}
+
+/* Strong/Bold text */
+.modal-instructions-content strong {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+/* Hide any unnecessary images in instructions */
+.modal-instructions-content img {
+    display: none;
+}
+
+/* Custom scrollbar for instructions panel */
+.modal-instructions-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.modal-instructions-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-instructions-content::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 2px;
+}
+
+.modal-instructions-content::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
